@@ -1,0 +1,162 @@
+<div class="dialog-heading font-bold text-center">
+    <!-- <div class="text-md">生活量表</div> -->
+    <div class="text-md">指数与量表</div>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-inline clearfix" ng-if="lifeQualityData.tmpType===1">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="form-group">
+                            请选择发送时间：
+                        </div>
+                        <time-set-cpn time="lifeQualityData.sendTime" hour-step="1" minute-step="30" class="form-inline"></time-set-cpn>
+                    </div>
+                </div>
+            </div>
+            <div class="m-t clearfix">
+                <div class="row">
+                    <div class="col-md-3 cnt-col-lt">
+                        <div id="lifeQualityLibraryTree" class="list-group" style="height: 300px;overflow: auto"></div>
+                    </div>
+                    <div class="col-md-9 cnt-col-rt">
+                        <div class="panel panel-default" style="height: 300px;overflow: auto">
+                            <div class="col-md-12">
+                                <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    <div class="dataTables_length">
+                                        <label>
+                                            每页
+                                            <select class="form-control input-sm" ng-model="pageSize" ng-change="setTable(null, 1, pageSize)">
+                                                <option value="1">1</option>
+                                                <option value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                            </select>
+                                            条
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped b-t dataTable no-footer">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>计划名称</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in surveyList track by $index">
+                                        <td class="text-center">
+                                            <input ng-click="selectLifeQuality(item)" type="radio" name="radio" ng-checked="selectItem.lifeScaleId==item.lifeScaleId">
+                                        </td>
+                                        <td>{{item.title}}</td>
+                                        <td>
+                                            <button class="btn btn-xs btn-primary text-xs" ng-click="lifeQualityCheck( item.lifeScaleId,item.version)">预览</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-right">
+                            <pagination class="m-n" ng-show="page_count>0" total-items="page_count" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="col-md-offset-2 col-md-4">
+        <button type="button" class="btn-block btn btn-success" ng-click="ok()">确 定</button>
+    </div>
+    <div class="col-md-4">
+        <button type="button" class="btn-block btn btn-default" ng-click="cancel()">取 消</button>
+    </div>
+</div>
+<!-- 弹窗生活表 -->
+<script type="text/ng-template" id="lifeQualityCheck.html">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default m-t">
+                <div class="panel-heading font-blod text-center">
+                    <h3>预览指数与量表<h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group clearfix">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <strong class="control-label">量表标题: {{lifeQualityData.title}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="form-group clearfix">
+                        <div class="col-sm-12">
+                            <div class="row">
+                                <strong class="control-label">量表简介: {{lifeQualityData.desc}}</strong>
+                            </div>
+                        </div>  
+                    </div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="form-group" ng-repeat="item in lifeQualityData.questions track by $index">
+                        <div class="row ">
+                            <div class="col-sm-12">
+                                 <strong class="strong">问题{{$index+1}}: {{item.name}}</strong>
+                            </div>
+                                  <div>
+                            <img ng-repeat="img in item.picUrls" src="{{img}}" class="img-question" />
+                        </div>
+                            <div class="col-sm-12">
+                                <ul>
+                                    <li ng-repeat="part in item.options" style="list-style-type:upper-alpha;margin-left:2.8em;">
+
+                                         <img src="{{part.picUrls[0]}}" ng-show="part.picUrls[0]" class="item-images" />
+
+                    
+                                         <label>{{part.name}}</label>
+
+                                        <span class="text-right" style="float:right;">{{part.score}}分</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                        <strong class="conter-label strong">答案情况:</strong>
+                        <ul style="margin-bottom:2em;">
+                            <li ng-repeat="item in lifeQualityData.scores" style="margin-left:1.8em;">
+                                <label>{{item.leftScore}}<span>-</span>{{item.rigthScore}}分:{{item.showInfo}}</label>
+                            </li>
+                        </ul>
+                       <!--  <div class="text-left" ><span class="glyphicon glyphicon-exclamation-sign"></span>需要编辑请到“生活量表”页编辑该表。</div> -->
+                        <div class="text-left" ng-show="lifeQualityData.groupId==groupDomId"><span class="glyphicon glyphicon-exclamation-sign"></span>需要编辑请到“指数与量表题库”页进行操作。</div>
+                        <div class="text-left" ng-show="lifeQualityData.groupId!=groupDomId"><span class="glyphicon glyphicon-exclamation-sign"></span>本表属于平台，不可编辑。但您可以正常使用。</div>
+                        <div class="text-right">
+                            <button class="btn btn-default btn-md w-xs" ng-click="cancel()"> 关闭 </button>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</script>
+<style type="text/css" >
+   .strong{
+        display: inline-block;
+        margin-bottom: 1em;
+    } 
+            .item-images {
+            width: 40px;
+            height: 40px;
+            display: inline;
+            padding:5px;
+        }.img-question{
+            width:80px;
+            height:80px;
+            display: inline;
+            padding:10px;
+        }
+</style>

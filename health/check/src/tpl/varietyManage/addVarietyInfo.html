@@ -1,0 +1,401 @@
+<div class="org hbox-auto-xs hbox-auto-sm " ng-controller="addVarietyInfoCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">新建品种</h2>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>基础信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">通用名称<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <input type="text" readonly="readonly" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入通用名" ng-model="GGData.generalName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">商品名称</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <input type="text" readonly="readonly" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入商品名" ng-model="GGData.tradeName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">生产厂家<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" readonly="readonly" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入生产厂商" ng-model="GGData.manufacturer">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">厂家简称<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" readonly="readonly" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入生产厂商简称" ng-model="GGData.manufacturer2">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">药理类别</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" readonly="readonly" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请选择药理类别" ng-model="GGData.pharmacoTypesText">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">所属企业</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" readonly="readonly" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请选择入驻平台上的所属企业" ng-model="GGData.companyName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">品种名称</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 wordWrap">
+                        <label class="control-label" ng-if="GGData.tradeName">{{GGData.tradeName+'.'+GGData.generalName}}</label>
+                        <label class="control-label" ng-if="!GGData.tradeName">{{GGData.manufacturer2+'.'+GGData.generalName}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">助记码</label>
+                    </div>
+                    <div class="control-label col-lg-6 col-md-8 col-sm-10 col-xs-12 wordWrap">
+                        {{GGData.abbr}}
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>基本信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">品种编码<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" placeholder="请输入品种编码，如J0001，不允许重复" maxlength="20" class="form-control" ng-model="drugFormCode">
+                        <em style="position: absolute;right: 20px;bottom: 0px;color: #8c8c8c;">{{drugFormCode.length==null?'0':drugFormCode.length}}/20</em>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">规格<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入规格，如10g" ng-model="specification">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">包装规格<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-6 col-sm-10 col-xs-12">
+                        <td>
+                            <input class="form-control" type="text" style="width:33%;display: inline-block" placeholder="数量" ng-model="packNum" ng-blur="checkIsCorrectNum(packNum,'包装规格')" />
+                            <select class="form-control" style="display: inline-block;width:31%;padding-left: 1px;" ng-model="units" id="units" ng-change="unitss()">
+                                <option value="">选择服药单位</option>
+                                <option ng-repeat="mts in AvailDoseList" id="{{mts.name}}" value="{{mts.id}}">{{mts.name}}</option>
+                            </select>
+                            <span style="position: absolute;margin-top: 6px;">/</span>
+                            <select class="form-control" style="width:31%;display: inline-block;padding-left: 1px;margin-left:2%;position: relative;" id="packUnit" ng-change="packUnits()" ng-model="packUnit">
+                                <option value="">选择包装单位</option>
+                                <option ng-repeat="l in packUnitList" id="{{l.name}}" value="{{l.id}}">{{l.name}}</option>
+                            </select>
+                        </td>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">规格说明</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入规格说明" ng-model="specificationCaption">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">批准文号<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入批准文号" ng-model="number">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">批准日期</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <p class="input-group">
+                            <input type="text" max-date="todayDate" class="form-control" datepicker-popup="{{format}}" ng-model="approvalDate" is-open="opened" datepicker-options="dateOptions" date-disabled="disabled(date, mode)" ng-required="true" close-text="关闭" current-text="今天" clear-text="清理" />
+                            <span class="input-group-btn">
+                                <button type="button" class="btn btn-default" ng-click="openDatePicker($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+                            </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">剂型<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <select class="form-control" id="form" name="x" ng-model="form">
+                            <option value="">请选择剂型</option>
+                            <option ng-repeat="f in formList" value="{{f.id}}">{{f.name}}</option>
+                        </select>
+                        <!--<input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请选择药理类别" ng-model="form">-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">是否慢病药品</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <label class="checkbox i-checks">
+                            <input type="checkbox" ng-model="drugType"><i></i>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">管理类别<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <select class="form-control" ng-model="manageType">
+                            <option value="">请选择管理类别</option>
+                            <option ng-repeat="mt in manageTypes" value="{{mt.id}}">{{mt.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">产品类别<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <select class="form-control" ng-model="productType">
+                            <option value="">请选择产品类别</option>
+                            <option ng-repeat="pt in productTypes" value="{{pt.id}}">{{pt.name}}</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">适应症</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <div class="input-group">
+                            <input type="hidden" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请选择适应症" value="{{}}" ng-model="indications">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请选择适应症" ng-model="indicationsInfo" value="{{}}" id="testInfo">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="ChooseIndications()" ng-disabled="">选择</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">适应症说明<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <textarea placeholder="请输入适应症说明" ng-model="indicationsDes" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">品种图片</label>
+                    </div>
+                    <div class="col-lg-10 col-md-8 col-sm-4 col-xs-12">
+                        <div class="col-lg-6">
+                            <div class="bg-white text-center ng-File-UpLoad-Bt" style="margin:0;width: 100%;height: 100%" ng-click="upload()">
+                                <img ng-src="{{titlePic+'?'+imgFile.percent}}" width="200px" height="100%" ng-show="titlePic">
+                                <input type="hidden" ng-model="imageUrl" />
+                                <i ng-show="!titlePic&&!imgFile.percent" class="fa fa-file-picture-o" style="font-size:80px;line-height:100px;color:#dee5e7;"></i>
+                                <i ng-show="!titlePic&&imgFile.percent" style="font-size: 80px;">
+                                    {{imgFile.percent}}%
+                                </i>
+                            </div>
+                            <div class="progress m-b-none" ng-show="!planData.titlePic">
+                                <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{imgFile.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{imgFile.percent}}%;min-width: 2em;">
+                                    {{imgFile.percent>0?imgFile.percent:0}}%
+                                    <span class="sr-only">{{imgFile.percent}}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            提示：支持格式类型 *.jpg;*.jpeg;*.png;*.bmp，大小不超过2M
+                        </div>
+                        <!-- 七牛上传组件 -->
+                        <qiniu-uploader token="{{token}}" bucket="group" upload="upload" filters="qiniuFilters" file-list="fileList" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="true" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded" progress-call-back="progressCallBack"></qiniu-uploader>
+                        <!-- 七牛上传组件 end -->
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>用法说明</h4>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">常规用法说明<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-sm-9">
+                        <textarea placeholder="请输入常规用法说明" ng-model="generalUsageDes" class="form-control" rows="2"></textarea>
+                    </div>
+                </div>
+            </div>
+            <ng-form name="exampleForm">
+                <div class="col-md-12 cnt-col-rt">
+                    <div class="row m-t-sm">
+                        <div class="col-sm-2 text-right">
+                            <label class="control-label">用法用量<span class="necsr-Item">*</span></label>
+                        </div>
+                        <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12">
+                            <table class="table">
+                                <thead>
+                                <tr>
+                                    <th>适用群体</th>
+                                    <th>用法</th>
+                                    <th>用量</th>
+                                    <th>备注说明</th>
+                                    <th style="font-size: 24px;cursor:pointer" ng-click="addUseLine()">+</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="dItem in drugLists track by $index">
+                                    <td>
+                                        <input type="text" name="patients" style="width:80px;display: inline-block" class="form-control" ng-model="dItem.patients" placeholder="如年龄段、病种、体重等..." ng-required="required" />
+                                    </td>
+                                    <td>
+                                        每
+                                        <select class="form-control" style="display: inline-block;width:100px;" ng-init="dItem.periodNum='1'" ng-model="dItem.periodNum">
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                        </select>
+                                        <select class="form-control" style="display: inline-block;width:100px;" ng-init="dItem.periodTime='天'" ng-model="dItem.periodTime">
+                                            <option value="天">天</option>
+                                            <option value="周">周</option>
+                                            <option value="月">月</option>
+                                            <option value="年">年</option>
+                                        </select>
+                                        <select class="form-control" style="width:80px;display: inline-block" ng-model="dItem.times">
+                                            <option value="">次数</option>
+                                            <option value="1">1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="6">6</option>
+                                            <option value="7">7</option>
+                                            <option value="8">8</option>
+                                            <option value="9">9</option>
+                                        </select>
+                                        次
+                                    </td>
+                                    <td>
+                                        每次
+                                        <input class="form-control"  type="text" style="display:inline-block;width:80px" ng-model="dItem.quantity" placeholder="数量" ng-blur="checkIsCorrectNum(dItem.quantity,'用量')" />
+                                        <select class="form-control" ng-model="dItem.unit" ng-options="mts.id as mts.name for mts in AvailDoseList" style="display:inline-block;width:80px">
+                                            <option value="">单位</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <input class="form-control" type="text" style="width:120px;display: inline-block" ng-model="dItem.method" placeholder="补充说明，如口服，咀嚼等.." />
+                                    </td>
+                                    <td style="font-size: 24px" ng-click="deleteUseLine($index)">
+                                        -
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </ng-form>
+            <div class="col-md-12 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">说明书</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-4 col-xs-12">
+                        <div class="col-sm-10" ng-if="timing==0">
+                            <!-- 百度富文本编辑器（含七牛上传） -->
+                            <ng-umeditor umeditor="umeditor" class="block w-full" token="{{token}}" content="manual"></ng-umeditor>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+        <div class="form-group text-center">
+            <button class="btn m-b-xs w-xs btn-success" ng-click="save()" ng-disabled="isGoodSave">保存</button>
+            <button class="btn m-b-xs w-xs btn-primary" ng-click="GoBack()">返回</button>
+        </div>
+    </div>
+</div>

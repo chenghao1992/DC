@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title></title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+</head>
+<style type="text/css">
+        p,figure,ul,body,html,h3{
+            margin: 0;
+            padding: 0;
+        }
+        .contrion{
+            width: 100%;
+            font-size: 12px;
+        }
+        .figure{
+            padding:1em ;
+            padding-bottom: 0;
+        }
+    	.figure > figcaption{
+            display: inline-block;
+            font-size: 16px;
+            width: 75%;
+         	padding-top: 2.5%;
+            vertical-align: top;
+        }
+        .figure>img{
+            width: 50px;
+			height: 50px;
+            border-radius: 50px;
+            margin-right: .5em;
+			margin-top: 2%;
+        }
+        .figure > figcaption>p{
+           padding-top: .5em;
+           color: #888;
+        }
+        .imgtitle{
+        	width: 6.5%;
+        	vertical-align: bottom;
+        	
+        }
+        .lanmu >ul{
+            text-decoration: none;
+           
+        }
+        .lanmu{
+            padding: 0;
+            height: 40px;
+            text-align: center;
+           	padding-top: 1em;
+           	padding-bottom: 1em;
+            border-top: 1px solid #ddd;
+          
+        }
+        .lanmu >ul >li{
+             display: inline-block; 
+             width: 23%;
+             font-size: 18px;
+             line-height: 40px;
+            text-indent: 1.3em;
+            color: #888;
+            font-weight: 400;
+            
+        }
+        .lanmu>ul>.li1{
+        	background: url(img/1.png) no-repeat left center;
+        	background-size:40%;
+        	
+        }
+        .lanmu>ul>.li2{
+        	background: url(img/2.png) no-repeat left center;
+        	background-size:40%;
+        }
+        .lanmu>ul>.li3{
+        	background: url(img/3.png) no-repeat left center;
+        	background-size:40%;
+        }
+        .lanmu>ul>.li4{
+        	background: url(img/4.png) no-repeat left center;
+        	background-size:40%;
+        }
+        .content{
+           
+            padding: 0 1em 0 1em;
+            min-height: 480px; 
+        }
+        .content .contentImg img{
+        	max-width: 100%;
+        }
+        .footer{
+            height: 50px;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            background-color: #000;
+            opacity: .8;
+            width: 100%;
+        }
+        .footer>a{
+           color: #fff;
+           font-weight: bold;
+           font-size: 20px;
+           line-height: 50px;
+           text-decoration: none;
+
+        }
+        .title{
+        	padding-bottom: .5em;
+        }
+       .datatime{
+       	 	color: #888;
+       	 	padding: .3em 0 .9em 0;
+		   font-size: 16px;
+
+       }
+       .datatime>span{
+			color: #23BA91;
+       }
+
+        @media (min-width: 992px) {
+        	.contrion{
+        		width: 920px;
+        		margin-left: auto;
+        		margin-right: auto;
+        		padding:10px;
+        	}
+        	.content{
+        		font-size: 18px;
+        	}
+        	.figure >figcaption{
+        		font-size: 18px;
+        	}
+        	.figure>img{
+        		width: 10%;
+        	}
+        	.lanmu{
+        		font-size: 18px;
+        		height: 50px;
+        		width: 920px;
+        	}
+        	.lanmu >ul>li{
+        		line-height: 50px;
+        		font-size: 20px;
+        	}
+        	.footer{
+        		width: 920px;
+        	}
+        }
+	</style>
+<body>
+<div class="contrion">
+<header class="header">
+			<figure class="figure">
+                <img src="img/5.png">
+                <figcaption>
+                   <strong>我是名称</strong> <img class="imgtitle" src="img/5.png">
+                    <p>我是职称 <span>我是集团</span></p>
+                </figcaption>
+                <div class="datatime">2015-15-15 8:20<span>我是栏目</span></div>
+            </figure>
+		</header>
+	<div class="content">
+		<h3 class="title">我是标题</h3>
+		<div class="text">
+			我是正文内容
+			我是正文内容
+		</div>
+		<div class="contentImg">
+			<img src="img/load.png"><img src="img/load.png"><img src="img/load.png">
+		</div>
+		
+	</div>
+	<dir class="lanmu">
+        <ul>
+            <li class="li1"> <span>50</span></li>
+            <li class="li3"> <span>300</span></li>
+            <li class="li4"> <span>20</span></li>
+            <li class="li2"> <span>60</span></li>
+        </ul>
+    </dir>
+	<footer class="footer">
+		<a href="load.html">如需了解更多？请下载app↓</a>
+	</footer>
+</div>
+</body>
+<script type="text/javascript">
+	window.onload=function(){
+		var imgs = document.getElementsByTagName('img');
+		for (var i = 0; i < imgs.length; i++) {
+			var img = imgs[i];
+			if (!img.getAttribute('src')) {
+				img.style.display = 'none';
+			}
+		}
+	}
+</script>
+</html>

@@ -1,0 +1,274 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="CompanyCreateCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">新建企业</h2>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <h4>基本信息</h4>
+            </div>
+            <div class="col-md-12">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">企业名称<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入企业名称" maxlength="50"  ng-model="name" required="required">
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">企业类型<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <select class="form-control" ng-model="type" id="type" ng-change="chooseType()">
+                            <option value="1">经营企业</option>
+                            <option value="2">生产药企</option>
+                            <option value="3">连锁药店总部</option>
+                            <!-- <option value="4">连锁药店分店</option> -->
+                            <option value="5">单体药店</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right" style="padding-right: 30px;">
+                        <label class="control-label text-right">经营范围</label>
+                    </div>
+                    <div class=" col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <div class="input-group">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-disabled="true" ng-model="businessScopeList" placeholder="请选择经营范围">
+                            <input type="hidden" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-disabled="true" ng-model="businessScope" placeholder="请选择经营范围">
+                            <span class="input-group-btn">
+                                <button class="btn btn-default" type="button" ng-click="chooseBusinessScope()" ng-disabled="">选择</button>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-t-sm" >
+                    <div class="col-sm-2 text-right" style="padding-right: 30px;">
+                        <label class="control-label text-right">企业简介</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <textarea class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-maxlength" rows="6" placeholder="请输入企业简介" ng-model="description" maxlength="500" required=""></textarea></div>
+                </div>
+
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-2 text-center">
+                    <h4>联系信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">负责人<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" maxlength="10"  placeholder="请输入企业负责人" ng-model="headUserName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">负责人手机<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12">
+                        <input type="number" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength"  placeholder="请输入负责人手机" ng-model="headUserPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">管理员<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" maxlength="10"  placeholder="请输入企业管理员" ng-model="manageUserName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">管理员手机<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
+                        <input type="number" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入管理员手机" ng-model="manageUserPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">所在区域<span class="necsr-Item">*</span></label>
+                    </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                                <select style="width:90%;display: inline-block" class="form-control"   id="province"  ng-change="AreaChange(areaProvince,1)"  name="x" ng-model="areaProvince">
+                                    <option ng-repeat="l in ProvinceList" value="{{l.code}}">{{l.name}}</option>
+                                </select> 省
+                        </div>
+
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <select style="width:90%;display: inline-block" class="form-control" id="city"    ng-change="AreaChange(areaCity,2)" name="y" ng-model="areaCity">
+                                <option ng-repeat="m in CityList" value="{{m.code}}">{{m.name}}</option>
+                            </select> 市
+                        </div>
+                        <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                            <select style="width:86%;display: inline-block" class="form-control"  id="area" name="z" ng-model="areaCounty" ng-change="searchLocation()">
+                                <option ng-repeat="n in CountyList" value="{{n.code}}">{{n.name}}</option>
+                            </select> 区/县
+                        </div>
+
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">联系地址<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-9 col-md-7 col-sm-10 col-xs-12">
+                        <input type="hidden" value="" id="lat" name="lat" ng-model="latitude" placeholder="{{latitude}}" />
+                        <input type="hidden" value="" id="lng" name="longitude" ng-model='longitude' placeholder="{{longitude}}" />
+                        <input type="hidden" value="" id="logo" name="logo" ng-model='logo' />
+                        <input type="hidden" value="{{data.id}}" id="id" name="id" ng-model='data.id' />
+                        <div class="top" style="width:100%; margin-bottom: 20px;">
+                            <div id="r-result">
+                                <input type="text" ng-model='address' id="areaDetail" placeholder="请输入联系地址后，回车定位坐标" ng-blur="formBlur()" name="areaDetail" class="form-control w400 text mapinputs" value="" autocomplete="off">
+                                <span style="color:#ff0000" id="areaDetailspan"></span>
+                            </div>
+                        </div>
+                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                        <div id="allmap" style="width: 100%; height: 400px; overflow: hidden; position: relative; z-index: 0; color: rgb(0, 0, 0); text-align: left; background-color: rgb(243, 241, 236);"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row" ng-show="type!=4&&type!=5">
+            <div class="col-md-12">
+                <div class="col-md-2 text-center">
+                    <h4>银行信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">所属银行</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <select class="form-control" ng-model="bankName" ng-options="bank.bankName as bank.bankName for bank in transferBankList">
+                            <option value="">请输入企业开户银行</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">银行卡号</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4` col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入银行卡号" ng-model="bankCardAccount">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">持卡人</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入银行持卡人姓名" ng-model="bankCardUserName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">预留手机</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入持卡人预留手机号" ng-model="bankCardUserPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row" ng-show="type==4||type==5">
+            <div class="col-md-12">
+                <div class="col-md-2 text-center">
+                    <h4>其它信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">营业时间</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入企业营业时间" ng-model="businessHours">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">联系电话</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4` col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入联系电话" ng-model="contactPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right ">
+                        <label class="control-label ">支持送药上门</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <!--<label><input type="radio" name="radio" ng-model="doorService" value="1">是</label>-->
+                        <!--<label><input type="radio" name="radio" ng-model="doorService" value="2">否</label>-->
+                        <label><input type="checkbox" ng-model="doorService" id="doorService" style="margin-top: 10px" ></label>
+                        <!--<input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入送药说明" ng-model="deliveryNote">-->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" ng-show="doorService==true">
+                <div class="row m-t-sm">
+                    <div class="col-md-2"></div>
+                    <div class="col-lg-6 col-md-10 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入送药说明" ng-model="deliveryNote">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">支持医保医疗保险</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <!--<label><input type="radio" name="radio1" ng-model="medicalInsurance" value="1">是</label>-->
+                        <!--<label><input type="radio" name="radio1" ng-model="medicalInsurance" value="2">否</label>-->
+                        <label><input type="checkbox" ng-model="medicalInsurance" style="margin-top: 10px;margin-left: -5px"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="form-group text-center">
+            <button class="btn m-b-xs w-xs btn-success" ng-disabled="isCreate" ng-click="save()" >保存</button>
+            <button class="btn m-b-xs w-xs btn-primary" ng-click="cancle()" >返回</button>
+        </div>
+
+    </div>
+</div>
+
+

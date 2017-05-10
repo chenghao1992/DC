@@ -1,0 +1,235 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="../common.css">
+    <script type="text/javascript" src="../../assets/config.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <title>加入我们</title>
+</head>
+
+<body style="padding: 20px 10px; background: #f1f2f4;">
+    <div class="content">
+        <div class="boday p-t-xxxl">
+            <div class="m-b-sm">
+                <input id="telephone" type="text" class="p-t-b-sm" placeholder="手机号码" disabled="disabled">
+            </div>
+            <div class="m-b-sm">
+                <input id="name" type="text" class="p-t-b-sm" placeholder="姓名">
+            </div>
+            <div class="m-b-sm">
+                <input id="pwd" type="text" class="p-t-b-sm" placeholder="密码">
+            </div>
+            <div class="m-b-sm">
+                <select id="depts">
+                    <option value="">请选择科室</option>
+                    <option>213</option>
+                </select>
+            </div>
+            <div class="m-b-sm" id="depts_next_box" style="display: none">
+                <select id="depts_next">
+                    <option value="">请选择下级科室</option>
+                    <option>213</option>
+                </select>
+            </div>
+            <div class="m-b-sm">
+                <select id="titles">
+                    <option value="">请选择职称</option>
+                </select>
+            </div>
+            <div class="m-t-sm clearfix ">
+                <a class="btn bg-success cl-white btn-block width-100 p-t-b-xs border-radius-sm font-lg" id="submit">确定</a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    (function() {
+        // 调用通用方法
+        var parameterArry = Tools.parameterArry;
+        var ajax = Tools.ajax;
+
+        //获取之前的手机号码
+        document.getElementById('telephone').value = parameterArry.telephone;
+        document.getElementById("submit").addEventListener('touchstart', function() {
+            signUp();
+        })
+        document.getElementById("depts").addEventListener('change', function() {
+            // 初始化下级科室
+            depts_next.value = '';
+            depts_next_box.style.display = 'none';
+            depts_next_arry = [];
+
+            _thisDept = getDeptById(this.value);
+
+            // 如果有下级
+            if (_thisDept && !_thisDept.isLeaf) {
+                depts_next_box.style.display = 'block';
+                getDepts(_thisDept.id);
+            };
+
+        });
+
+        // 获取dom
+        var telephone = document.getElementById("telephone");
+        var name = document.getElementById("name");
+        var password = document.getElementById("pwd");
+        var depts = document.getElementById('depts');
+        var depts_next = document.getElementById('depts_next');
+        var depts_next_box = document.getElementById('depts_next_box');
+        var titles = document.getElementById('titles');
+
+
+        // 设置基础数据
+        var groupId = parameterArry.groupId;
+        var inviteId = parameterArry.inviteId;
+        var groupName = parameterArry.groupName;
+        var depts_arry = [];
+        var depts_next_arry = [];
+
+
+        //注册
+        function signUp() {
+
+            var _telephone = telephone.value;
+            var _name = name.value;
+            var _password = password.value;
+            var _titles = titles.value;
+            var _dept = getDeptById(depts_next.value || depts.value);
+
+            if (!_telephone) return alert('请输入手机号！');
+            if (!_name) return alert('请输入姓名！');
+            if(!_password.match(/^[A-Za-z0-9]{6,12}$/)){
+                return alert('验证码长度为：6-18位');
+            }
+            if (!_titles) return alert('请选择职称！');
+            if (!_dept) return alert('请选择科室！');
+            if (!_dept.isLeaf) return alert('请选择下级科室！');
+
+            if (!groupId) {
+                return alert("邀请进入的集团不存在");
+            }
+            if (!inviteId) {
+                return alert("邀请人不存在");
+            }
+
+            var url = serverApiRoot + "group/hospital/confirmByRegisterJoin?";
+            var data = 'telephone=' + _telephone + '&password=' + _password + '&name=' + _name + '&groupHospitalId=' + groupId + '&inviteDoctorId=' + inviteId + '&title=' + _titles + '&deptId=' + _dept.id + '&departments=' + _dept.name;
+
+            ajax({
+                type: "post",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    console.log(data);
+                    if (data.resultCode == 1) {
+                        window.location.href = 'joinHospitalSucces.html?groupName=' + groupName + '&result=1';
+                    } else {
+                        alert(data.resultMsg);
+                        console.log(data);
+                    }
+                }
+            })
+        };
+
+        // 获取科室选项
+        var getDepts = (function _getDepts(id) {
+            var url = serverApiRoot + "base/getDepts?";
+            var data = 'id=' + (id || '');
+
+            ajax({
+                type: "post",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data && data.resultCode === 1) {
+
+                        var _depts = data.data;
+                        var index = 0;
+                        var _depts_len = _depts.length;
+                        var _option = '<option value="">请选择' + (id ? "下级" : "") + '科室</option>'
+
+                        while (index < _depts_len) {
+                            _option = _option + '<option value="' + _depts[index].id + '">' + _depts[index].name + '</option>';
+                            index++;
+                        };
+
+                        // 更新科室
+                        if (id) {
+                            depts_next_arry = data.data;
+                            depts_next.innerHTML = _option;
+                        } else {
+                            depts_arry = data.data;
+                            depts.innerHTML = _option;
+                        };
+
+                    } else if (data && data.resultMsg) {
+                        alert(data.resultMsg)
+                    } else {
+                        console.warn(data);
+                    }
+                }
+            });
+
+            return _getDepts;
+        })();
+
+        // 根据id获取科室
+        function getDeptById(id) {
+            var _dept = null;
+            var _arry = depts_arry.concat(depts_next_arry);
+            _arry.map(function(item, index) {
+                if (item.id == id) {
+                    _dept = item;
+                    return;
+                }
+            })
+            return _dept;
+        };
+
+        // 获取职称
+        var getTitles = (function _getTitles() {
+            var url = serverApiRoot + "base/getTitles?";
+            var data = '';
+
+            ajax({
+                type: "post",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data && data.resultCode === 1) {
+
+                        var _titles = data.data;
+                        var index = 0;
+                        var _titles_len = _titles.length;
+                        var _option = '<option value="">请选择职称</option>'
+
+                        while (index < _titles_len) {
+                            _option = _option + '<option value="' + _titles[index].name + '">' + _titles[index].name + '</option>';
+                            index++;
+                        };
+
+                        titles.innerHTML = _option;
+
+                    } else if (data && data.resultMsg) {
+                        alert(data.resultMsg)
+                    } else {
+                        console.warn(data);
+                    }
+                }
+            });
+
+            return _getTitles;
+        })();
+
+    })()
+    </script>
+</body>
+
+</html>

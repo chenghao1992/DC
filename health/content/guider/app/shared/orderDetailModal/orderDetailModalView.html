@@ -1,0 +1,274 @@
+<uib-tabset justified="true" class="orderDetailModal">
+
+        <div class="modal-body">
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="panel panel-danger panel-alt widget-photoday img-list" style="height: 210px;">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img style="width: 100px;height: 100px;" ng-src="{{orderData.headPicFileName||'./assets/img/peopleDefault.jpg'}}" class="img-sm img-border" alt="profile">
+                                </div>
+                                <div class="col-sm-8" style="padding-left: 0;">
+                                    <div class="m-b-none text-dark word-break-break-word faceBox">
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        患者姓名：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.patientName}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        患者电话：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        <button class="text-info btn-xs no-shadow b-none bg-f8" title="拨打电话" uib-popover-template="'doctorCallView.html'" popover-is-open="patientItem.callViewIsOpen" ng-show="orderData.patientTelephone" ng-click="setCurrentDocTel(patientItem,orderData.patientTelephone)" popover-placement="right"><i class="fa fa-phone inline m-t-xs fa-lg fa-fw"></i>{{orderData.patientTelephone}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        用户姓名：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.patientUserName}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        与患者关系：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.patientUserRelation}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        患者证件类型：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{{1:'身份证',2:'护照',3:'台胞',4:'香港身份证'}[orderData.idtype]}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        患者证件号：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.idcard}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="panel panel-danger panel-alt widget-photoday img-list" style="height: 210px;">
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <img style="width: 100px;height: 100px;" ng-src="{{orderData.doctors[0].headPicFilleName||'./assets/img/peopleDefault.jpg'}}" class="img-sm img-border" alt="profile">
+                                </div>
+                                <div class="col-sm-8" style="padding-left: 0;">
+                                    <div class="m-b-none text-dark word-break-break-word faceBox">
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        医生姓名：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.doctors[0].name}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        医生电话：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        <button class="text-info btn-xs no-shadow b-none bg-f8" title="拨打电话" uib-popover-template="'doctorCallView.html'" popover-is-open="docItem.callViewIsOpen" ng-click="setCurrentDocTel(docItem,orderData.doctors[0].telephone)" ng-show="orderData.doctors[0].telephone" popover-placement="right"><i class="fa fa-phone inline m-t-xs fa-lg fa-fw"></i>{{orderData.doctors[0].telephone}}</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        科室：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.doctors[0].departments}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="row m-b-sm">
+                                            <div class="col-xs-5">
+                                                <div class="row">
+                                                    <strong class="p-l">
+                                                        职称：
+                                                    </strong>
+                                                </div>
+                                            </div>
+                                            <div class="col-xs-7">
+                                                <div class="row">
+                                                    <div class="p-r">
+                                                        {{orderData.doctors[0].title}}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <table class="table table-striped m-b-none table-hover b">
+                        <tr>
+                            <th style="text-align: center">
+                                订单号
+                            </th>
+                            <th style="text-align: center">
+                                订单价格
+                            </th>
+                            <th style="text-align: center">
+                                执业点
+                            </th>
+                            <th style="text-align: center">
+                                订单状态
+                            </th>
+                            <th style="text-align: center">
+                                预约时间
+                            </th>
+                        </tr>
+                        <tr>
+                            <td align="center">{{orderData.orderNo}}</td>
+                            <td align="center">{{(orderData.price||0)/100}}元</td>
+                            <td align="center">{{orderData.hospitalName}}</td>
+                            <td align="center">{{transOrderStatus()}}</td>
+                            <td align="center">{{orderData.appointmentStart|date:'yyyy/MM/dd HH:mm'}}-{{orderData.appointmentEnd|date:'HH:mm'}}</td>
+                        </tr>
+                        <tfoot>
+                        <td colspan="5" style="border-top-style: dashed;">
+                            备注：{{orderData.remarks||'无'}}
+                            <div class="text-right">
+                                <a ng-click="funEditRemarks(orderData)"><i class="fa fa-edit"></i>
+                                    <span class="text">编辑</span></a>
+                            </div>
+                        </td>
+                        </tfoot>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-default" type="button" ng-if="orderData.orderStatus==1" ng-disabled="true">待预约</button>
+            <button class="btn btn-default" type="button" ng-if="orderData.orderStatus==2" ng-disabled="true">待支付</button>
+            <button class="btn btn-success" type="button" ng-if="orderData.orderStatus==3&&!orderData.serviceBeginTime" ng-click="funBeginService(orderData.orderId)">开始服务</button>
+            <button class="btn btn-success" type="button" ng-if="orderData.orderStatus==3&&orderData.serviceBeginTime" ng-click="funFinishService(orderData.orderId)">结束服务</button>
+            <button class="btn btn-dark" type="button" ng-if="orderData.orderStatus==4" ng-disabled="true">已完成</button>
+            <button class="btn btn-dark" type="button" ng-if="orderData.orderStatus==5" ng-disabled="true">已取消</button>
+
+            <button class="btn btn-info" type="button" ng-click="funEditBooktime(orderData)" ng-disabled="!((orderData.orderStatus==3&&orderData.serviceBeginTime)||(orderData.orderStatus==3&&!orderData.serviceBeginTime))">修改预约时间</button>
+            <button class="btn btn-primary" type="button" ng-click="refund()">取消订单并退款</button>
+            <button class="btn btn-default" type="button" ng-click="close()">返回</button>
+        </div>
+
+</uib-tabset>
+<!-- 七牛上传组件 -->
+<qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+<!-- 七牛上传组件 end -->
+
+<!-- 拨打电话 -->
+<script type="text/ng-template" id="doctorCallView.html">
+    <div class="form-group w-250 h-max-200">
+        <div class=" w-full position-relative">
+            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-23px;top:-23px;" ng-click="currentDocItem.callViewIsOpen=false;"><i class="fa fa-close"></i></button>
+        </div>
+        <div class="p-t-sm text-center text-nowrap">
+            确定用平台来拨通{{currentDocItem==docItem?'医生':'患者'}}与您的电话吗？
+        </div>
+        <div class="m-t-xs text-center text-xs" ng-class="{true:'text-success',false:'text-danger'}[call.result.type]" ng-if="call.result">{{call.result.content}}</div>
+        <div class="clearfix text-center m-t-sm">
+            <button type="button" class="btn btn-sm btn-success m-r-xs" ng-click="callPhone()">
+                <span ng-if="call.isCalling">拨打中 <i class="fa" ng-class="{true:'fa-spinner fa-spin'}[call.isCalling]"></i>
+                </span>
+                <span ng-if="!call.isCalling">确定</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-info" ng-click="currentDocItem.callViewIsOpen=false;">取消</button>
+        </div>
+    </div>
+</script>
+<!-- 拨打电话 end -->

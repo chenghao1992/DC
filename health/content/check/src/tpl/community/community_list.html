@@ -1,0 +1,110 @@
+<style>
+    .pagination{
+        margin:0 !important;
+    }
+    .table{
+        margin-bottom: 10px !important;
+    }
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="communitylistCtrl">
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <h2 class="org-title text-center">社区栏目</h2>
+        </div>
+    </div> -->
+    <div class="row">
+    	<div class="col-md-12 form-inline">
+    		<div class="input-group" style="width: 300px; position: relative;">
+	            <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="&#128269;&nbsp;作者&nbsp;标题" ng-model="search.keywords" ng-enter="queryPostList()">
+	        </div>
+
+            <label class="control-label m-l-md">开始日期</label>
+            <label class="control-label" style="width:180px">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" ng-model="search.startDate" is-open="startBtn" current-text="今天" clear-text="清空" close-text="关闭" max-date="search.endDate"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-shadow-none" ng-click="open($event,'startBtn')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </label>
+
+            <label class="control-label m-l-md">结束日期</label>
+            <label class="control-label" style="width:180px">
+                <p class="input-group">
+                    <input type="text" class="form-control" uib-datepicker-popup="yyyy-MM-dd" ng-model="search.endDate" is-open="endBtn"  current-text="今天" clear-text="清空" close-text="关闭" min-date="search.startDate"/>
+                    <span class="input-group-btn">
+                        <button type="button" class="btn btn-default btn-shadow-none" ng-click="open($event,'endBtn')"><i class="glyphicon glyphicon-calendar"></i></button>
+                    </span>
+                </p>
+            </label>
+        	<button class="btn btn-info m-l-lg" ng-click="queryPostList()" style="width:80px;" ng-disabled="search.can" ng-bind-html="search.text"></button>
+        </div>
+    </div>
+    <div class="m-t-md">
+        <table class="table table-striped m-n table-layout-fixed" style="border:1px solid #ddd;">
+            <thead>
+                <tr>
+                    <th class="text-left" width="40%">标题</th>
+                    <th class="text-center" width="15%">作者</th>
+                    <th class="text-center" width="15%">时间</th>
+                    <th class="text-right" style="padding-right:9%; width: 30%;">操作</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="post in postList track by $index" ng-show="postList.length>0">
+                    <td class="text-left" style="position: relative;">
+                        <span class="table-list-mark" ng-show="post.top>0">
+                            <span class="mark-reference"></span>
+                            <span class="mark-info" ng-class="{'mark-info-danger': post.topType=='202','mark-info-attention': post.topType=='203','mark-info-success': post.topType!='202'&&post.topType!='203',}">{{post.topTypeName}}</span>
+                        </span>
+                        <span class="table-list-title" ng-class="{'table-list-title-p-l': post.top>0}" ng-click="funGoDetail(post)">{{post.title}}</span>
+                    </td>
+                    <td class="text-center">
+                        {{post.author}}
+                        <span class="mark-info mark-info-success mark-l-xxs" ng-show="post.userType==3">医生</span>
+                        <span class="mark-info mark-info-success mark-l-xxs" ng-show="post.userType==4">官方账号</span>
+                    </td>
+                    <td class="text-center">{{post.createTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+                    <td class="text-right" style="padding-right:5%;">
+                        <button class="btn btn-link btn-link-4" ng-show="$index!=0 && post.top>0" ng-click="funMoveUp(post)">上移</button>
+                        <button class="btn btn-link btn-link-4" ng-show="post.recommended==1" ng-click="funRecommend(post)">取消推荐</button>
+                        <button class="btn btn-link btn-link-4" ng-show="post.recommended!=1" ng-click="funRecommend(post)">推荐</button>
+                        <button class="btn btn-link btn-link-4" ng-show="post.top>0" ng-click="funUnTopPost(post)">取消置顶</button>
+                        <div class="btn-group m-n b-none" ng-show="post.top==0" uib-dropdown dropdown-append-to-body>
+                            <button id="btn-append-to-body" type="button" class="btn btn-link btn-link-4" uib-dropdown-toggle>置顶</button>
+                            <div class="dropdown-menu dropdown-menu-dialog p-none m-n b-none">
+                                <ul>
+                                    <li class="text-center" ng-repeat="type in topTypeList track by type.id" ng-click="funTopPost(post, type)">{{type.valueName}}</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr ng-hide="postList.length>0">
+                    <td colspan="4" class="text-center">
+                        无数据
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div class="row" >
+        <div class="col-sm-6">
+            <label>
+                每页
+                <select class="input-sm" ng-model="pageSize" ng-change="pageSizeChange()">
+                   <option value="10">10</option>
+                   <option value="20">20</option>
+                   <option value="50">50</option>
+                </select>
+                条
+            </label>
+            <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info" role="status" aria-live="polite">
+                当前第 {{(pageIndex-1)*pageSize+1}} - {{pageIndex*pageSize > postTotal ? postTotal:  pageIndex*pageSize}} 条，共 {{postTotal}} 条
+            </label>
+        </div>
+        <div class="col-sm-6 text-right">
+            <uib-pagination total-items="postTotal" ng-model="pageIndex" items-per-page="pageSize" max-size="7" boundary-link-numbers="true" rotate="false" ng-change="pageChange()" boundary-links="true" first-text="首页" last-text="尾页" previous-text="<" next-text=">" ></uib-pagination>
+        </div>
+    </div>
+</div>

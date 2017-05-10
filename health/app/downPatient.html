@@ -1,0 +1,477 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="description" content="玄关健康" id="desc" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title id="title">安装「玄关健康」，一分钟联系名医专家</title>
+    <link rel="shortcut icon" href="./img/logo_p.png">
+    <style type="text/css">
+    html,
+    body {
+        margin: 0;
+        pading: 0;
+        font-size: 14px;
+        font: normal normal normal 14px/1.5em '微软雅黑', Arial;
+        color: #666;
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p {
+        margin: 0;
+        padding: 0;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    .text-center {
+        text-align: center;
+    }
+    
+    .text-left {
+        text-align: left;
+    }
+    
+    .none {
+        display: none !important;
+    }
+    
+    .fl {
+        float: left;
+    }
+    
+    .logo {
+        width: 70px;
+    }
+    
+    .inline-block {
+        display: inline-block;
+    }
+    
+    .v-l-m {
+        vertical-align: middle;
+    }
+    
+    .link-wrap {
+        height: 60px;
+        overflow: hidden;
+    }
+    
+    .link-btn {
+        display: inline-block;
+        width: 70%;
+        border-radius: 8px;
+        line-height: 60px;
+        text-align: center;
+        color: #fff;
+        font-size: 22px;
+        background-color: #5681D3;
+        vertical-align: middle;
+    }
+    
+    .link-btn img {
+        width: 35px;
+        margin-bottom: -10px;
+    }
+    
+    .mrt-20 {
+        margin-top: 20px;
+    }
+    
+    .mrt-50 {
+        margin-top: 50px;
+    }
+    
+    .mrb-20 {
+        margin-bottom: 20px;
+    }
+    
+    .mrl-10 {
+        margin-left: 10px;
+    }
+    
+    .p-t-b-5 {
+        padding: 5px 0;
+    }
+    
+    .p-t-b-10 {
+        padding: 10px 0;
+    }
+    
+    .p-t-3 {
+        padding-top: 3px;
+    }
+    
+    .p-t-6 {
+        padding-top: 6px;
+    }
+    
+    .p-b-3 {
+        padding-bottom: 3px;
+    }
+    
+    .p-b-6 {
+        padding-bottom: 6px;
+    }
+    
+    .ft-s-24 {
+        font-size: 24px;
+    }
+    
+    .ft-s-20 {
+        font-size: 20px;
+    }
+    
+    .ft-s-16 {
+        font-size: 16px;
+    }
+    
+    .ft-s-14 {
+        font-size: 14px;
+    }
+    
+    .img-ga img {
+        max-width: 80%;
+        margin: 10px 0;
+        box-shadow: 0 0 1px rgba(0, 0, 0, .5);
+    }
+    
+    .ft-w-b {
+        font-weight: bold;
+    }
+    
+    .tip-win-mask {
+        position: fixed;
+        top: 1px;
+        right: 1px;
+        left: 1px;
+        bottom: 1px;
+        z-index: 100;
+        background: rgba(000, 000, 000, .3);
+    }
+    
+    .tip-win {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        z-index: 1000;
+        height: 95px;
+        padding: 20px 0 0 35%;
+        line-height: 24px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, .95);
+    }
+    
+    .clr-d-red {
+        color: #e80000;
+    }
+    
+    .tip-win img {
+        position: absolute;
+        top: 2px;
+        right: 5%;
+        height: 55%;
+    }
+    </style>
+    <script type="text/javascript" src="../appInvite/js/tools.js"></script>
+    <!--<script type="text/javascript" src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>-->
+</head>
+
+<body>
+    <div class="text-center mrt-20 mrb-20">
+        <div class="inline-block v-l-m">
+            <img class="logo" src="img/logo_p.png" id="logo">
+        </div>
+        <div class="inline-block mrl-10 v-l-m">
+            <h3 class="ft-s-24 text-left p-t-3 p-b-3" id="name">玄关健康</h3>
+            <p class="ft-s-14 text-left p-t-3 p-b-3">您的健康服务专家</p>
+        </div>
+    </div>
+    <div class="link-wrap text-center">
+        <a id="down_btn_and_a" class="link-btn" href="javascript:void(0)"><img src="img/android.png" /> Android 下载</a>
+        <a id="down_btn_ios_a" class="link-btn none" href="javascript:void(0)"><img src="img/apple.png" /> AppStore 下载</a>
+    </div>
+    <div class="img-ga text-center mrt-50">
+        <img src="img/p_1.png" />
+        <img src="img/p_2.png" />
+        <img src="img/p_3.png" />
+    </div>
+    <div class="link-wrap text-center mrt-20 mrb-20 none" id="downLoad_b">
+        <a id="down_btn_and_b" class="link-btn" href="javascript:void(0)"><img src="img/android.png" /> Android 下载</a>
+        <a id="down_btn_ios_b" class="link-btn none" href="javascript:void(0)"><img src="img/apple.png" /> AppStore 下载</a>
+    </div>
+    <div id="tip_win_mask" class="tip-win-mask none"></div>
+    <div id="tip_win" class="tip-win none">
+        <div class="inline-block v-l-m">
+            <p class="ft-s-16 ft-w-b p-b-6">链接打不开？</p>
+            <p>请点击右上角</p>
+            <p id="option_and">选择“
+                <span class="clr-d-red">在浏览器中打开</span>”</p>
+            <p id="option_ios">选择“
+                <span class="clr-d-red">在Safari中打开</span>”</p>
+        </div>
+        <img class="v-l-m" src="img/goToClick.png" />
+    </div>
+    <script type="text/javascript">
+    window.onload = function() {
+        var desc = document.getElementById('desc');
+        var downLoad_b = document.getElementById('downLoad_b');
+        downLoad_b.setAttribute('class', 'text-center mrt-20 mrb-20');
+        var protocol = window.protocol || 'http://';
+
+        (function function_name(argument) {
+            var device = {},
+                title = document.getElementById('title'),
+                name = document.getElementById('name'),
+                btn_and_a = document.getElementById('down_btn_and_a'),
+                btn_and_b = document.getElementById('down_btn_and_b'),
+                btn_ios_a = document.getElementById('down_btn_ios_a'),
+                btn_ios_b = document.getElementById('down_btn_ios_b'),
+                option_and = document.getElementById('option_and'),
+                option_ios = document.getElementById('option_ios'),
+                tip_win_mask = document.getElementById('tip_win_mask'),
+                tip_win = document.getElementById('tip_win'),
+                and_p_url = protocol+'appdist.mediportal.com.cn/release/patient-release.apk',
+                ios_p_url = 'https://itunes.apple.com/cn/app/xuan-guan-jian-kang/id1092868086?mt=8',
+                parameterArry = Tools.parameterArry;
+
+            if (parameterArry && parameterArry.app == 'bd') {
+
+                var logo = document.getElementById('logo');
+                logo.src = "img/logo_p_bd.png";
+
+                and_p_url = protocol+'www.chinamediportal.com/replease/dGroupPatient-release.apk_1.07.apk';
+                ios_p_url = 'http://fir.im/bdhz';
+                title.innerHTML = "安装「博德嘉联患者端」，一分钟联系名医专家";
+                name.innerHTML = "博德嘉联患者端";
+
+                desc.setAttribute('content', '博德嘉联患者端');
+            }
+
+            var agent;
+            //识别设备
+            function discernDevice() {
+                agent = navigator.userAgent.toLowerCase();
+                if (agent.match(/MicroMessenger/i) == "micromessenger") {
+                    device.app = 'weixin'; //在微信中打开
+                } else if (agent.match(/QQ\//i) == "qq/") {
+                    device.app = 'qq'; //在QQ打开
+                } else if (agent.match(/WeiBo/i) == "weibo") {
+                    device.app = 'weibo'; //在新浪微博客户端打开
+                }
+
+                if (agent.indexOf('android') != -1) {
+                    device.platform = 'Android';
+                } else if (agent.indexOf('iphone') != -1) {
+                    device.platform = 'iOS';
+                }
+            }
+
+            discernDevice();
+            //alert(device.platform + ', ' + agent)
+
+
+            if (device.platform === 'Android') {
+                btn_and_a.setAttribute('class', 'link-btn');
+                btn_and_b.setAttribute('class', 'link-btn');
+                btn_ios_a.setAttribute('class', 'link-btn none');
+                btn_ios_b.setAttribute('class', 'link-btn none');
+
+                option_and.setAttribute('class', '');
+                option_ios.setAttribute('class', 'none');
+
+                btn_and_a.addEventListener('touchstart', initDownLoad);
+                btn_and_b.addEventListener('touchstart', initDownLoad);
+            } else if (device.platform === 'iOS') {
+                btn_ios_a.setAttribute('class', 'link-btn');
+                btn_ios_b.setAttribute('class', 'link-btn');
+                btn_and_a.setAttribute('class', 'link-btn none');
+                btn_and_b.setAttribute('class', 'link-btn none');
+
+                option_and.setAttribute('class', 'none');
+                option_ios.setAttribute('class', '');
+
+                btn_ios_a.addEventListener('touchstart', initDownLoad);
+                btn_ios_b.addEventListener('touchstart', initDownLoad);
+            }
+
+            function initDownLoad() {
+                switch (device.app) {
+                    case 'weixin':
+                    case 'qq':
+                    case 'weibo':
+                        tip_win_mask.setAttribute('class', 'tip-win-mask');
+                        tip_win.setAttribute('class', 'tip-win');
+                        break;
+                    default:
+                        if (device.platform === 'Android') {
+                            location.href = and_p_url;
+                        } else {
+                            location.href = ios_p_url;
+                        }
+                        break;
+                }
+            }
+        })()
+
+        return; // 微信分享现需要授权，一下代码目前不可用
+
+        var imgUrl = protocol+"120.24.94.126/health/web/app/img/logo_p.png";
+        var lineLink = protocol+"120.24.94.126/health/web/app/downPatient.html";
+        var descContent = '玄关健康';
+        var shareFriendTitle = '玄关健康，医生提供专业权威的疾病问诊、用药指导、随访随诊服务，切实缓解看病难题。支持医生与您实时咨询，图文、语音都支持，像QQ聊天一样简单。汇集全国医生给您最好的服务。';
+        var shareTitle = '安装「玄关健康」，一分钟联系名医专家';
+        var appid = '';
+
+        function shareFriend() {
+            alert('shareFriend' + ';' + WeixinJSBridge.invoke);
+            WeixinJSBridge.invoke('sendAppMessage', {
+                "appid": appid,
+                "img_url": imgUrl,
+                "img_width": "200",
+                "img_height": "200",
+                "link": lineLink,
+                "desc": descContent,
+                "title": shareFriendTitle
+            }, function(res) {
+                alert('shareFriend.send_msg' + ';' + res.err_msg);
+                //_report('send_msg', res.err_msg);
+            })
+        }
+
+        function shareTimeline() {
+            alert('shareTimeline' + ';' + WeixinJSBridge.invoke);
+            WeixinJSBridge.invoke('shareTimeline', {
+                "img_url": imgUrl,
+                "img_width": "200",
+                "img_height": "200",
+                "link": lineLink,
+                "desc": descContent,
+                "title": shareTitle
+            }, function(res) {
+                alert('shareTimeline.send_msg' + ';' + res.err_msg);
+                //_report('timeline', res.err_msg);
+            });
+        }
+
+        function shareWeibo() {
+            alert('shareWeibo' + ';' + WeixinJSBridge.invoke);
+            WeixinJSBridge.invoke('shareWeibo', {
+                "content": descContent,
+                "url": lineLink,
+            }, function(res) {
+                alert('shareWeibo.send_msg' + ';' + res.err_msg);
+                //_report('weibo', res.err_msg);
+            });
+        }
+        // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+
+        document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+            //alert('WeixinJSBridgeReady' + ';' + WeixinJSBridge.invoke);
+            // 发送给好友
+            WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+                shareFriend();
+            });
+            // 分享到朋友圈
+            WeixinJSBridge.on('menu:share:timeline', function(argv) {
+                shareTimeline();
+            });
+            // 分享到微博
+            WeixinJSBridge.on('menu:share:weibo', function(argv) {
+                shareWeibo();
+            });
+        }, false);
+
+
+        ///////////////////////////////////////////////
+
+        wx.config({
+            debug: true, // 开启调试模式,调用的所有api的返回值会在客户端alert出来，若要查看传入的参数，可以在pc端打开，参数信息会通过log打出，仅在pc端时才会打印。
+            appId: '{$appid}', // 必填，公众号的唯一标识
+            timestamp: "{$signPackage.timestamp}", // 必填，生成签名的时间戳
+            nonceStr: '{$signPackage.nonceStr}', // 必填，生成签名的随机串
+            signature: '{$signPackage.signature}', // 必填，签名，见附录1
+            jsApiList: [
+                    'checkJsApi',
+                    'onMenuShareTimeline',
+                    'onMenuShareAppMessage',
+                    'onMenuShareQQ',
+                    'onMenuShareWeibo'
+                ] // 必填，需要使用的JS接口列表，所有JS接口列表见附录2
+        });
+
+        wx.checkJsApi({
+            jsApiList: [
+                'getLocation',
+                'onMenuShareTimeline',
+                'onMenuShareAppMessage'
+            ],
+            success: function(res) {
+                alert(JSON.stringify(res));
+            }
+        });
+
+        wx.ready(function() {
+            wx.onMenuShareTimeline({
+                title: '--{$info.name}', // 分享标题
+                link: '{$url}__URL__/index?pid={$pid}&puid={$uid}', // 分享链接,将当前登录用户转为puid,以便于发展下线
+                imgUrl: '{$url}__PUBLIC__/Uploads/{$goodsvo.image}', // 分享图标
+                desc: '00000000000000',
+                trigger: function(res) {
+                    // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                    // alert('用户点击发送给朋友');
+                },
+                success: function() {
+                    // 用户确认分享后执行的回调函数
+                    alert('分享成功');
+                },
+                cancel: function() {
+                    // 用户取消分享后执行的回调函数
+                },
+                fail: function(res) {
+                    // alert(JSON.stringify(res));
+                }
+            });
+            wx.onMenuShareAppMessage({
+                title: descContent, // 分享标题
+                link: '{$url}__URL__/index?pid={$pid}&puid={$uid}', // 分享链接,将当前登录用户转为puid,以便于发展下线
+                imgUrl: '{$url}__PUBLIC__/Uploads/{$goodsvo.image}', // 分享图标
+                desc: shareFriendTitle,
+                trigger: function(res) {
+                    // 不要尝试在trigger中使用ajax异步请求修改本次分享的内容，因为客户端分享操作是一个同步操作，这时候使用ajax的回包会还没有返回
+                    // alert('用户点击发送给朋友');
+                },
+                success: function() {
+                    // 用户确认分享后执行的回调函数
+                    alert('AppMessage分享成功');
+                },
+                cancel: function() {
+                    alert('cancel');
+                    // 用户取消分享后执行的回调函数
+                },
+                fail: function(res) {
+                    // alert(JSON.stringify(res));
+                }
+            });
+            wx.error(function(res) {
+                alert(00)
+                    // config信息验证失败会执行error函数，如签名过期导致验证失败，具体错误信息可以打开config的debug模式查看，也可以在返回的res参数中查看，对于SPA可以在这里更新签名。
+                alert("errorMSG:" + res.err_msg);
+            });
+        });
+
+    };
+    </script>
+</body>
+
+</html>

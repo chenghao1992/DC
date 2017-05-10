@@ -1,0 +1,167 @@
+<script type="text/ng-template" id="selectPeopleDialogBox.html">
+    <div class="modal-body clearfix p-t-lg p-l-lg doc-detail position-relative h-600 p-r-none" ng-click="triggerClick($event)">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:-10px;top:-12px;" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <!--<button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="position:absolute;right:-15px;top:-15px;" ng-click="cancel()"><i class="fa fa-close"></i></button>-->
+        <div class="col-xs-8 clearfix b-r" style="height: 100%;" >
+            <div class=" ng-hide" ng-show="showDep" style="position: absolute;background: white;margin-left: -15px;overflow: visible;z-index: 9999;width: 100%;height: 100%;">
+                <div class="tree-box" style="overflow-y: scroll;">
+                    <tree-dir tree-data="treeData" tree-options="{
+                            multiSelection:false,
+                            dirSelectable:true,
+                            nodeChildren:'subList',
+                            allowDeselect:false
+                        }" on-selection="funTreeClick" expanded="1" selected-node="currentLeaf">
+                        <div class="clearfix">
+                            <div class="pull-left">
+                                <i class="fa fa-h-square" ng-if="node.id!='idx_0'"></i><i class="fa fa-ban" ng-if="node.id=='idx_0'"></i>&nbsp;{{node.name}}
+                            </div>
+                            <!--<div class="pull-right text-right m-r-sm" ng-show="node.$isHover&&node!=treeData[0]&&node.name!='未分配'&&node.id!='idx_0'">-->
+                            <!--<span class="fa-hover" ng-click="$treeScope.$parent.editDivision(node);$event.stopPropagation()">-->
+                            <!--<i class="fa fa-pencil-square-o"></i>-->
+                            <!--</span>-->
+                            <!--<span class="fa-hover" ng-click="$treeScope.$parent.funDelDivision(node);$event.stopPropagation()">-->
+                            <!--<i class="fa fa-trash-o"></i>-->
+                            <!--</span>-->
+                            <!--</div>-->
+                        </div>
+                    </tree-dir>
+
+                </div>
+                <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:-10px;top:-12px;"
+                        ng-click="showDep=false">
+                    <i class="fa fa-close"></i></button>
+            </div>
+            <div>
+                <button class="btn btn-info" ng-click="showDep=true" style="float: left">
+                    <span class="hid">查看部门</span>
+                </button>
+                <div class="input-group" style="margin:10px 0px 10px 83px;">
+                    <input type="search" class="form-control" placeholder="输入搜索内容" ng-model="_keyword" ng-enter="search(_keyword)">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="search(_keyword)" ng-disabled="!_keyword">搜索</button>
+                        </span>
+                </div>
+                <div class="col-md-12" style="max-height: 100%;overflow-y: scroll;padding: 0;">
+                    <div class="text-center">
+                        <uib-pagination ng-show="pageCount>0" total-items="pageCount" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" max-size="10" boundary-links="true" rotate="false"></uib-pagination>
+                    </div>
+                    <div class="panel panel-default">
+                        <!--<div class="col-xs-2 m-t-sm m-b-sm">-->
+                            <!--<div class="form-group form-inline m-n">-->
+                                <!--<label class="control-label">每页</label>-->
+                                <!--<select class="form-control m-l-xs m-r-xs" ng-model="pageSize" ng-change="search(_keyword)">-->
+                                    <!--<option value="{{option}}" ng-repeat="option in [10,20,50]">{{option}}</option>-->
+                                <!--</select>-->
+                                <!--<label class="control-label">条</label>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <table class="table tablebox table-striped b-b h-full table-hover no-footer">
+                            <thead>
+                            <tr role="row">
+                                <th class="text-center">头像</th>
+                                <th class="text-left">姓名</th>
+                                <th class="text-left">职位</th>
+                                <th class="text-left">联系方式</th>
+                                <!--<th class="text-left">备注</th>-->
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <!--<tr ng-class="personnel.status==1?'a-link':''" ng-repeat="personnel in personnelList" ng-click="addPerson(personnel)" ng-show="personnelList.length>0">-->
+                            <tr ng-class="{'a-link':personnel.status==1,'selected_person':findPersonIndex(personnel)!==-1,'current_person':currentPeopleMap[personnel.userId]}"
+                                ng-repeat="personnel in personnelList" ng-click="addPerson(personnel)" ng-show="personnelList.length>0">
+                                <td class="text-center position-relative">
+                                    <!-- <span ng-show="personnel.duty==1" style="background-color: orange;font-size: 12px;padding: 3px;border-radius: 3px;position: absolute;top: 22px;left: 33px;">主管</span>
+                                    <img ng-src="{{$rootUrl}}/assets/img/a0.jpg"> -->
+                                            <span class="avatar inline">
+                                                <img ng-src="{{personnel.headPicFileName}}" >
+                                                <span class="badge badge-sm up bg-primary bg" ng-show="personnel.duty==1">主管</span>
+                                            </span>
+                                </td>
+                                <td class="text-left">{{personnel.name}}</td>
+                                <td class="text-left">{{ personnel.position}}</td>
+                                <td class="text-left">{{ personnel.telephone}}</td>
+                                <!--<td class="text-left">{{ personnel.remarks}}</td>-->
+                            </tr>
+                            <tr ng-hide="personnelList.length>0">
+                                <td colspan="5" class="text-center">无数据</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+        <div class="col-xs-4 clearfix p-r-none p-l-none">
+            <div class="b-b p-l-sm p-r-sm" style="height: 50px;line-height: 50px;">
+                <span class="text-md">已选择</span>
+                <button class="btn btn-warning" ng-click="createChat()" >
+                    <span class="hid">确定</span>
+                </button>
+                <!--<button class="btn btn-sm btn-icon btn-default pull-right m-t-sm" ng-click="addDocRemarks()"><i class="fa fa-plus"></i></button>-->
+            </div>
+            <!--<div ng-repeat="(key,personnel) in selMap">-->
+                <!--<span class="avatar inline">-->
+                    <!--<img ng-src="{{personnel.headPicFileName}}" style="width: 50px;height: 50px;">-->
+                    <!--<span class="badge badge-sm up bg-primary bg" ng-show="personnel.duty==1">主管</span>-->
+                <!--</span>-->
+                <!--<span>{{personnel.name}}</span>-->
+            <!--</div>-->
+            <ul class="p-sm" style="max-height: 500px;overflow-y: auto;" id="remarkListContent">
+                <!--<li ng-repeat="(key,personnel) in selMap" class="m-t-sm bg-f8 b p-sm">-->
+                <li ng-repeat="personnel in selPeople" class="m-t-sm bg-f8 b p-sm" style="position: relative;">
+                    <span class="avatar inline">
+                        <img ng-src="{{personnel.headPicFileName}}" style="width: 50px;height: 50px;">
+                        <span class="badge badge-sm up bg-primary bg" ng-show="personnel.duty==1">主管</span>
+                    </span>
+                    <span>{{personnel.name}}</span>
+                    <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:5px;top:5px;"
+                            ng-click="removePerson(personnel)">
+                        <i class="fa fa-close"></i></button>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="modal-footer" style="text-align: center !important;" ng-if="data.type==2">
+        <div class="btn-group" uib-dropdown is-open="status.isopen">
+            <button id="single-button" style="width: 250px;" type="button" class="btn btn-default" uib-dropdown-toggle ng-disabled="disableSend">
+                通知患者，约不到医生<span class="caret"></span>
+                <span ng-show="appointTimeLoading"><i class="fa fa-spinner fa-spin"></i></span>
+            </button>
+            <ul uib-dropdown-menu role="menu" aria-labelledby="single-button">
+                <li role="menuitem" style="width: 250px;" ng-click="sendAbort(1)" ><a>联系不上医生</a></li>
+                <li class="divider"></li>
+                <li role="menuitem" style="width: 250px;" ng-click="sendAbort(2)"><a>医生没时间</a></li>
+            </ul>
+        </div>
+
+        <button class="btn btn-success" style="width: 280px;" type="button" ng-disabled="disableSend" ng-click="appointTime(data.itemData.id)">
+            <span ng-show="!appointTimeLoading">{{ {true:'发给患者付款',false:'发送医生名片给患者'}[timeSelectSataus] }}</span>
+            <span ng-show="appointTimeLoading"><i class="fa fa-spinner fa-spin"></i></span>
+        </button>
+        </div>
+    </div>
+</script>
+<!-- 拨打电话 -->
+<script type="text/ng-template" id="docInfoCallView.html">
+    <div class="form-group w-300 h-max-200">
+        <div class=" w-full position-relative">
+            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-23px;top:-23px;" ng-click="closeCallView()"><i class="fa fa-close"></i></button>
+        </div>
+        <div class="p-t-sm text-center">
+            确定用平台来拨通医生与您的电话吗？
+        </div>
+        <div class="m-t-xs text-center text-xs" ng-class="{true:'text-success',false:'text-danger'}[call.result.type]" ng-if="call.result">{{call.result.content}}</div>
+        <div class="clearfix text-center m-t-sm">
+            <button type="button" class="btn btn-sm btn-success m-r-xs" ng-click="callPhone(data.info.telephone)">
+                <span ng-if="call.isCalling">拨打中 <i class="fa" ng-class="{true:'fa-spinner fa-spin'}[call.isCalling]"></i>
+                </span>
+                <span ng-if="!call.isCalling">确定</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-info" ng-click="closeCallView()">取消</button>
+        </div>
+    </div>
+</script>
+<!-- 拨打电话 end -->
+
+

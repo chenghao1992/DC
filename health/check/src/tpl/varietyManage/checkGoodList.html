@@ -1,0 +1,95 @@
+<style>
+    .dataTable >tbody>tr> td{
+        word-break: break-all;
+        word-wrap: break-word;
+    }
+</style>
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="VarietyCheckListCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">待审核品种列表</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="panel panel-default">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="dataTables_length">
+                                    <label>
+                                        每页
+                                        <select class="form-control input-sm" ng-model="pageSize" ng-change="InitTable(0, pageSize,keyWord)">
+                                            <option value="10" selected="selected">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                        条
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <div class="dataTables_filter">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control input-sm" style="width: 300px;" placeholder="请输入通用名/商品名/生产厂家/助记码/所属企业" ng-model="keyWord" ng-change="keyWordKeep(keyWord)" ng-enter="InitTable(0,pageSize,keyWord)">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="InitTable(0,pageSize,keyWord)">搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped b-t dataTable no-footer m-t-sm">
+                        <thead>
+                        <tr>
+                            <th style="width:10%">通用名</th>
+                            <th style="width:10%">商品名</th>
+                            <th style="width:10%">规格</th>
+                            <th style="width:10%">包装规格</th>
+                            <th style="width:10%">剂型</th>
+                            <th style="width:10%">生产厂商</th>
+                            <th style="width:10%">批准文号</th>
+                            <th style="width:10%">所属企业</th>
+                            <th style="width:10%">提交审核日期</th>
+                            <th style="width:10%">操作</th>
+                        </tr>
+                        <tr ng-if="!data.pageData||data.pageData.length<1">
+                            <td colspan="11" class="text-center" style="font-size:16px;">无数据</td>
+                        </tr>
+                        </thead>
+                        <tbody >
+                        <tr ng-repeat="cItem in data.pageData track by $index">
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.generalName}}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.tradeName}}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.specification}}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.packSpecification}}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.formText}}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.manufacturer}}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.number}} </td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.companyName }}</td>
+                            <td style="width:120px;word-wrap:break-word;word-break:break-all">{{cItem.submitCheckDate | date:'yyyy/MM/dd'}}</td>
+
+
+                            <td>
+                                <button  class="btn btn-xs btn-info text-xs" ui-sref="app.VarietyManage.checkVart({ vartId: cItem.id})">审核</button>
+                            </td>
+                        </tr>
+                        </tbody>
+                        <tbody>
+                        <tr ng-if="!data||data.length<1">
+                            <td colspan="11" class="text-center">无数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <pagination ng-s="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" max-size="10" rotate="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

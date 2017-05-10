@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            width: 1px;
+            margin-right: 2px
+        }
+        .btn-close {
+            position: absolute;
+            top: -11px;
+            right: -11px;
+        }
+        .ipod-header {
+            width: 100%;
+        }
+        body,html{
+        	padding:0;
+        	margin: 0;
+        }
+        .container {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 100%;
+            min-height: 600px;
+            overflow: auto;
+            padding: 0px 10px 10px 10px;
+            word-wrap: break-word;
+        }
+        .container>.title {
+            color: #333333;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .container>.disease>.tag {
+            display: inline-block;
+            background-color: #f8f8f8;
+            border: 1px solid #888888;
+            border-radius: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 2px 6px;
+            color: #888888;
+            font-size: 12px;
+        }
+        .container>.a-t {
+            font-size: 14px;
+            color: #888888;
+            margin-top: 10px;
+        }
+        .container>.a-t>.author {
+            margin-left: 20px;
+        }
+        .container>.summary {
+            border-left: 3px solid #CCCCCC;
+            padding-left: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 150%;
+            color: #888888;
+        }
+        .container >.font-img {
+            max-width: 100%;
+            margin: 10px 0 0;
+        }
+        .container >.article {
+            color: #333333;
+            font-size: 14px;
+            margin-top: 10px;
+            line-height: 150%;
+        }
+        .article img {
+            max-width: 100% !important;
+        }
+        .footer{
+        	background-color: #000;
+        	height: 60px;
+        	position: fixed;
+        	bottom: 0;
+        	opacity: .8;
+        	width: 100%;
+        	text-align: center;
+        }
+        .footer a{
+        	text-decoration: none;
+        	color:#fff;
+        	line-height: 60px;
+
+        }
+        @media (min-width: 992px) {
+            .container{
+                width: 900px;
+                margin-left: auto;
+                margin-right: auto;
+                padding:10px;
+            }
+            .container>.title{
+                font-weight: bold;
+            }
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">{{title}}</h1>
+        <div class="a-t">
+            <span>{{datatime}}</span>
+        </div>
+        <div class="article">
+            {{content}}
+        </div>
+    </div>
+<footer class="footer">
+		<a href="load.html">如需了解更多？请下载app↓</a>
+</footer>
+</body>
+</html>
+

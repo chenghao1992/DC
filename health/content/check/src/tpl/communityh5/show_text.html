@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+    p,
+    figure,
+    ul,
+    body,
+    html,
+    h3 {
+        margin: 0;
+        padding: 0;
+    }
+    
+    .content {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        padding: 0 1em 0 1em;
+        min-height: 200px;
+        max-width: 100%;
+    }
+    
+    .contenttext {
+        font-size: 12px;
+        padding-top: 1em;
+        letter-spacing: 1px;
+    }
+    
+    .contentImg {
+        text-align: center;
+    }
+    
+    .contenttext img {
+        max-width: 100%;
+    }
+    
+    .contentImg>img {
+        max-width: 100%;
+    }
+    
+    .contentImg img {
+        max-width: 100%;
+    }
+    
+    .content .title {
+        padding-bottom: .5em;
+        color: #393939;
+        font-size: 16px;
+    }
+    
+    @media (min-width: 992px) {
+        .content {
+            width: 920px;
+            margin-left: auto;
+            margin-right: auto;
+            padding: 10px;
+        }
+    }
+    </style>
+</head>
+
+<body>
+    <div class="content">
+        <h3 class="title">{{topicTitle}}</h3>
+        <div class="contenttext">
+            {{content}}
+        </div>
+        <div class="contentImg">
+            {{imgSrc}}
+        </div>
+    </div>
+</body>
+
+</html>

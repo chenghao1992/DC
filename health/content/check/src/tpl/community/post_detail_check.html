@@ -1,0 +1,75 @@
+<style type="text/css">
+    html{
+        background-color: #fff !important;
+        background-image: none;
+    }
+    body {
+        background-color: #fff !important;
+    }
+</style>
+<div ng-controller="PostDetailCheckCtrl" class="post-detail col-xs-8 col-xs-offset-2 m-b-lg">
+    <div class="header">
+        <p class="title">{{post.title}}</p>
+        <p>{{post.createTime|date:'yyyy-MM-dd HH:mm'}}</p>
+        <p style="border-left: 3px solid #b3b1b1; text-indent: 0.5em;margin-top: 5px;">作者：{{post.createUserName+' '}}{{post.jobTitle|| ''}}</p>
+    </div>
+    <div class="content m-t-sm">
+
+        <p ng-bind-html="post.content">
+        </p>
+        <div class="m-b-md">
+            <img ng-repeat="image in post.imgUrls track by $index" class="img-thumbnail m-r-sm m-t-sm" width="150px" height="150px" ng-src="{{image}}"/>
+        </div>
+    </div>
+    <ul class="comment">
+        <li ng-repeat="reply in replyList track by $index" class="p-lg c-list">
+            <span class="thumb-sm avatar m-r pull-left">
+                <img ng-src="{{reply.userHeadUrl||'src/img/a0.jpg'}}" alt="..." class="img-circle">
+                <i class="on b-white bottom"></i>
+            </span>
+            <div class="inline-block ">
+                <div>{{reply.userName}}</div>
+                <small class="text-muted">{{reply.createTime | date:'yyyy-MM-dd HH:mm'}}</small>
+            </div>
+            <div class="m-t-sm">
+                <!--<face-icon-filter-content data="reply.content"></face-icon-filter-content>-->
+                <!--{{reply.content}}-->
+                <face-icon-filter-content data="reply.content"></face-icon-filter-content>
+            </div>
+            <ul class="m-t-sm">
+                <li class="pull-left" ng-repeat="image in reply.imgUrls">
+                    <img style="width: 100px;height: 100px;"  ng-src="{{image}}" class="img-thumbnail m-r-sm">
+                </li>
+                <li class="clearfix"></li>
+            </ul>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <ul>
+                <li ng-repeat="subReply in reply.replys" class="hover-pointer subReply" ng-click="openComment(post.id,reply.id,subReply.id,subReply.userId)"><span class="text-info">{{subReply.userName}}</span> 回复 <span class="text-info">{{subReply.toUserName}}</span>：<span><face-icon-filter-content data="subReply.content"></face-icon-filter-content></span></li>
+            </ul>
+            <p ng-show="reply.replyCount>3" class="text-center text-info hover-pointer" ng-click="loadMoreReply(reply)">{{reply.isMore?'收起':'查看更多'}}</p>
+        </li>
+    </ul>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <div class="btn-ctrl" ng-show="urlParams.urltype==1">
+        <button class="btn m-b-xs w-xs btn-success" ng-show="post.state==0" ng-click="passPost()">通过</button>
+        <button class="btn m-b-xs w-xs btn-info" ng-show="post.state==1||post.state==2" ng-click="cancelPost()">撤销</button>
+        <button class="btn m-b-xs w-xs btn-danger" ng-show="post.state==0" ng-click="deletePost()">删除</button>
+
+    </div>
+    <div class="btn-ctrl" ng-show="urlParams.urltype==2">
+        <button class="btn m-b-xs w-xs btn-success" ng-show="urlParams.urlstatus==0" ng-click="passPost()">通过</button>
+        <button class="btn m-b-xs w-xs btn-info" ng-show="urlParams.urlstatus==1||urlParams.urlstatus==2" ng-click="cancelPost()">撤销</button>
+        <button class="btn m-b-xs w-xs btn-danger" ng-show="urlParams.urlstatus==0" ng-click="deletePost()">删除</button>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">确认删除该文章并关闭窗口？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>

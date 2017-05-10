@@ -1,0 +1,52 @@
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="MsgSendingCtrl">
+    <div class="panel-heading font-bold text-center text-md">
+        短信发送（博德嘉联）
+    </div>
+    <div class="frame-panel" style="margin-top:0">
+        <form class="form-horizontal">
+            <div class="clear mrb-15">
+                <div class="col-lg-8 col-md-10 col-sm-12">
+                    <div class="mrt-15 mrb-15"><b>账号剩余短信数：</b> <span class="text-info" ng-bind="msg_total">62321</span> 条</div>
+                    <div class="mrb-10"><b>收件人：</b></div>
+                    <div class="edit-wrapper">
+                        <div class="form-control invite-phone-input" id="invite_phone_list" onpaste="return false"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="clear mrt-15 mrb-15">
+                <div class="col-lg-4 col-md-5 col-sm-6 text-muted">
+                    <p>可以通过以下两种方式添加收件人：</p>
+                    <p>1、直接输入手机号；</p>
+                    <p>2、批量复制手机号，然后粘贴（Ctrl+V）到输入框中。</p>
+                </div>
+                <div class="col-lg-4 col-md-5 col-sm-6">
+                    <div class="form-group">
+                        <div class="col-md-offset-8 col-md-4">
+                            <button class="btn btn-default w100" type="button" ng-click="clear()">清 空</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-8 col-md-10 col-sm-12">
+                <div class="mrb-10"><b>短信内容：</b></div>
+                <div class="edit-wrapper">
+                    <textarea class="form-control invite-phone-input" id="msg_input"></textarea>
+                </div>
+            </div>
+
+            <div class="clear">
+                <div class="col-lg-offset-4 col-lg-4 col-md-offset-5 col-md-5 col-sm-offset-6 col-sm-6">
+                    <div class="form-group">
+                        <div class="col-md-offset-6 col-md-6 text-right mrt-10 mrb-15">
+                            短信共 <span class="text-success" ng-bind="str_length">123</span> 个字，由 <span class="text-danger" ng-bind="msg_num">2</span> 条短信发送
+                        </div>
+                        <div class="col-md-offset-8 col-md-4">
+                            <button class="btn btn-info w100" type="button" ng-click="send()" ng-disabled="!can_send">发 送</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

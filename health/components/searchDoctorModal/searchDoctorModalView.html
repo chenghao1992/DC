@@ -1,0 +1,70 @@
+
+<div class="modal-body">
+    <div class="row" style="position: relative;">
+        <div class="input-group" style="width: 400px;margin: 0 auto;position: relative;">
+            <input type="text" class="form-control" placeholder="医生手机号、姓名、医院查询" ng-model="keyWord" ng-keypress="pressEnter($event)">
+            <a ng-show="keyWordLength>0" style="position: absolute;top: 10px;right: 60px;z-index: 999;" ng-click="clearKW()" class="glyphicon glyphicon-remove"></a>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-click="findByKeyWord()">搜索</button>
+            </span>
+        </div>
+    </div>
+    <div class="row m-t-sm">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <xg-table searching="false" length-menu="[5,10,20,50]" data="data">
+                    <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0">
+                        <tr>
+                            <th style="text-align: center">
+                                选择
+                            </th>
+                            <th style="text-align: center">
+                                头像
+                            </th>
+                            <th style="text-align: center">
+                                姓名
+                            </th>
+                            <th style="text-align: center">
+                                医院机构
+                            </th>
+                            <th style="text-align: center">
+                                科室
+                            </th>
+                            <th style="text-align: center">
+                                职称
+                            </th>
+                            <th style="text-align: center">
+                                电话
+                            </th>
+
+                        </tr>
+                        <tr ng-repeat="item in $parent.sliceData">
+                            <td align="center" ng-if="selectType">
+                                <label class="i-checks m-b-none">
+                                    <input type="checkbox" ng-model="item.check" ng-checked="checkSelected(item.userId)" ng-click="setCheckDoctor(item)"> <i></i>
+                                </label>
+                            </td>
+                            <td align="center" ng-if="!selectType">
+                                <label class="i-checks m-b-none">
+                                    <input type="radio" name="single" ng-model="radioDoc.selectedDoc" value="{{item}}"><i></i>
+                                </label>
+                            </td>
+                            <td align="center">
+                                <img src={{item.headPicFileName||'http://192.168.3.7:8081/avatar/defalut.jpg'}}>
+                            </td>
+                            <td align="center">{{item.name}}</td>
+                            <td align="center">{{item.hospital}}</td>
+                            <td align="center">{{item.departments}}</td>
+                            <td align="center">{{item.title}}</td>
+                            <td align="center" >{{item.telephone}}</td>
+                        </tr>
+                    </table>
+                </xg-table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+    <button class="btn btn-warning" type="button" ng-click="cancel()">取消</button>
+</div>

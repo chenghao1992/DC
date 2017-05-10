@@ -1,0 +1,64 @@
+<div class="home hbox hbox-auto-xs hbox-auto-sm" ng-controller="HomeController" ng-init="
+  app.settings.asideFolded = false;
+  app.settings.asideDock = false;
+  ">
+    <!-- main -->
+    <div class="col">
+        <!-- <i class="loading fa fa-circle-o-notch"></i> -->
+        <!-- main header -->
+        <!-- / main header -->
+        <!-- <div class="wrapper-md" ng-controller="FlotChartDemoCtrl"> -->
+        <div class="wrapper-md">
+            <!-- stats -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="row text-center">
+                        <div class="col-md-2 col-sm-3 col-xs-4">
+                            <a ui-sref="app.check.group.check_list({type:'un_check', page: 'page_1'})" class="app-item app-item-group" href="#/app/check/group/check_list/un_check/page_1">
+                                <i></i>
+                                <span class="text-white font-thin h4">集团审核</span>
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-sm-3 col-xs-4">
+                            <a ui-sref="app.check.group.with_v_list({type:'un_check', page: 'page_1'})" class="app-item app-item-v" href="#/app/check/group/with_v_list/un_check/page_1">
+                                <i></i>
+                                <span class="text-white font-thin h4 block">加V认证</span>
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-sm-3 col-xs-4">
+                            <a ui-sref="app.check.doctor.check_list({type:'un_check', page:'page_1'})" class="app-item app-item-doctor" href="#/app/check/doctor/check_list/un_check/page_1">
+                                <i></i>
+                                <span class="text-white font-thin h4 block">资质审核</span>
+                            </a>
+                        </div>
+                        <!-- ngIf: undefineded -->
+                        <div class="col-md-2 col-sm-3 col-xs-4">
+                            <a ui-sref="app.reports_of_finance({name:'group'})" class="app-item app-item-finance" href="#/app/reports_of_finance/group">
+                                <i></i>
+                                <span class="text-white font-thin h4 block">收入结算</span>
+                            </a>
+                        </div>
+                        <div class="col-md-2 col-sm-3 col-xs-4">
+                            <a ui-sref="app.order_query" class="app-item app-item-order" href="#/app/order_query">
+                                <i></i>
+                                <span class="text-white font-thin h4 block">订单查询</span>
+                            </a>
+                        </div>
+                        <!-- <div class="col-md-2 col-sm-3 col-xs-4">
+                            <a ui-sref="app.message.query" class="bg-dark app-item">
+                                <i class="fa fa-envelope text-white text-3x"></i>
+                                <span class="text-white font-thin h4 block">短信查询</span>
+                            </a>
+                        </div> -->
+                        <div class="col-md-2 col-sm-3 col-xs-4 hide">
+                            <a class="bg-white app-item add-item">
+                                <i></i>
+                                <span class="text-dark font-thin h4 block">添加模块</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

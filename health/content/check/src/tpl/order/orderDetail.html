@@ -1,0 +1,214 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="OrderDetailCtrl">
+    <div class="ord-frame-panel">
+        <div class="row">
+            <h4 class="col-xs-12 text-center">
+                订单详情
+            </h4>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">订单信息</h2>
+            </div>
+            <div class="col-md-9 mrb-10">
+                <div class="pull-right">
+                    <a class="btn btn-success"  ng-click="CancelOrder()">取消订单</a>
+                    <a class="btn btn-primary" ui-sref="app.order.orderList">关闭</a>
+                </div>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>订单编号：</strong><span ng-bind="orderDetail.orderNo"></span></div>
+                    <div class="col-xs-4"><strong>订单状态：</strong><span ng-bind="orderDetail.orderStatus"></span></div>
+                    <div class="col-xs-4"><strong>支付时间：</strong><span ng-bind="orderDetail.payTime | date:'yyyy-MM-dd HH:mm:ss'"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>订单价格：</strong><span ng-bind="orderDetail.price"></span></div>
+                    <div class="col-xs-4"><strong>下单角色：</strong><span ng-bind="orderDetail.packType"></span></div>
+                    <div class="col-xs-4"><strong>订单开始时间：</strong><span ng-bind="orderDetail.serviceBeginTime | date:'yyyy-MM-dd HH:mm:ss'"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>订单类型：</strong><span ng-bind="orderDetail.orderType"></span></div>
+                    <div class="col-xs-4"><strong>下单时间：</strong><span ng-bind="orderDetail.createTime | date:'yyyy-MM-dd HH:mm:ss'"></span></div>
+                    <div class="col-xs-4"><strong>完成时间：</strong><span ng-bind="orderDetail.finishTime | date:'yyyy-MM-dd HH:mm:ss'"></span></div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>归属集团：</strong><span ng-bind="orderDetail.doctors.departments"></span></div>
+                    <div class="col-xs-4"><strong>支付类型：</strong><span ng-bind="orderDetail.packType"></span></div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="row">
+                    <div class="col-md-6 mrb-15">
+                        <h2 class="title-3">患者信息</h2>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="javascript:;">
+                                    <img class="media-object ord-messageImg" src="{{orderDetail.headPicFileName}}" alt="">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <div class="col-xs-12 ord-colp">患者姓名：{{orderDetail.patientName}}</div>
+                                <div class="col-xs-12 ord-colp">患者性别：{{orderDetail.sex ==1?'男':'女'}}</div>
+                                <div class="col-xs-12 ord-colp">患者年龄：{{orderDetail.ageStr}}</div>
+                                <div class="col-xs-12 ord-colp">患者电话：{{orderDetail.patientTelephone}}</div>
+                            </div>
+                            <div class="col-xs-12 col-xs-6 ord-colp">身高：{{orderDetail.patientHeight}}</div>
+                            <div class="col-xs-12 col-xs-6 ord-colp">婚育：{{orderDetail.patientMarriage}}</div>
+                            <div class="col-xs-12 col-xs-6 ord-colp">体重：{{orderDetail.patientWeight}}</div>
+                            <div class="col-xs-12 col-xs-6 ord-colp">职业：{{orderDetail.patientName}}</div>
+                            <div class="col-xs-12 col-xs-6 ord-colp">所在地：{{orderDetail.area}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-2"></div>
+            <div class="col-xs-12 col-sm-12 col-md-4">
+                <div class="row">
+                    <div class="col-md-6 mrb-15">
+                        <h2 class="title-3">医生信息</h2>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="media">
+                            <div class="media-left">
+                                <a href="javascript:;">
+                                    <img class="media-object ord-messageImg" src="{{orderDoctors.headPicFilleName}}" alt="">
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <div class="col ord-colp">医生姓名：{{orderDoctors.name}}</div>
+                                <div class="col ord-colp">医生电话：{{orderDoctors.telephone}}</div>
+                                <div class="col ord-colp">医生科室：{{orderDoctors.departments}}</div>
+                                <div class="col ord-colp">医生职称：{{orderDoctors.title}}</div>
+                                <div class="col ord-colp">医生集团：{{orderDoctors.hospital}}</div>
+                                <div class="col ord-colp">医生助手：{{orderDoctors.hospital}}</div>
+                                <div class="col ord-colp">助手电话：{{orderDoctors.hospital}}</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">病情内容</h2>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>主诉：</strong>胃痛，咳嗽有血丝</div>
+                    <div class="col-xs-4"><strong>既往史：</strong>没有</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>诊治情况：</strong>未就诊过</div>
+                    <div class="col-xs-4"><strong>家族史：</strong>没有</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-4 ord-colp"><strong>现病史：</strong>没有</div>
+                    <div class="col-xs-4"><strong>月经生育史：</strong>没有</div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-2" ng-repeat="image in images">
+                        <a ng-click="openLightboxModal($index)">
+                            <img ng-src="{{image.thumbUrl}}" class="img-thumbnail ord-messageImg">
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="wrapper">
+            <ul class="timeline">
+                <li class="tl-item tl-left">
+                    <div class="tl-wrap b-success ord-tl-wrap">
+                        <div class="ord-bg-success">
+                            <span class="arrow arrow-success right pull-up visible-left"></span>
+                            <div class="text-lt">2016-08-20首诊：</div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="row">
+                                        <div class="col-xs-4 ord-colp">胃痛，咳嗽有血丝</div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-xs-2" ng-repeat="image in images">
+                                            <a ng-click="openLightboxModal($index)">
+                                                <img ng-src="{{image.thumbUrl}}" class="img-thumbnail ord-messageImg">
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                <li class="tl-item tl-left">
+                    <div class="tl-wrap b-success ord-tl-wrap">
+                        <div class="ord-bg-success">
+                            <span class="arrow arrow-success right pull-up visible-left"></span>
+                            <div class="text-lt">2016-08-20图文咨询：</div>
+                            <div class="panel panel-default">
+                                <div class="panel-body">
+                                    <div class="col ord-colp">医生：张小龙</div>
+                                    <div class="col ord-colp">就诊时间：2016-08-08 15:50</div>
+                                    <div class="col ord-colp">结束时间：2016-08-09 15:50</div>
+                                    <div class="col ord-colp">咨询结果：有点严重，需要住院观察</div>
+                                    <div class="col-xs-2" ng-repeat="image in images">
+                                        <a ng-click="openLightboxModal($index)">
+                                            <img ng-src="{{image.thumbUrl}}" class="img-thumbnail ord-messageImg">
+                                        </a>
+                                    </div>
+                                    <div class="col-xs-12 ord-colp">疑似疾病：肺结核</div>
+                                    <div class="col-xs-12 ord-colp">检查建议：肺部彩超、血常规</div>
+                                    <div class="col-xs-12 ord-colp">用药建议：阿莫西林0.5g  1盒；澳美制药厂<p style="text-indent: 4.5em;">【用法用量】每天1次，每次1粒</p><p style="text-indent: 4.5em;">【包装规格】12粒/盒</p></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <hr>
+        <div class="row">
+            <div class="col-md-6 mrb-15">
+                <h2 class="title-3">订单取消详情</h2>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <div class="panel-body">
+                <div class="col-xs-6 ord-colp">取消操作人：XXXXXX</div>
+                <div class="col-xs-6 ord-colp">取消时间：A2016-06-18 15：30：20</div>
+                <div class="col-xs-6 ord-colp">取消原因：因为改派医生取消该订单</div>
+            </div>
+        </div>
+    </div>
+</div>
+<!--确认取消订单modal-->
+<script type="text/ng-template" id="cancelOrder.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">确认取消订单？</h3>
+    </div>
+    <div class="modal-body">
+        <span>原因：</span>
+        <input type="text" class="form-control" ng-model="canceCause" placeholder="">
+        <span ng-bind="teleTip"></span>
+    </div>
+    <div class="modal-footer">
+        <div class="row">
+            <div class="col col-xs-6">
+                <button class="btn btn-success w50" type="button" ng-click="orderOK()">取消订单</button>
+            </div>
+            <div class="col col-xs-6 text-left">
+                <button class="btn btn-info w50" type="button" ng-click="orderNo()">返回</button>
+            </div>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,298 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>博德嘉联分享(医生端)</title>
+    <style type="text/css">
+    html,
+    body {
+        margin: 0;
+        pading: 0;
+        font-size: 14px;
+        font: normal normal normal 14px/1.5em '微软雅黑', Arial;
+        color: #666;
+    }
+    
+    h1,
+    h2,
+    h3,
+    h4,
+    h5,
+    p {
+        margin: 0;
+        padding: 0;
+    }
+    
+    a {
+        text-decoration: none;
+    }
+    
+    .text-center {
+        text-align: center;
+    }
+    
+    .text-left {
+        text-align: left;
+    }
+    
+    .none {
+        display: none !important;
+    }
+    
+    .fl {
+        float: left;
+    }
+    
+    .logo {
+        width: 70px;
+    }
+    
+    .inline-block {
+        display: inline-block;
+    }
+    
+    .v-l-m {
+        vertical-align: middle;
+    }
+    
+    .link-btn {
+        display: inline-block;
+        width: 70%;
+        border-radius: 8px;
+        line-height: 60px;
+        text-align: center;
+        color: #fff;
+        font-size: 22px;
+        background-color: #5681D3;
+        vertical-align: middle;
+    }
+    
+    .link-btn img {
+        width: 35px;
+        margin-bottom: -10px;
+    }
+    
+    .mrt-20 {
+        margin-top: 20px;
+    }
+    
+    .mrt-50 {
+        margin-top: 50px;
+    }
+    
+    .mrb-20 {
+        margin-bottom: 20px;
+    }
+    
+    .mrl-10 {
+        margin-left: 10px;
+    }
+    
+    .p-t-b-5 {
+        padding: 5px 0;
+    }
+    
+    .p-t-b-10 {
+        padding: 10px 0;
+    }
+    
+    .p-t-3 {
+        padding-top: 3px;
+    }
+    
+    .p-t-6 {
+        padding-top: 6px;
+    }
+    
+    .p-b-3 {
+        padding-bottom: 3px;
+    }
+    
+    .p-b-6 {
+        padding-bottom: 6px;
+    }
+    
+    .ft-s-24 {
+        font-size: 24px;
+    }
+    
+    .ft-s-20 {
+        font-size: 20px;
+    }
+    
+    .ft-s-16 {
+        font-size: 16px;
+    }
+    
+    .ft-s-14 {
+        font-size: 14px;
+    }
+    
+    .img-ga img {
+        max-width: 80%;
+        margin: 10px 0;
+        box-shadow: 0 0 1px rgba(0, 0, 0, .5);
+    }
+    
+    .ft-w-b {
+        font-weight: bold;
+    }
+    
+    .tip-win-mask {
+        position: fixed;
+        top: 1px;
+        right: 1px;
+        left: 1px;
+        bottom: 1px;
+        z-index: 100;
+        background: rgba(000, 000, 000, .3);
+    }
+    
+    .tip-win {
+        position: fixed;
+        top: 10px;
+        right: 10px;
+        left: 10px;
+        z-index: 1000;
+        height: 95px;
+        padding: 20px 0 0 35%;
+        line-height: 24px;
+        border-radius: 6px;
+        background: rgba(255, 255, 255, .95);
+    }
+    
+    .clr-d-red {
+        color: #e80000;
+    }
+    
+    .tip-win img {
+        position: absolute;
+        top: 2px;
+        right: 5%;
+        height: 55%;
+    }
+    </style>
+</head>
+
+<body>
+    <div class="text-center mrt-20 mrb-20">
+        <div class="inline-block v-l-m">
+            <img class="logo" src="img/logo_d.png">
+        </div>
+        <div class="inline-block mrl-10 v-l-m">
+            <h3 class="ft-s-20 text-left p-t-3 p-b-3">博德嘉联医生端</h3>
+            <p class="ft-s-14 text-left p-t-3 p-b-6">您的健康服务专家</p>
+        </div>
+    </div>
+    <div class="text-center">
+        <a id="down_btn_and_a" class="link-btn" href="javascript:void(0)"><img src="img/android.png" /> Android 下载</a>
+        <a id="down_btn_ios_a" class="link-btn none" href="javascript:void(0)"><img src="img/apple.png" /> AppStore 下载</a>
+    </div>
+    <div class="img-ga text-center mrt-50">
+        <img src="img/d_1.png" />
+        <img src="img/d_2.png" />
+        <img src="img/d_3.png" />
+    </div>
+    <div class="text-center mrt-20 mrb-20">
+        <a id="down_btn_and_b" class="link-btn" href="javascript:void(0)"><img src="img/android.png" /> Android 下载</a>
+        <a id="down_btn_ios_b" class="link-btn none" href="javascript:void(0)"><img src="img/apple.png" /> AppStore 下载</a>
+    </div>
+    <div id="tip_win_mask" class="tip-win-mask none"></div>
+    <div id="tip_win" class="tip-win none">
+        <div class="inline-block v-l-m">
+            <p class="ft-s-16 ft-w-b p-b-6">链接打不开？</p>
+            <p>请点击右上角</p>
+            <p id="option_and">选择“
+                <span class="clr-d-red">在浏览器中打开</span>”</p>
+            <p id="option_ios">选择“
+                <span class="clr-d-red">在Safari中打开</span>”</p>
+        </div>
+        <img class="v-l-m" src="img/goToClick.png" />
+    </div>
+    <script type="text/javascript">
+    // from=2DBarcode(二维码)
+    (function function_name(argument) {
+        var device = {},
+            btn_and_a = document.getElementById('down_btn_and_a'),
+            btn_and_b = document.getElementById('down_btn_and_b'),
+            btn_ios_a = document.getElementById('down_btn_ios_a'),
+            btn_ios_b = document.getElementById('down_btn_ios_b'),
+            option_and = document.getElementById('option_and'),
+            option_ios = document.getElementById('option_ios'),
+            tip_win_mask = document.getElementById('tip_win_mask'),
+            tip_win = document.getElementById('tip_win'),
+            and_d_url = 'http://www.chinamediportal.com/replease/dGroupDoctor-release.apk_0.9.040601.174.apk',
+            ios_d_url = 'https://itunes.apple.com/cn/app/xuan-guan-yi-sheng/id1092840420?mt=8';
+
+        //识别设备
+        function discernDevice() {
+            var agent = navigator.userAgent.toLowerCase();
+            if (agent.match(/MicroMessenger/i) == "micromessenger") {
+                device.app = 'weixin'; //在微信中打开
+            } else if (agent.match(/QQ\//i) == "qq/") {
+                device.app = 'qq'; //在QQ打开
+            } else if (agent.match(/WeiBo/i) == "weibo") {
+                device.app = 'weibo'; //在新浪微博客户端打开
+            }
+
+            if (agent.indexOf('android') != -1) {
+                device.platform = 'Android';
+            } else if (agent.indexOf('iphone') != -1) {
+                device.platform = 'iOS';
+            }
+        }
+
+        discernDevice();
+        //alert(device.platform + ', ' + device.app)
+
+
+        if (device.platform === 'Android') {
+            btn_and_a.setAttribute('class', 'link-btn');
+            btn_and_b.setAttribute('class', 'link-btn');
+            btn_ios_a.setAttribute('class', 'link-btn none');
+            btn_ios_b.setAttribute('class', 'link-btn none');
+
+            option_and.setAttribute('class', '');
+            option_ios.setAttribute('class', 'none');
+
+            btn_and_a.addEventListener('touchstart', initDownLoad);
+            btn_and_b.addEventListener('touchstart', initDownLoad);
+        } else if (device.platform === 'iOS') {
+            btn_ios_a.setAttribute('class', 'link-btn');
+            btn_ios_b.setAttribute('class', 'link-btn');
+            btn_and_a.setAttribute('class', 'link-btn none');
+            btn_and_b.setAttribute('class', 'link-btn none');
+
+            option_and.setAttribute('class', 'none');
+            option_ios.setAttribute('class', '');
+
+            btn_ios_a.addEventListener('touchstart', initDownLoad);
+            btn_ios_b.addEventListener('touchstart', initDownLoad);
+        }
+
+        function initDownLoad() {
+            switch (device.app) {
+                case 'weixin':
+                case 'qq':
+                case 'weibo':
+                    tip_win_mask.setAttribute('class', 'tip-win-mask');
+                    tip_win.setAttribute('class', 'tip-win');
+                    break;
+                default:
+                    if (device.platform === 'Android') {
+                        location.href = and_d_url;
+                    } else {
+                        location.href = ios_d_url;
+                    }
+                    break;
+            }
+        }
+    })()
+    </script>
+</body>
+
+</html>

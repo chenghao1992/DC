@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html data-ng-app="app">
+
+<head>
+    <meta charset="utf-8" />
+    <title>玄关健康服务平台</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if lt IE 9]>
+    <script>
+      window.location.href = 'src/tpl/Navigator_Not_Surpport.html';  
+    </script>
+    <![endif]-->
+    <script src="../assets/config.js?rev=5fb32a10109d721e25a62d425b50fb59"></script>
+</head>
+
+<body ng-controller="AppCtrl">
+    <div class="app" id="app" ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}" ui-view></div>
+    <script type="text/javascript">
+        (function() {
+        var protocol = window.protocol || 'http://';
+        // 加载 css
+        var headDom = document.getElementsByTagName('head')[0];
+        var links = [
+            protocol + "static.mediportal.com.cn/static/health/bootstrap/dist/css/bootstrap.css",
+            protocol + "static.mediportal.com.cn/static/health/animate.css/animate.css",
+            protocol + "static.mediportal.com.cn/static/health/font-awesome/css/font-awesome.min.css",
+            protocol + "static.mediportal.com.cn/static/health/simple-line-icons/css/simple-line-icons.css",
+            "../components/ngUmeditor/umeditor/themes/default/css/umeditor.min.css",
+            protocol + "static.mediportal.com.cn/static/guider/angular-xeditable-npm/dist/css/xeditable.css",
+            protocol + "static.mediportal.com.cn/static/guider/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css",
+            protocol + "static.mediportal.com.cn/static/common/angular-tree-control/tree-control-attribute.css",
+            protocol + "static.mediportal.com.cn/static/common/angular-tree-control/tree-control.css",
+            "../src/css/font.css",
+            "../src/css/app.css",
+            "src/css/main.css"
+        ];
+        function setCssLink(url) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url;
+            headDom.appendChild(link);
+        };
+        for (var i = 0; i < links.length; i++) {
+            setCssLink(links[i])
+        };
+        // 加载 js
+        var jss = [
+            protocol + "static.mediportal.com.cn/static/health/jquery/dist/jquery.min.js",
+            "../components/ngUmeditor/umeditor/umeditor.min.js",
+            "../components/ngUmeditor/umeditor/umeditor.config.js",
+            protocol + "static.mediportal.com.cn/static/health/angular/angular.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-xeditable-npm/dist/js/xeditable.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js",
+            "../guider/bower_components/angular-audio/app/angular.audio.js",
+            protocol + "static.mediportal.com.cn/static/common/angular-tree-control/angular-tree-control.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-file-upload/dist/angular-file-upload.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-animate/angular-animate.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-cookies/angular-cookies.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-resource/angular-resource.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-sanitize/angular-sanitize.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-touch/angular-touch.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-ui-router/release/angular-ui-router.js",
+            protocol + "static.mediportal.com.cn/static/health/ngstorage/ngStorage.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-ui-utils/ui-utils.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-ui-bootstrap/ui-bootstrap-tpls.min.js",
+            protocol + "static.mediportal.com.cn/static/health/oclazyload/dist/ocLazyLoad.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-translate/angular-translate.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-translate-loader-static-files/angular-translate-loader-static-files.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-translate-storage-cookie/angular-translate-storage-cookie.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-translate-storage-local/angular-translate-storage-local.js",
+            protocol + "static.mediportal.com.cn/static/guider/moment/min/moment.min.js",
+            "src/js/app.js",
+            "src/js/config.js",
+            "src/js/config.lazyload.js",
+            "src/js/config.router.js",
+            "src/js/utils.js",
+            "src/js/main.js",
+            "src/js/modal.js",
+            "src/js/services/ui-load.js",
+            "src/js/filters/fromNow.js",
+            "src/js/directives/setnganimate.js",
+            "src/js/directives/ui-butterbar.js",
+            "src/js/directives/ui-focus.js",
+            "src/js/directives/ui-fullscreen.js",
+            "src/js/directives/ui-jq.js",
+            "src/js/directives/ui-module.js",
+            "src/js/directives/ui-nav.js",
+            "src/js/directives/ui-scroll.js",
+            "src/js/directives/ui-shift.js",
+            "src/js/directives/ui-toggleclass.js",
+//            "src/js/databox.js",
+            protocol +  "api.map.baidu.com/api?v=2.0&ak=6uWsWUrNR6xqQref0wIwMgGw&s=1&callback=BMap"
+        ];
+        var body = document.body;
+        function setJsLink(url) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+            script.async = false; //是否异步
+            body.appendChild(script);
+        };
+        for (var i = 0; i < jss.length; i++) {
+            setJsLink(jss[i])
+        };
+    })();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,252 @@
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="OrderDone">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-12 mrb-15">
+                <h2 class="title-3 text-center">已支付订单</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="container text-center">
+                <form style="padding: 10px">
+                    <div class="row">
+                        <div class="order-query">
+                            <label class="control-label text-right">订单类型：</label>
+                            <div style="display:inline-block;width:120px">
+                                <select class="form-control" id="orderType">
+                                    <option selected>全部</option>
+                                    <option value="11">图文咨询</option>
+                                    <option value="13">电话咨询</option>
+                                    <!--<option value="2">患者报道</option>-->
+                                    <option value="3">门诊</option>
+                                    <option value="7">会诊</option>
+                                    <option value="4">健康关怀</option>
+                                    <option value="9">名医面对面</option>
+                                    <option value="12">积分问诊</option>
+                                </select>
+                            </div>
+                            <label class="control-label text-right mrl-15">订单状态：</label>
+                            <div style="display:inline-block;width:120px">
+                                <select class="form-control" id="orderStatus">
+                                    <option selected>全部</option>
+                                    <!--<option value="1">待预约</option>-->
+                                    <!--<option value="2">待支付</option>-->
+                                    <option value="3">已支付</option>
+                                    <option value="4">已完成</option>
+                                    <option value="5">已取消</option>
+                                </select>
+                            </div>
+                            <label class="control-label text-right mrl-15">医生或用户姓名：</label>
+                            <div style="display:inline-block;width:120px">
+                                <input class="form-control" id="userName" />
+                            </div>
+                            <label class="control-label text-right mrl-15">订单号：</label>
+                            <div style="display:inline-block;width:120px">
+                                <input class="form-control" id="orderNo" />
+                            </div>
+                            <div class="mrl-15" style="display:inline-block;width:80px">
+                                <button class="btn btn-default w100" style="vertical-align:baseline" ng-click="queryOrder()">查 询</button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 pb-10">
+                <div class="panel panel-default">
+                    <div class="panel-body">
+                        <div class="wrapper-md">
+                            <div ng-init="loading=true" ng-if="loading" class="loading">
+                                <i class="glyphicon glyphicon-repeat"></i>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="orderList_done" class="table table-striped b-t b-b">
+                                    <thead>
+                                        <tr>
+                                            <th>订单号</th>
+                                            <th>医生姓名</th>
+                                            <th>患者姓名</th>
+                                            <th>患者关系</th>
+                                            <th>用户姓名</th>
+                                            <th>订单类型</th>
+                                            <th>订单金额(元)</th>
+                                            <th>支付时间</th>
+                                            <th>支付类型</th>
+                                            <th>订单状态</th>
+                                            <th>操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<toaster-container toaster-options="{'body-html':'<button>Close</button>'}"></toaster-container>-->
+</div>
+<script type="text/ng-template" id="toaster.html">
+    <a class="btn btn-danger mrt-10" ng-click="refund()" href>点击立即退款</a>
+</script>
+
+<script type="text/ng-template" id="order_info.html">
+    <!--样式写在main里面不起作用-->
+    <style>
+        .p_img >img{
+            width: 100px;
+            height:100px;
+            /*padding: 2px;*/
+            margin-right:8px;
+            margin-bottom: 10px;
+            border:1px solid #ddd;
+            cursor: pointer;
+        }
+        .info-p>p{
+            padding-top: 5px;
+        }
+        .info-p>h5{
+            font-weight: bold;
+        }
+
+        .p-box{
+            display: flex;
+        }
+
+        .p-box>span:nth-of-type(1){
+            width: 75px;
+        }
+
+        .p-box>div:nth-of-type(1){
+            flex: 1;
+        }
+    </style>
+    <div class="panel" style="padding-left:30px;box-sizing: border-box;">
+        <div class="modal-header">
+            <h3 class="modal-title text-center">订单详情</h3>
+        </div>
+        <div class="modal-body">
+            <div class="content info-p">
+                <h5>订单状态</h5>
+                <p ng-bind="orderInfo.orderStatus">已支付,等待医生回答</p>
+                <h5>患者填写的资料</h5>
+                <div class="p-box">
+                    <span>所患疾病：</span>
+                    <div>{{orderInfo.disease}}</div>
+                </div>
+                <div class="p-box">
+                    <span>病症时长：</span>
+                    <div>{{orderInfo.diseaseDuration}}</div>
+                </div>
+                <div class="p-box">
+                    <span>病情描述：</span>
+                    <div>{{orderInfo.diseaseDesc}}</div>
+
+
+                </div>
+                <div class="p-box">
+                    <span>用药情况：</span>
+                    <div>
+                        <div>{{orderInfo.drugInfo}}</div>
+                        <div>
+                            <span ng-repeat="item in orderInfo.drugNames track by $index">
+                                {{item}}
+                                <span ng-show="$index<orderInfo.drugNames.length-1">、</span>
+                            </span>
+
+                        </div>
+                        <div>
+                            <a class="p_img"  ng-repeat="img in orderInfo.drugPics track by $index">
+                                <img src={{img}} ng-click="funByimg(orderInfo.drugPics,$index)"/>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="p-box">
+                    <span style="width: 160px">希望获得医生什么帮助：</span>
+                    <div>{{orderInfo.hopeHelp}}</div>
+                </div>
+                <!--<p><span>是否到医院就诊过：</span>没有啊，你还想怎么样</p>-->
+                <!--<p><span>诊治情况：</span>没有啊，你还想怎么样</p>-->
+                <div class="p-box">
+                    <span>图片资料：</span>
+                    <div>
+                        <a class="p_img"  ng-repeat="img in orderInfo.pics track by $index">
+                            <img src={{img}} ng-click="funByimg(orderInfo.pics,$index)"/>
+                        </a>
+                    </div>
+                    <span ng-show="imgIsShow">--</span>
+                </div>
+
+
+                <h5>检查建议</h5>
+                <p>
+                    <!--{{orderInfo.checkSuggestNames}}-->
+                    <span ng-repeat="item in orderInfo.checkSuggestNames track by $index">
+                        {{item}}
+                        <span ng-show="$index<orderInfo.checkSuggestNames.length-1">、</span>
+                    </span>
+                </p>
+                <h5>用药建议</h5>
+                <!--<p>{{drugSugges.toString()}}</p>-->
+                <div>
+                    <div ng-repeat="item in orderInfo.recipeDetailViews track by $index">
+                        <span>{{item.goodsTitle}}(用法用量:{{item.doseMothod}}<span ng-if="item.doseMothod">,</span>{{item.periodNum}}{{item.periodUnit}}{{item.periodTimes}}次，每次{{item.doseQuantity}}{{item.doseUnit}})</span>
+                        <span ng-if="$index<orderInfo.recipeDetailViews.length-1">,</span>
+                    </div>
+                    <span ng-if="orderInfo.recipeDetailViews.length==0">--</span>
+                </div>
+                <h5>患者评价</h5>
+                <p>
+                    <!--{{orderInfo.evaluation}}-->
+                    <span ng-repeat="item in orderInfo.evaluation track by $index">
+                        {{item}}
+                        <span ng-show="$index<orderInfo.evaluation.length-1">、</span>
+                    </span>
+                </p>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <div class="row text-center">
+                <div class="col col-xs-12">
+                    <button class="btn btn-info btn-md w30" type="button" ng-click="orderOK()"> 确 定 </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</script>
+
+<script type="text/ng-template" id='showImage.html'>
+    <style>
+        .btn-close {
+            position: absolute;
+            top: -11px;
+            right: -11px;
+            z-index: 1052;
+        }
+        .carousel-control{
+            opacity: 0;
+            color:#F4E9EF;
+        }
+        .carousel-control.right{
+            opacity: 1;
+            background:rgba(0,0,0,0) ;
+        }
+        .carousel-control.left{
+            opacity: 1;
+            background:rgba(0,0,0,0) ;
+        }
+    </style>
+    <div style="position: relative; text-align:center;z-index:1051;margin-top: 35%;">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default b-dark btn-close" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <carousel>
+            <slide ng-repeat="slide in slides" active="slide.active">
+                <img ng-src="{{slide.image}}" style="margin:auto;">
+            </slide>
+        </carousel>
+    </div>
+</script>

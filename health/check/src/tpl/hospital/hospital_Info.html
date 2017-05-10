@@ -1,0 +1,38 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="hospitalInfoCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">医院信息</h2>
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="panel panel-default">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <ul>
+                                <li><b class="control-label col-sm-3 text-right ">医院名称</b><label class="control-label col-sm-9 text-left">{{hospitalInfos.HospitalName}}</label></li>
+                                <li><b class="control-label col-sm-3 text-right ">省份</b><label class="control-label col-sm-9 text-left">{{hospitalInfos.province}}</label></li>
+                                <li><b class="control-label col-sm-3 text-right ">城市</b><label class="control-label col-sm-9 text-left">{{hospitalInfos.city}}</label></li>
+                                <li><b class="control-label col-sm-3 text-right ">区域</b><label class="control-label col-sm-9 text-left">{{hospitalInfos.country}}</label></li>
+                                <li><b class="control-label col-sm-3 text-right ">管理员</b><label class="control-label col-sm-3 text-left">{{hospitalInfos.adminName}}</label><label class="control-label col-sm-6 text-left"><button class="btn btn-primary btn-sm" ng-click="addAdmin(hospitalInfos.hospitalId,'')" >修改管理员</button></label></li>
+                                <li><b class="control-label col-sm-3 text-right ">联系电话</b><label class="control-label col-sm-9 text-left">{{hospitalInfos.telephone}}</label></li>
+                                <li><b class="control-label col-sm-3 text-right ">创建日期</b><label class="control-label col-sm-9 text-left">{{hospitalInfos.creatorDate | date:'yyyy-MM-dd HH:mm:ss'}}</label></li>
+                                <li class="clear"></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-7 mrt-15">
+                    <div class="pull-right col-xs-3 col-xs-4">
+                        <a type="button" class="w100 btn btn-default" ui-sref="app.hospital.list">返回</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

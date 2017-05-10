@@ -1,0 +1,15 @@
+<div class="m-lg p-msg clearfix frame-panel-a" style="min-height:500px;" ng-controller="dynamicCtrl">
+    <div class="m pull-left p-msg-l" ng-repeat="item in dynamicList">
+        <div class="panel b-a"  ng-click="toManage(item)">
+            <div>
+                <img ng-src={{item.photourl}} />
+            </div>
+            <div class="panel-footer text-center">
+                <span style="font-size:17px;font-weight:500;" ng-if="item.rtype != 'pub_1'">集团通知</span>
+                <span style="font-size:17px;font-weight:500;" ng-if="item.rtype == 'pub_1'">患者动态</span>
+                {{item.nickName}}
+            </div>
+        </div> 
+
+    </div>
+</div>

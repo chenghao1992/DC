@@ -1,0 +1,59 @@
+<script type="text/ng-template" id="chatPeopleDialogBox.html">
+    <div class="modal-body clearfix p-t-lg p-l-lg doc-detail position-relative h-600 p-r-none" ng-click="triggerClick($event)">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:-10px;top:-12px;" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <div class="col-xs-12 clearfix p-r-none p-l-none">
+            <div class="b-b p-l-sm p-r-sm" style="height: 50px;line-height: 50px;">
+                <div>
+                    <span class="text-md">{{chatGroup.name}}</span>
+                    <button class="btn btn-warning" ng-click="openSelectPeopleDialog(chatGroup,onSelPeopleRes)" >
+                        <span class="hid">加人</span>
+                    </button>
+                    <button class="btn btn-warning" ng-click="editingName=true" ng-show= "chatGroup.type!==1">
+                        <span class="hid">改名</span>
+                    </button>
+                    <button class="btn btn-warning" ng-click="setChatTop()" >
+                        <span class="hid" ng-if="chatGroup.top==0">置顶</span>
+                        <span class="hid" ng-if="chatGroup.top>0">取消置顶</span>
+                    </button>
+                </div>
+                <div class="pos-abt " ng-show="editingName" style="background-color: white;top: 0;right: 0;left: 0;">
+                    <input style="height: 40px" value="{{chatGroup.name}}" ng-model="tempName">
+                    <button class="btn btn-success" ng-click="changeName()" >
+                        <span class="hid">确定</span>
+                    </button>
+                    <button class="btn btn-danger" ng-click="editingName=false" >
+                        <span class="hid">取消</span>
+                    </button>
+                </div>
+
+            </div>
+            <div class="p-sm clearfix" style="max-height: 500px;overflow-y: auto;" >
+                <div class="pull-left chat-people-item" ng-repeat="personnel in currentPeople" style="position: relative;padding: 15px;text-align: center" >
+                    <span class="avatar inline">
+                        <img ng-src="{{personnel.pic}}" style="width: 50px;height: 50px;">
+                        <span class="badge badge-sm up bg-primary bg" ng-show="personnel.duty==1">主管</span>
+                    </span>
+                    <p style="text-overflow:ellipsis;text-align: center;">{{personnel.name}}</p>
+                    <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:5px;top:5px;"
+                            ng-click="removePerson(personnel)">
+                        <i class="fa fa-close"></i></button>
+                </div>
+            </div>
+            <!--<ul class="p-sm" style="max-height: 500px;overflow-y: auto;" >-->
+                <!--<li ng-repeat="personnel in currentPeople" class="m-t-sm bg-f8 b p-sm" style="position: relative;">-->
+                    <!--<span class="avatar inline">-->
+                        <!--<img ng-src="{{personnel.pic}}" style="width: 50px;height: 50px;">-->
+                        <!--<span class="badge badge-sm up bg-primary bg" ng-show="personnel.duty==1">主管</span>-->
+                    <!--</span>-->
+                    <!--<span>{{personnel.name}}</span>-->
+                    <!--<button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:5px;top:5px;"-->
+                            <!--ng-click="">-->
+                        <!--<i class="fa fa-close"></i></button>-->
+                <!--</li>-->
+            <!--</ul>-->
+        </div>
+        <select-people-dialog open="openSelectPeopleDialog" go-running=""></select-people-dialog>
+    </div>
+</script>
+
+

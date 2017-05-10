@@ -1,0 +1,152 @@
+<div class="edit_a row">
+    <div class="main col-sm-12 col-md-12 col-lg-10">
+        <form class="form-horizontal">
+            <div class="font-w-b" style="font-size:16px; margin-bottom: -13px;">一般设置</div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group form-counter" ng-class="planData.name.length>40?'has-error':''">
+                <label class="col-sm-2 control-label">计划名称<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="planData.name" class="form-control" style="padding-right:48px;">
+                </div>
+                <em class="frm_input_append frm_counter">
+                <span ng-class="planData.name.length>40?'text-danger':''">{{planData.name.length}}</span>/40
+                </em>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">所属病种<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" ng-model="planData.diseaseTypeName" placeholder="科室" disabled>
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="chooseType()" ng-disabled="planData.id">选择</button>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="(planData.executeTime<1 && !planData.executeTimeEver)?'has-error':''">
+                <label class="col-sm-2 control-label">执行时长
+                    <i class="fa fa-asterisk text-danger"></i></br>
+                    <span class="text-muted">关怀计划的执行时长</span>
+                </label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="执行时长" ng-model="planData.executeTime" 
+                            ng-disabled="planData.executeTimeEver">
+                        <span class="input-group-addon">&nbsp;&nbsp;天&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+                <label class="col-sm-2 control-label" style="margin-left: -15px;">
+                    <label class="i-checks m-b-none">
+                        <input type="checkbox" ng-model="planData.executeTimeEver"><i></i>
+                    </label>
+                    <span>设为永久</span>
+                </label>
+            </div>
+
+
+            <div class="font-w-b m-t-xl" style="font-size:16px; margin-bottom: -13px;">收费设置</div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group" ng-if="planData.tmpType==1">
+                <label class="col-sm-2 control-label">是否收费<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-10 control-label row">
+                    <div class="col-sm-2 text-left">
+                        <label class="i-checks m-b-none">
+                            <input type="radio" name="priceIf" ng-model="planData.priceIf" value="no"><i></i>
+                        </label>
+                        <span>免费</span>
+                    </div>
+                    <div class="col-sm-2 text-left">
+                        <label class="i-checks m-b-none">
+                            <input type="radio" name="priceIf" ng-model="planData.priceIf" value="yes" ng-click="funPriceYes()"><i></i>
+                        </label>
+                        <span>收费</span>
+                    </div>
+                    <div class="col-sm-8 text-left">
+                        <span ng-if="planData.priceIf=='no'">( 免费计划患者不能咨询医生 )</span>
+                        <span ng-if="planData.priceIf=='yes'">( 健康关怀执行期间，患者可以无限次咨询医生 )</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-class="(planData.price>carePlanMax||planData.price<carePlanMin)?'has-error':''" 
+                ng-if="planData.tmpType==1 && planData.priceIf=='yes'">
+                <label class="col-sm-2 control-label">价格
+                    <i class="fa fa-asterisk text-danger"></i><br><span ng-show="carePlanMin>=0 && carePlanMax>=0" class="text-danger">({{carePlanMin}}~{{carePlanMax}}元)</span></label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <input type="number" class="form-control" placeholder="价格" name="price" ng-model="planData.price" onkeyup="value=this.value.replace(/\D+/g,'')">
+                        <span class="input-group-addon">&nbsp;&nbsp;元&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">患者电话求助</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <select class="form-control" ng-model="planData.helpTimes" ng-options="opt for opt in [0,1,2,3,4,5,6,7,8,9,10]"></select>
+                        <span class="input-group-addon">&nbsp;&nbsp;次&nbsp;&nbsp;</span>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="font-w-b m-t-xl" style="font-size:16px; margin-bottom: -13px;">推广设置</div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group" ng-if="planData.tmpType==1">
+                <label class="col-sm-2 control-label">题图<i class="fa fa-asterisk text-danger"></i>
+                    <br>
+                    <span class="text-danger">( 建议尺寸：540*260像素，不大于2M，请注意长宽比例，否则在用户端会出现变形 )</span>
+                </label>
+                <div class="col-sm-6">
+                    <div class="bg-white text-center ng-File-UpLoad-Bt" style="margin:0;width: 100%;height: 100%" ng-click="upload()">
+                        <img ng-src="{{planData.titlePic+'?'+imgFile.percent}}" width="100%" height="100%" ng-show="planData.titlePic">
+                        <i ng-show="!planData.titlePic&&!imgFile.percent" class="fa fa-file-picture-o" style="font-size:80px;line-height:100px;color:#dee5e7;"></i>
+                        <i ng-show="!planData.titlePic&&imgFile.percent" style="font-size: 80px;">
+                            {{imgFile.percent}}%
+                        </i>
+                    </div>
+                    <div class="progress m-b-none" ng-show="!planData.titlePic">
+                        <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{imgFile.percent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{imgFile.percent}}%;min-width: 2em;">
+                            {{imgFile.percent>0?imgFile.percent:0}}%
+                            <span class="sr-only">{{imgFile.percent}}%</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-4">
+                    <div class="btn-group">
+                        <button class="btn m-b-xs w-xs btn-default" ng-click="upload()">上传</button>
+                        <button class="btn m-b-xs w-xs btn-default" ng-click="removeImg()">删除</button>
+                    </div>
+                </div>
+                <!-- 七牛上传组件 -->
+                <qiniu-uploader token="{{token}}" bucket="group" upload="upload" filters="qiniuFilters" file-list="fileList" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="true" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded" progress-call-back="progressCallBack"></qiniu-uploader>
+                <!-- 七牛上传组件 end -->
+            </div>
+            <div class="form-group" ng-class="planData.digest.length>80?'has-error':''">
+                <label class="col-sm-2 control-label">摘要<i class="fa fa-asterisk text-danger"></i>
+                    <br>
+                    <!-- <span class="text-muted">（选填，该摘要只在发送图文消息为单条时显示）</span> -->
+                </label>
+                <div class="col-sm-10">
+                    <textarea ng-model="planData.digest" class="form-control" rows="4"></textarea>
+                    <label class="pull-right">
+                        <em class="text-muted" style="position: relative; top: -20px; left: -6px;">
+                            <span ng-class="planData.digest.length>80?'text-danger':''">{{planData.digest.length}}</span>/80
+                        </em>
+                    </label>
+                </div>
+            </div>
+            <div class="form-group" ng-if="planData.tmpType==1">
+                <label class="col-sm-2 control-label">正文<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-10" ng-if="showBaidu==1">
+                    <!-- 百度富文本编辑器（含七牛上传） -->
+                    <ng-umeditor class="block w-full" token="{{token}}" content="planData.content" config="config" umeditor="umeditor"></ng-umeditor>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group text-center">
+                <button class="btn m-b-xs w-xs btn-success" ng-click="saveDoc()" ng-disabled="isSaved">确认</button>
+                <button class="btn m-b-xs w-xs btn-primary" ng-click="cancel()" ng-disabled="isSaved">取消</button>
+            </div>
+        </form>
+    </div>
+</div>

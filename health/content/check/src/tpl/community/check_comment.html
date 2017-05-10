@@ -1,0 +1,196 @@
+<style>
+    .pagination{
+        margin:0 !important;
+    }
+    .table{
+        margin-bottom: 0 !important;
+    }
+    .borderleif-right{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+    .borderleif-right-bootm{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="checkcommentlist">
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<h2 class="org-title text-center">评论审核列表</h2>-->
+        <!--</div>-->
+    <!--</div>-->
+    <uib-tabset >
+        <uib-tab heading="待审核" select="bycheckComment(0)" >
+           <div>
+               <table class="table table-striped b-b borderleif-right" >
+                   <thead>
+                      <tr></tr>
+                   </thead>
+                   <tbody>
+                       <tr ng-repeat="i in datalist">
+                           <td style="width:10%;">
+                               <label>
+                                    <input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/>
+                                   <img ng-src="{{i.userInfo.headPic||'src/img/a0.jpg'}}" style="border-radius:50%;" >
+                               </label>
+                           </td>
+                           <td style="width:65%;" ng-if="i.type==1">
+                               <span style="color: #2A9CDB;" ng-bind="i.userInfo.name"></span> 回复了<span style="color: #2A9CDB;" ng-bind="i.toUserInfo.name"> </span> 的评论 <span style="color: #2A9CDB;"><face-icon-filter-content data="i.toReplyInfo.content"></face-icon-filter-content>  </span><br>
+                               <face-icon-filter-content data="i.content"></face-icon-filter-content>
+                                <div ng-show="i.imgUrls.length>0" style="border:0;"><img ng-show="img!='' " src="{{img}}" ng-repeat="img in i.imgUrls track by $index" style="width:120px;height: 70px;border-radius: 0;"></div>
+                           </td>
+                           <td style="width:65%;" ng-if="i.type==0">
+                               <span style="color: #2A9CDB;" ng-bind="i.userInfo.name"></span> 评价了<span style="color: #2A9CDB;" ng-bind="i.topicUserInfo.name"> </span> 的帖子 <span style="color: #2A9CDB;" ng-bind="i.topicInfo.content.title">  </span><br>
+                               <face-icon-filter-content data="i.content"></face-icon-filter-content>
+                               <div ng-show="i.imgUrls.length>0" style="border:0;"><img ng-show="img!='' " src="{{img}}" ng-repeat="img in i.imgUrls track by $index" style="width:120px;height: 70px;border-radius: 0;"></div>
+                           </td>
+                           <td style="width:25%;">
+                               <p>{{i.replyTime|date:'yyyy-MM-dd HH:mm'}}</p><br>
+                               <button class="btn btn-link btn-link-2" ng-click="bycomPass(i.id)">已审核</button>
+                               <button class="btn btn-link btn-link-2" ng-click="bycomDel(i.id)">删除</button>
+                           </td>
+                       </tr>
+                       <tr ng-show="datalist.length<1">
+                           <td colspan="3" class="text-center">无数据</td>
+                       </tr>
+                   </tbody>
+               </table>
+               <div class="row" style="margin-top: 10px">
+                   <div class="col-sm-5 text-left">
+                       <label><input type="checkbox" ng-model="check.isCheckAll" ng-click="allSelected(check.isCheckAll)"/>全选({{numberlsit}})</label>
+                       <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="bycomPass()">已审核</button> <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="bycomDel()">删除</button>
+                       <label>
+                           每页
+                           <select class="input-sm" ng-model="page.size" ng-change="funPageSizeChange(0)">
+                               <option value="10">10</option>
+                               <option value="20">20</option>
+                               <option value="50">50</option>
+                           </select>
+                           条
+                       </label> <label class="dataTables_info ng-binding m-l-xs" id="contactsList_info1" role="status" aria-live="polite">
+                       当前第 {{(page.index-1)*page.size+1}} - {{page.index*page.size > search.postTotal0 ? search.postTotal0:  page.index*page.size}} 条，共 {{search.postTotal0}} 条
+                   </label></div>
+                   <div class="col-sm-7 text-right">
+                       <uib-pagination ng-change="funPageindex(0)" max-size="7" items-per-page="page.size" boundary-links="true" total-items="search.postTotal0" ng-model="page.index" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                   </div>
+               </div>
+           </div>
+        </uib-tab>
+        <uib-tab heading="已审核" select="bycheckComment(1)">
+            <div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <tbody>
+                    <tr ng-repeat="i in datalist">
+                        <td style="width:10%;">
+                            <label>
+                                <input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/>
+                                <img ng-src="{{i.userInfo.headPic||'src/img/a0.jpg'}}" style="border-radius:50%;" >
+                            </label>
+                        </td>
+                        <td style="width:65%;" ng-if="i.type==1">
+                            <span style="color: #2A9CDB;" ng-bind="i.userInfo.name"></span> 回复了<span style="color: #2A9CDB;" ng-bind="i.toUserInfo.name"> </span> 的评论 <span style="color: #2A9CDB;"><face-icon-filter-content data="i.toReplyInfo.content"></face-icon-filter-content>  </span><br>
+                            <face-icon-filter-content data="i.content"></face-icon-filter-content>
+                            <div ng-show="i.imgUrls.length>0" style="border:0;"><img ng-show="img!='' " src="{{img}}" ng-repeat="img in i.imgUrls track by $index" style="width:120px;height: 70px;border-radius: 0;"></div>
+                        </td>
+                        <td style="width:65%;" ng-if="i.type==0">
+                            <span style="color: #2A9CDB;" ng-bind="i.userInfo.name"></span> 评价了<span style="color: #2A9CDB;" ng-bind="i.topicUserInfo.name"> </span> 的帖子 <span style="color: #2A9CDB;" ng-bind="i.topicInfo.content.title">  </span><br>
+                            <face-icon-filter-content data="i.content"></face-icon-filter-content>
+                            <div ng-show="i.imgUrls.length>0" style="border:0;"><img ng-show="img!='' " src="{{img}}" ng-repeat="img in i.imgUrls track by $index" style="width:120px;height: 70px;border-radius: 0;"></div>
+                        </td>
+                        <td style="width: 15%">{{i.replyTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td style="width:10%;">
+                            <button class="btn btn-link btn-link-2" ng-click="bycomDelcheck(i.id,1)">撤销</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="3" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-5 text-left">
+                        <label><input type="checkbox" ng-model="check.isCheckAll1" ng-click="allSelected(check.isCheckAll1)"/>全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="bycomDelcheck(0,1)">撤销</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size1" ng-change="funPageSizeChange(1)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info2" role="status" aria-live="polite">
+                        当前第 {{(page.index1-1)*page.size1+1}} - {{page.index1*page.size1 > search.postTotal1 ? search.postTotal1:  page.index1*page.size1}} 条，共 {{search.postTotal1}} 条
+                    </label></div>
+                    <div class="col-sm-7 text-right">
+                        <uib-pagination ng-change="funPageindex(1)" max-size="7" items-per-page="page.size1" boundary-links="true" total-items="search.postTotal1" ng-model="page.index1" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="已删除" select="bycheckComment(2)">
+            <div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <tbody>
+                    <tr ng-repeat="i in datalist">
+                        <td style="width:10%;">
+                            <label>
+                                <input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/>
+                                <img ng-src="{{i.userInfo.headPic||'src/img/a0.jpg'}}" style="border-radius:50%;" >
+                            </label>
+                        </td>
+                        <td style="width:65%;" ng-if="i.type==1">
+                            <span style="color: #2A9CDB;" ng-bind="i.userInfo.name"></span> 回复了<span style="color: #2A9CDB;" ng-bind="i.toUserInfo.name"> </span> 的评论 <span style="color: #2A9CDB;"><face-icon-filter-content data="i.toReplyInfo.content"></face-icon-filter-content>  </span><br>
+                            <face-icon-filter-content data="i.content"></face-icon-filter-content>
+                            <div ng-show="i.imgUrls.length>0" style="border:0;"><img ng-show="img!='' " src="{{img}}" ng-repeat="img in i.imgUrls track by $index" style="width:120px;height: 70px;border-radius: 0;"></div>
+                        </td>
+                        <td style="width:65%;" ng-if="i.type==0">
+                            <span style="color: #2A9CDB;" ng-bind="i.userInfo.name"></span> 评价了<span style="color: #2A9CDB;" ng-bind="i.topicUserInfo.name"> </span> 的帖子 <span style="color: #2A9CDB;" ng-bind="i.topicInfo.content.title">  </span><br>
+                            <face-icon-filter-content data="i.content"></face-icon-filter-content>
+                            <div ng-show="i.imgUrls.length>0" style="border:0;"><img ng-show="img!='' " src="{{img}}" ng-repeat="img in i.imgUrls track by $index" style="width:120px;height: 70px;border-radius: 0;"></div>
+                        </td>
+                        <td style="width: 15%">{{i.replyTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td style="width:10%;">
+                            <button class="btn btn-link btn-link-2" ng-click="bycomDelcheck(i.id,2)">撤销</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="3" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-5 text-left">
+                        <label><input type="checkbox" ng-model="check.isCheckAll2" ng-click="allSelected(check.isCheckAll2)"/>全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="bycomDelcheck(0,2)">撤销</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size2" ng-change="funPageSizeChange(2)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info" role="status" aria-live="polite">
+                        当前第 {{(page.index2-1)*page.size2+1}} - {{page.index2*page.size2 > search.postTotal2 ? search.postTotal2:  page.index2*page.size2}} 条，共 {{search.postTotal2}} 条
+                    </label></div>
+                    <div class="col-sm-7 text-right">
+                        <uib-pagination ng-change="funPageindex(2)" max-size="7" items-per-page="page.size2" boundary-links="true" total-items="search.postTotal2" ng-model="page.index2" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+<script type="text/ng-template" id="deleteComment.html">
+    <div class="modal-header text-center">
+        <h3 class="modal-title">确认是否删除</h3>
+    </div>
+    <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-primary " ng-click="modalOk()" style="margin: 0 2em;">确定</button>
+        <button class="btn btn-warning " ng-click="modalCancel()" style="margin: 0 2em;">取消</button>
+    </div>
+</script>
+

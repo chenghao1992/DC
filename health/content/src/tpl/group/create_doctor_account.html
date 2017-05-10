@@ -1,0 +1,107 @@
+<div class="org hbox-auto-xs hbox-auto-sm" ng-controller="CreateDoctorAccount">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3">
+                <a class="btn btn-primary mrl-10" href ng-click="goBack()"> 返 回 </a>
+            </div>
+            <div class="col-md-6 mrb-15">
+                <h2 class="org-title text-center">新建医生</h2>
+            </div>
+        </div>
+        <div class="row" style="margin: 0;">
+            <form class="form-horizontal" novalidate name="FillInfoForm" enctype="multipart/form-data">
+                <div class="form-group"
+                     ng-class="{'has-error':FillInfoForm.userName.$invalid&&FillInfoForm.userName.$dirty}">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-11">姓名<i
+                            class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-11">
+                        <input type="text" class="form-control" name="userName" ng-model="userName" autocomplete="off" tabindex="1" required>
+                    </div>
+                </div>
+                <div class="form-group"
+                     ng-class="{'has-error':FillInfoForm.telephone.$invalid&&FillInfoForm.telephone.$dirty}">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-11">手机号<i
+                            class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-11">
+                        <input type="text" class="form-control" name="telephone" ng-model="telephone" autocomplete="off" tabindex="2" required>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error':FillInfoForm.hospital.$invalid&&FillInfoForm.hospital.$dirty}">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-12" ng-init="false">医疗机构名称<i class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-11" ng-show="!alter">
+                        <div class="r" ng-class="!hospital.selected&&keyWord?'b b-danger':''">
+                            <ui-select ng-model="hospital.selected" theme="bootstrap" tabindex="3" required>
+                                <ui-select-match placeholder="请输入医院名称搜索...">{{$select.selected.name}}</ui-select-match>
+                                <ui-select-choices repeat="option in hospitalOption" refresh="getHospitalOption($select.search)">
+                                    <div ng-if="option.name">
+                                        {{option.name}}<small class="text-muted">（{{option.provinceName?option.provinceName+'-':''}}{{option.cityName?option.cityName+'-':''}}{{option.countryName?option.countryName+'-':''}}{{option.address}}）</small>
+                                    </div>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-11" ng-show="alter">
+                        <input type="text" class="form-control" name="hospital" ng-model="hospital.selected.name" autocomplete="off" tabindex="3" required>
+                    </div>
+                    <div class="col-lg-1 col-md-1 col-sm-2 col-xs-11">
+                        <label class="checkbox i-checks"><input type="checkbox" ng-click="alter=!alter;hospital.selected=null"><i></i>其他医院</label>
+                    </div>
+                    <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-lg-5 col-md-7 col-sm-8 col-xs-11 m-t-xs hide">
+                        <a class="text-info" ng-click="createHospital()">没有您要创建的医院？点击添加新医院</a>
+                    </div>
+                </div>
+                <div class="form-group" ng-class="{'has-error':FillInfoForm.department.$invalid&&FillInfoForm.department.$dirty}">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-11">科室<i class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-11">
+                        <i class="ipt-arr fa fa-plus" style="top:12px;right:23px;font-size:12px;"></i>
+                        <input type="text" class="form-control" placeholder="选择科室" ng-click="selectDepts()" name="department" ng-model="department" tabindex="4" readonly required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-11">职称<i class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-lg-5 col-md-7 col-sm-8 col-xs-11">
+                        <select id="doctor_title" ng-model="title" class="form-control" tabindex="4" required>
+                            <option selected value="0">请选择职称</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label col-lg-3 col-md-3 col-sm-3 col-xs-12">头像</label>
+                    <div class="col-lg-2 col-md-3 col-sm-4 col-xs-6" style="width:230px;">
+                        <div ng-click="selectFile('usrPic')" class="bg-white text-center ng-File-UpLoad-Bt"
+                             style="width:200px;height:200px;cursor:pointer" ng-model="usrPic" name="usrPic" accept=".jpg,.jpeg,.png,.bmp" >
+                            <img ng-src="{{usrPicUrl}}" style="max-width:200px;max-height:200px;" id="user_pic">
+                            <i ng-show="!usrPic.progress && !usrPicUrl" class="fa fa-file-picture-o"
+                               style="font-size:80px;line-height:160px;color:#dee5e7;"></i>
+                        </div>
+                        <div class="progress m-b-none" ng-show="usrPicProgress>0">
+                            <div class="progress-bar progress-bar-striped progress-bar-success active font-bold"
+                                 role="progressbar m-b-none" aria-valuenow="{{usrPicProgress}}" aria-valuemin="0"
+                                 aria-valuemax="100" style="width:{{usrPicProgress}}%;min-width: 2em;">
+                                {{usrPicProgress>0?usrPicProgress:0}}%
+                                <span class="sr-only">{{usrPicProgress}}%</span>
+                            </div>
+                        </div>
+                        <p class="font-bold"
+                           ng-class="{'text-success text-right':usrPic.result,'text-danger':reUsrPic[0].$error}"
+                           ng-show="usrPic.result||reUsrPic[0].$error">
+                            {{usrPic.result?usrPic.result:'上传错误：'+reUsrPic[0].$error}}</p>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-lg-5 col-md-7 col-sm-8 col-xs-11 mrt-15">
+                        <button type="button" class="btn btn-success" style="width: 200px" ng-click="submitInfo()" ng-disabled="FillInfoForm.$invalid">确认新建</button>
+                    </div>
+                </div>
+                <div class="form-group m-t-lg" ng-show="authError">
+                    <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-lg-5 col-md-7 col-sm-8 col-xs-11 text-danger">
+                        {{authError}}
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="group" progress-call-back="progress" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="99999gb" chunk-sizee="1mb" unique-names="true" multi-selection="true" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+</div>

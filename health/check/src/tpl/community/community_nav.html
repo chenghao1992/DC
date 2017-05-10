@@ -1,0 +1,63 @@
+<div class="frame-panel p-none b-none clear" style="background: none;" ng-controller="communityNavCtrl">
+    <!-- menu -->
+    <div class="community-nav">
+		<uib-accordion close-others="true">
+			<div uib-accordion-group class="panel-level-1" is-open="status.open1">
+				<uib-accordion-heading>
+					社区栏目
+					<i class="pull-right nav-arrow glyphicon" ng-class="{'glyphicon-chevron-down': status.open1, 'glyphicon-chevron-right': !status.open1}"></i>
+				</uib-accordion-heading>
+				<dl class="panel-level-2" ng-repeat="column in columnList">
+					<a ng-click="funGoColumn(column.id)" ng-class="{comactive: $state.includes('app.community.list') && curColumn == column.id}">
+						{{column.name}}
+						<span class="mark-info mark-info-disabled mark-l-xxs" ng-show="column.sign==0">标记</span>
+						<span class="mark-info mark-info-disabled mark-l-xxs" ng-show="column.enable==1">停用</span>
+					</a>
+				</dl>
+			</div>
+			<dl class="panel-level-1" style="height: 40px;">
+				<div ui-sref="app.community.myPost" class="panel-alone" ng-class="{comactive: $state.includes('app.community.myPost')}">	发帖
+				</div>
+			</dl>
+			<div uib-accordion-group class="panel-level-1" is-open="status.open2">
+				<uib-accordion-heading>
+					社区管理
+					<i class="pull-right nav-arrow glyphicon" ng-class="{'glyphicon-chevron-down': status.open2, 'glyphicon-chevron-right': !status.open2}"></i>
+				</uib-accordion-heading>
+				<dl class="panel-level-2">
+					<a ui-sref="app.community.banner" ng-class="{comactive: $state.includes('app.community.banner')}">banner管理</a>
+				</dl>
+				<dl class="panel-level-2">
+					<a ui-sref="app.community.column" ng-class="{comactive: $state.includes('app.community.column')}">栏目管理</a>
+				</dl>
+			</div>
+			<div uib-accordion-group class="panel-level-1" is-open="status.open3">
+				<uib-accordion-heading>
+					审核
+					<i class="pull-right nav-arrow glyphicon" ng-class="{'glyphicon-chevron-down': status.open3, 'glyphicon-chevron-right': !status.open3}"></i>
+				</uib-accordion-heading>
+				<dl class="panel-level-2">
+					<a ui-sref="app.community.checkPost" ng-class="{comactive: $state.includes('app.community.checkPost')}">
+						帖子审核
+					</a>
+				</dl>
+				<dl class="panel-level-2">
+					<a ui-sref="app.community.checkComment" ng-class="{comactive: $state.includes('app.community.checkComment')}">
+						评论审核
+					</a>
+				</dl>
+				<dl class="panel-level-2">
+					<a ui-sref="app.community.checkReport" ng-class="{comactive: $state.includes('app.community.checkReport')}">
+						举报审核
+					</a>
+				</dl>
+			</div>
+		</uib-accordion>
+    </div>
+    <!-- / menu -->
+    <!-- content -->
+    <div class="community-cont-wapper">
+        <div class="community-cont" ui-view></div>
+    </div>
+    <!-- /content -->
+</div>

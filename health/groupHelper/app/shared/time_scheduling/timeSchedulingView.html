@@ -1,0 +1,35 @@
+<script type="text/ng-template" id="TimeSchedulingCtrlBox.html">
+    <div class="modal-body clearfix p-lg" st-table="displayedCollection" st-safe-src="rowCollection">
+        <div class=" w-full position-relative">
+            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-20px;top:-20px;" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        </div>
+        <div class="text-base text-center">
+            新增排班时间
+        </div>
+        <div class="row">
+            <div class="clearfix">
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="p">
+                            <div class="input-group" style="margin:0 auto;">
+                                <uib-timepicker ng-model="dataPrev.start" minute-step="dataPrev.minuteStep || 1" hour-step="dataPrev.hourStep || 1" min="dataPrev.minDate" max="dataPrev.maxDate" show-meridian="false"></uib-timepicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-6">
+                    <div class="row">
+                        <div class="p">
+                            <div class="input-group" style="margin:0 auto;">
+                                <uib-timepicker ng-model="dataPrev.end"  minute-step="dataPrev.minuteStep || 1" hour-step="dataPrev.hourStep || 1" min="dataPrev.minDate" max="dataPrev.maxDate" show-meridian="false"></uib-timepicker>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row text-center">
+            <button class="btn btn-info" type="button" ng-disabled="!dataPrev.start || !dataPrev.end" ng-click="ok()">确定</button>
+        </div>
+    </div>
+</script>

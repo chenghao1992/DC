@@ -1,0 +1,43 @@
+<style type="text/css">
+    body{
+        background-color: #fff !important;
+    }
+    .app-header-fixed{
+        padding-top: 0;
+    }
+    .article-content{
+        width: 100%;
+        height: 100%;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        overflow-y:auto;
+    }
+    .btn-ctrl{
+        position: fixed;
+        top: 15px;
+        right: 25px;
+    }
+</style>
+<div ng-controller="doctorKnowledgeInfoCtrl">
+    <iframe class="article-content" ng-src="{{article.url}}" frameborder="0">
+        <p>你的浏览器不支持iframes</p>
+    </iframe>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <div class="btn-ctrl">
+        <button class="btn m-b-xs w-xs btn-success" ng-show="showTop&&isPersonKnowledge" ng-click="topArticle()">置顶</button>
+        <button class="btn m-b-xs w-xs btn-success" ng-show="showQuitTop&&isPersonKnowledge" ng-click="quitTopArticle()">取消置顶</button>
+        <button class="btn m-b-xs w-xs btn-primary" ng-show="isPersonKnowledge" ng-click="editArticle()">编辑</button>
+        <button class="btn m-b-xs w-xs btn-danger"  ng-show="isPersonKnowledge" ng-click="deleteArticle()">删除</button>
+        <button class="btn m-b-xs w-xs btn-info"   ui-sref="app.doctorKnowledge.list({isPersonKnowledge:isPersonKnowledge,isEditBeforeWidthcategoryId:isEditBeforeWidthcategoryId,isSearchByAllCategory:isSearchByAllCategory})">返回</button>
+    </div>
+</div>
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">确认删除文章并关闭页面？</div>
+        <div class="panel-body">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>

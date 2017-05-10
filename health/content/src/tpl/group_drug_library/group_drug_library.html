@@ -1,0 +1,42 @@
+<div class="frame-panel-a ng-scope" ng-controller="groupDrugLibraryCtrl">
+    <div class="m-t">
+        <h2 class="title-3 text-center">集团药品库</h2>
+        <a class="btn btn-success" type="button" ng-click="openDrugBox()">添加药品</a>
+    </div>
+    <div class="b b-grey r r-2x m-t-sm">
+        <bk-table searching="false" length-menu="[5,10,20,50]" url="url" params="params">
+            <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0;">
+                <tr>
+                    <th></th>
+                    <th class="text-center" align="center">品种名称</th>
+                    <th class="text-center" align="center">规格</th>
+                    <th class="text-center" style="white-space: nowrap" align="center">包装规格</th>
+                    <th class="text-center" style="white-space: nowrap" align="center">生产厂家</th>
+                    <th class="text-center" style="white-space: nowrap" align="center">操作</th>
+                </tr>
+                <tr ng-repeat="item in $parent.data" class="hover-pointer">
+                    <td width="10%">
+                        <img ng-src="{{item.imageUrl}}" ng-if="item.imageUrl">
+                        <img src="src/img/medicine.png" ng-if="!item.imageUrl">
+                    </td>
+                    <td align="center">{{item.title}}</td>
+                    <td align="center">{{item.specification}}</td>
+                    <td align="center">{{item.packSpecification}}</td>
+                    <td align="center">{{item.manufacturer}}</td>
+                    <td align="center">
+                        <button class="btn btn-danger btn-sm m-t-xs" ng-click="delete(item.id)">删 除</button>
+                    </td>
+                </tr>
+            </table>
+        </bk-table>
+    </div>
+</div>
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading text-center">确定从医生集团删除该药品吗？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>

@@ -1,0 +1,130 @@
+<div class="frame-panel-a edit_a row pdt-0 mrt-0 bdt-0 creat-post" ng-controller="creatVideoCtrl" >
+    <div class="form-group creat-post-top">
+        <div  class="creat-post-button">
+            <button class="btn btn-default mrl-15 w-xs" type="button" ng-click="cancel()">取消</button>
+            <button class="btn w-xs btn-info" ng-disabled="isSaved || !formData.video.play_first || !formData.title" ng-click="showPost()">预览</button>
+            <button class="btn btn-success w-xs" ng-hide="formData.state==0"  type="button" ng-disabled="isSaved || !(formData.video.play_first || formData.title)" ng-click="saveDoc(1)">保存草稿</button>
+            <button class="btn w-xs btn-danger" ng-disabled="isSaved || !formData.video.play_first || !formData.title" ng-click="saveDoc(0)">发布</button>
+        </div>
+    </div>
+    <div class="main col-sm-12 col-md-12 col-lg-10 pdt-0 mrt-0" style="max-width: 660px;">
+        <form name="forma" class="form-horizontal form-validation ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-valid-url ng-valid-pattern ng-valid-validator ng-valid-blacklist">
+            <div style="height: 65px;"></div>
+            <div class="form-group">
+                <!-- <label class="col-sm-2 control-label">视频<i class="fa fa-asterisk text-danger"></i></label> -->
+                <div class="col-sm-12 text-center">
+                    <div ng-show="!formData.video.play_first" class=" text-center" style="cursor:pointer;width: 474px;height:268px;margin:auto;background-color: #F5F5F5;" ng-click="addVideo()">
+                        <img src="./src/img/play_sm.png" alt="" style="width:60px; height:55px;margin-top: 96px;">
+                        <p style="color:#1296DB;">点击添加视频</p>
+                    </div>
+                    <div ng-show="formData.video.play_first"  class="text-center" style="display:inline-block; position: relative;">
+                        <img ng-src="{{formData.video.play_first}}" alt="">
+                        <img class="video-play-btn" src="./src/img/play.png" alt="">
+                        <div ng-show="formData.video.play_first" style="position: absolute;bottom: 5px;right: 5px;">
+                            <i class="glyphicon glyphicon-camera file-ioc" ng-click="addVideo()"></i>
+                            <i class="glyphicon glyphicon-trash file-ioc" ng-click="cancelVideo()"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group form-counter">
+                <!-- <label class="col-sm-2 control-label">标题<i class="fa fa-asterisk text-danger"></i></label> -->
+                <div class="col-sm-12">
+                    <input type="text" ng-model="formData.title" class="input_counter form-control bd-b-1 pdr-50" maxlength="80" ng-change="funGetLength()" placeholder="请输入标题*">
+                </div>
+                <em class="frm_input_append frm_counter">{{titleLength}}/80</em>
+            </div>
+            <div class="form-group">
+                <!-- <label class="col-sm-2 control-label">视频描述</label> -->
+                <div class="col-sm-12" style="position: relative;">
+                    <textarea ng-model="formData.videoDesc" class="form-control ng-pristine ng-valid ng-valid-maxlength ng-touched bd-b-1" rows="6" placeholder="请输入视频描述*" maxlength="200" ></textarea>
+                    <em class="frm_input_append" style="bottom:3px;right: 20px;position: absolute;">{{formData.videoDesc.length||0}}/200</em>
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- <label class="col-sm-2 control-label">栏目<i class="fa fa-asterisk text-danger"></i></label> -->
+                <div class="col-sm-12">
+                    <p class="mrb-5"><b>栏目(单选) *：</b></p>
+                    <button class="btn btn-sm m-r-xs m-b-xs" ng-class="{'btn-success': (chooseCircleId==circle.id || chooseCircleId == $index)}" ng-repeat="circle in circleSideList" ng-click="chooseCircle($index)">{{circle.name}}</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <!-- <label class="col-sm-2 control-label">附件</label> -->
+                <div class="col-sm-10">
+                    <b>附件：</b>&nbsp;
+                    <button class="btn w-xs btn-info btn-sm" ng-click="addAccessory()"><i class="glyphicon glyphicon-plus"></i>添加附件</button>
+                </div>
+            </div>
+            <div class="form-group" ng-show="accessoryList.length>0">
+                <!-- <label class="col-sm-2 control-label"></label> -->
+                <div class="col-sm-12">
+                    <div class="b p-accessory clear">
+                        <div class="col-sm-12 clear-p-l-r accessory-one" ng-repeat="accessory in accessoryList">
+                            <div class="col-sm-7 clear-p-l-r text-ellipsis">{{accessory.file_name}}</div>
+                            <div class="col-sm-3 text-right">{{accessory.sizeStr}}</div>
+                            <div class="col-sm-2 text-right text-danger" ng-click="removeAcce(accessory.file_id)">删除<!-- <i class="glyphicon glyphicon-remove"></i> --></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in m-t-lg"></div>
+        </form>
+    </div>
+    <div ng-show="showModal" style="position: fixed;top: 0;right: 0;bottom: 0;left: 0;background-color: #000;z-index: 1049;opacity:0.3;"></div>
+</div>
+
+<script type="text/ng-template" id="saveCPostModal.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading text-center">是否保存到草稿？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">是</button>
+            <button class="btn btn-primary" ng-click="cancel()">否</button>
+            <button class="btn btn-default" ng-click="closeShow()">取消</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="savePostModal.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading text-center">是否修改？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">是</button>
+            <button class="btn btn-primary" ng-click="cancel()">否</button>
+            <button class="btn btn-default" ng-click="closeShow()">取消</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="showPostModal.html">
+    <div class="post-wrapper">
+        <div class="post-content"  style="overflow-wrap: break-word;">
+            <h4 class="text-center m-b-md">{{formData.title}}</h4>
+            <div class="post-author m-b-md">
+                <img ng-src={{formData.headUrl}} alt="">
+                <div class="post-author-desc m-l-xs">
+                    <p style="font-size: 16px;">{{formData.createName}}
+                        <span class="post-circle m-l-sm">{{formData.circleName}}</span>
+                    </p>
+                    <p style="color:#c0c0c0;" class="m-t-xs">{{formData.createTime}}</p>
+                </div>
+            </div>
+            <div >
+                <div style="display:inline-block; position: relative;" class="m-b-sm" ng-show="formData.video.play_first">
+                    <img ng-src="{{formData.video.play_first}}" alt="">
+                    <img class="video-play-btn" src="./src/img/play.png" alt="">
+                </div>
+                <p>{{formData.videoDesc}}<!-- <face-icon-filter data="formData.videoDesc"></face-icon-filter> --></p>
+            </div>
+            <div ng-show="accessoryList.length>0">
+                <h5 class="m-t-md font-w-b">附件：</h5>
+                <div class="row" ng-repeat="file in accessoryList">
+                    <label class="col-md-10 text-ellipsis text-info a-link">{{file.file_name}}</label>
+                    <label class="col-md-2 text-right">
+                        <a class="text-info a-link" ng-href="{{file.file_url}}?download/{{file.file_name}}">下载</a>
+                    </label>
+                </div>
+            </div>
+            <div>
+                <button class="btn btn-info w-full mrt-15" type="button" ng-click="cancelShow()">取消</button>
+            </div>
+        </div>
+    </div>
+</script>

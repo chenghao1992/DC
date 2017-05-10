@@ -1,0 +1,195 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="addGoodGroupCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">新建品种组</h2>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">通用名称<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入通用名" ng-model="generalName" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">商品名称</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4` col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入商品名" ng-model="tradeName" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">生产厂家<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入生产厂商" ng-model="manufacturer" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">厂家简称<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入生产厂商简称" ng-model="manufacturer2" maxlength="50">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">药理类别<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <div class="input-group">
+
+                            <!--<div class="edit-kw">-->
+                                <!--<span class="label-btn btn-info" ng-repeat="keyword in fpharmacoTypes">{{keyword.name||"undefined"}}<i class="fa fa-times" ng-click="removeItem(keyword)"></i></span>-->
+                            <!--</div>-->
+
+                            <input type="hidden" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-disabled="true" ng-model="pharmacoTypes" placeholder="请选择药理类别">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-disabled="true" ng-model="pharmacoTypesText" placeholder="请选择药理类别">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="ChoosePharmacoTypes()" ng-disabled="">选择</button>
+                                </span>
+                        </div>
+                     </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">所属企业</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <div class="input-group">
+                            <input type="hidden" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-disabled="true" ng-model="companyId" placeholder="请选择入驻平台上的所属企业">
+                            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" ng-disabled="true" ng-model="companyName" placeholder="请选择入驻平台上的所属企业">
+                                <span class="input-group-btn">
+                                    <button class="btn btn-default" type="button" ng-click="ChooseCompany()" ng-disabled="">选择</button>
+                                </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">品种名称</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 wordWrap">
+                        <label ng-if="generalName" class="control-label">{{(tradeName?tradeName:manufacturer2)+'.'+generalName}}</label>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">助记码</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12 wordWrap control-label" ng-if="tradeName">
+                        {{makePy(tradeName)}}/{{makePy(generalName || lowercase)}}
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="form-group text-center">
+            <button class="btn m-b-xs w-xs btn-success" ng-click="save()" >保存</button>
+            <button class="btn m-b-xs w-xs btn-primary" ng-click="GoBack()" >返回</button>
+        </div>
+
+    </div>
+    <script type="text/ng-template" id="myModalCompany.html">
+        <div class="modal-header">
+            <h3 class="modal-title">请选择药企</h3>
+        </div>
+        <div class="modal-body" style="overflow-y: scroll; max-height: 300px;">
+            <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" placeholder="请输入企业名称" ng-model="query.name" style="margin-bottom: 20px;">
+            <ul>
+                <li ng-repeat="item in companyList | filter:query"><label ng-click="selected.item = item"><input type="radio" name="radio"/> {{ item.name }}</label></li>
+            </ul>
+            <!--Selected: <b>{{ selected.item }}</b>-->
+        </div>
+        <div class="modal-footer clear">
+            <button class="btn btn-primary" ng-click="modalOk()">确定</button>
+            <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+        </div>
+    </script>
+
+
+    <script type="text/ng-template" id="mySelectfPharmacoTypes.html">
+        <div class="modal-header">
+            <h3 class="modal-title">请选择药理类别</h3>
+        </div>
+        <div class="modal-body" style="overflow-y: scroll; max-height: 300px;">
+            <div class="col-md-3">
+                <div class="b-a r r-2x" >
+                    <abn-tree class="abn-tree"
+                              tree-control      = "my_tree"
+                              tree-data         = "my_data"
+                              on-select         = "my_tree_handler(branch)"
+                              expand-level      = "2"
+                              icon-leaf         = "fa fa-stethoscope dcolor"
+                              icon-expand       = "fa fa-caret-right"
+                              icon-collapse     = "fa fa-caret-down"
+                              initial-selection = "全部文档(6)">
+                    </abn-tree>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="panel panel-default">
+                    <xg-table searching="true" length-menu="[5,10,20,50]" data="pharmacologicalData">
+                        <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0;">
+                            <tr>
+                                <th>
+                                    数据名称
+                                </th>
+                             
+                            </tr>
+                            <tr ng-repeat="item in $parent.sliceData track by $index" >
+                                <td style="max-width: 200px;" ng-click="addPharmocologiCalType(item)">
+                                    <label ng-init="item.isOpen=false;item.index=$index">
+                                        {{item.name}}
+                                    </label>
+                                </td>
+                                <!--<td>-->
+                                    <!--<span class="abel-btn btn-success" ng-click="addPharmocologiCalType(item)" ng-if="!item.isOpen">选中</span>-->
+                                    <!--<span class="abel-btn btn-warning" ng-if="item.isOpen">取消</span>-->
+                                <!--</td>-->
+                            </tr>
+                        </table>
+                    </xg-table>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <h5>已选中的药理类别</h5>
+                <span ng-repeat="item in PharmocologiCalTypes track by $index">
+                    <span class="label-btn btn-info">{{item.name}}<i ng-click="removeItem($index)" class="fa fa-times"></i></span>
+                </span>
+
+            </div>
+        </div>
+        <div class="modal-footer clear">
+            <button class="btn btn-primary" ng-click="modalOk()">确定</button>
+            <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+        </div>
+    </script>
+
+</div>
+
+
+
+

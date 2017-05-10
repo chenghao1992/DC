@@ -1,0 +1,223 @@
+<div class="hbox-auto-xs hbox-auto-sm" ng-controller="CustomerService">
+    <div class="panel-heading font-bold text-center" ng-bind="viewTitle"></div>
+    <div class="panel-body" ng-model="formData">
+        <form name="form" class="form-validation form-horizontal">
+            <div class="text-danger wrapper text-center" ng-show="authError" ng-bind="authError"></div>
+            <div class="form-group" ng-show="viewData.isDoctor">
+                <div class="col-sm-12 text-center">
+                    <div ng-click="selectFile('usrPic')" class="bg-white text-center ng-File-UpLoad-Bt" style="display:inline-block;width:106px;height:106px;cursor:pointer;border-radius:100px;overflow: hidden;position: relative;" ng-model="usrPic" name="usrPic">
+                        <img ng-src="{{usrPicUrl}}" style="width:100px;height:100px;border-radius:100px">
+                        <i ng-show="!usrPic.progress && !usrPicUrl" class="fa fa-file-picture-o" style="font-size:80px;color:#dee5e7;"></i>
+                        <div class="img-load-circle" ng-hide="loaded">
+                            <div style="height:{{usrPicProgress}}%;"></div>
+                            <p>
+                                {{usrPicProgress>0?usrPicProgress:0}}%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">医生姓名<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="医生姓名" class="form-control" ng-model="viewData.name" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">手机号码</label>
+                <div class="col-sm-3">
+                    <input type="text" placeholder="手机号码" class="form-control" ng-model="telephone"  readonly/>
+                </div>
+                <div class="col-sm-2">
+                    <button type="button" ng-click="changeTels('xs')" class="btn btn-info">变更登录手机号</button>
+                </div>
+            </div>
+            <div class="form-group rewrite-col">
+                <label class="col-sm-3 col-xs-11 control-label">医疗机构<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-6">
+                    <div class="r" ng-class="!hospital.selected&&keyWord?'b b-danger':''">
+                        <ui-select ng-model="hospital.selected" theme="bootstrap" tabindex="3">
+                            <ui-select-match placeholder="请输入医院名称搜索...">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="option in hospitalOption" refresh="getHospitalOption($select.search)">
+                                <div ng-if="option.name">
+                                    {{option.name}}<small class="text-muted">（{{option.provinceName?option.provinceName+'-':''}}{{option.cityName?option.cityName+'-':''}}{{option.countryName?option.countryName+'-':''}}{{option.address}}）</small>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="col-lg-offset-3 col-md-offset-3 col-sm-offset-3 col-lg-5 col-md-7 col-sm-8 col-xs-11 m-t-xs">
+                    <a class="text-info" ng-click="createHospital()">没有您要创建的医院？点击添加新医院</a>
+                </div>
+            </div>
+            <div class="form-group rewrite-col">
+                <label class="col-sm-3 col-xs-11 control-label">科室<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-4 col-xs-8 re-col">
+                    <input type="text" id="departments_ipt" placeholder="选择科室" class="form-control" ng-model="formData.departments" readonly>
+                </div>
+                <div class="col-sm-2 col-xs-4">
+                    <button type="button" ng-click="choose($index, 'department')" class="w100 btn btn-info">选择</button>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label">职称<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-6">
+                    <select id="doctor_title" class="form-control" ng-model='formData.title' tabindex="1">
+                        <option value="1" selected>请选择职称</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label">性别</label>
+                <div class="col-sm-6">
+                    <select id="doctor_sex" class="form-control" ng-model="formData.sex" tabindex="1">
+                        <option value="1" selected>男</option>
+                        <option value="2">女</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label">医生介绍</label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" rows="6" placeholder="请输入医生介绍" name="introduce" ng-model="formData.introduce" ng-maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label">擅长</label>
+                <div class="col-sm-6">
+                    <div class="input-group">
+                        <div class="edit-kw">
+                            <span class="label-btn btn-info" ng-repeat="keyword in formData.keywords">{{keyword.name ||"undefined"}}<i class="fa fa-times" ng-click="removeItem(keyword)"></i></span>
+                            <button class="btn btn-primary" type="button" ng-click="seleteEntity()">选择擅长病种</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label"></label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" rows="6" placeholder="补充医生擅长" name="good" ng-model="formData.skill" ng-maxlength="4000"></textarea>
+                </div>
+            </div>
+            <div ng-if="viewData.isDoctor" class="form-group required-items">
+                <label class="col-sm-3 control-label">证书编号</i>
+                </label>
+                <div class="col-sm-6">
+                    <input type="tel" placeholder="证书编号" class="form-control" ng-model="formData.licenseNum" tabindex="2">
+                </div>
+            </div>
+            <div ng-show="viewData.isDoctor" class="form-group required-items">
+                <label class="col-sm-3 control-label">证书到期时间</label>
+                <div class="col-sm-6 input-append date form_datetime">
+                    <input type="text" placeholder="证书到期日" class="form-control" ng-model='formData.licenseExpire' tabindex="3" readonly>
+                    <span class="add-on"><i class="icon-th glyphicon glyphicon-calendar"></i></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label">角色标签<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-6">
+                    <select id="doctor_role" class="form-control" ng-model="formData.role" tabindex="4">
+                        <option value="1" selected>医生</option>
+                        <option value="2">护士</option>
+                        <option value="3">其他</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 col-xs-11 control-label">医生助手<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-6">
+                    <ui-select ng-model="feldsherSelected.selected">
+                        <ui-select-match placeholder="请输入医生助手姓名搜索...">
+                            <span ng-bind="$select.selected.name"></span>
+                        </ui-select-match>
+                        <ui-select-choices repeat="feldsher in (feldsherList | filter: $select.search)">
+                            {{feldsher.name}}
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-6">
+                    <label class="checkbox i-checks">
+                        <input type="checkbox" ng-click="forceQuit()" checked><i></i>保存资料后，强制用户退出app</label>
+                </div>
+            </div>
+            <div class="form-group" ng-model="imgs">
+                <label class="col-sm-3 control-label">证书图片</label>
+                <div class="col-sm-4" ng-show="imgs">
+                    <div class="certificate-list w100" ng-show="imgs">
+                        <div id="gl_point" ng-init="viewSrc=imgs[0]">
+                            <a ng-repeat="val in imgs track by $index" ng-class="{{cur-img}}" ng-click="viewSrc=imgs[$index]" href="javascript:void(0)">
+                                <img ng-src="{{val}}" />
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <p class="col-sm-4 form-text" ng-show="!imgs">暂无证件图片！</p>
+                <div class="col-sm-2">
+                    <div>
+                        <button class="btn btn-primary btn-lg w100 pos-rlt" ng-click="selectFile('licPic')" ng-disabled="!canLoad" ng-model="licPic" name="licPic">
+                            <div ng-hide="licPicProgress == 100" class="btn-success" style="width:{{licPicProgress}}%;height:100%;position:absolute;top:0;left:0;z-index:0;opacity:.7"></div>
+                            <div style="position: relative;">{{licPicProgress > 0 ? licPicProgress == 100 ? '上传图片' : licPicProgress + '%' : '上传图片'}}</div>
+                        </button>
+                    </div>
+                    <p class="font-bold" ng-class="{'text-success text-right':licPic.result,'text-danger':reLicPic[0].$error}" ng-show="licPic.result||reLicPic[0].$error">
+                        {{licPic.result?licPic.result:'上传错误：'+reLicPic[0].$error}}</p>
+                </div>
+                <div class="col-sm-offset-3 col-sm-6" ng-show="imgs">
+                    <div id="gl_preview">
+                        <a ng-click="preview()" style="display:inline-block;position:relative;">
+                            <img src="" ng-src="{{viewSrc}}" />
+                            <span class="remove-opr" title="删除此图片" ng-click="removePic({e:$event, src: viewSrc})"><i class="fa fa-trash-o"></i></span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="form-group" ng-show="formData.status==1">
+                <label class="col-sm-3 control-label">医生二维码</label>
+                <p class="col-sm-6 form-text" ><a style="padding-right: 20px;color:#337ab7;" href="{{formData.doctorImg}}" target="_blank">下载二维码</a></p>
+            </div>
+            <div class="form-group" ng-show="formData.status==1">
+                <label class="col-sm-3 control-label"></label>
+                <p class="col-sm-6 form-text" style="margin-top: -1.5em;"><span>提示:可以使用玄关健康医生端,患者端或者微信扫描二维码</span>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="col-sm-offset-3 col-sm-2 col-xs-4">
+                    <button type="submit" class="w100 btn btn-success" ng-click="saveData()" ng-disabled='form.$invalid'>
+                        保 存
+                    </button>
+                </div>
+                <div class="col-sm-2 col-xs-4">
+                    <button type="button" class="w100 btn btn-default" ng-click="return()">取 消</button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <pic-view class="hide" ng-data="{name: 'yyc', number: 1234}"></pic-view>
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="avatar" progress-call-back="progress" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="99999gb" chunk-sizee="1mb" unique-names="true" multi-selection="true" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+
+    <script type="text/ng-template" id="changeTelCtrl.html">
+        <div class="modal-header">
+            <h3 class="modal-title text-center">变更登录手机号</h3>
+        </div>
+        <div class="modal-body">
+            <input type="tel" class="form-control" ng-model="modalTelePhone" placeholder="请输入新的登录手机号">
+            <span ng-bind="teleTip"></span>
+        </div>
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col col-xs-6">
+                    <button class="btn btn-success" type="button" ng-click="changeOK()">确定</button>
+                </div>
+                <div class="col col-xs-6 text-left">
+                    <button class="btn btn-info" type="button" ng-click="changeNo()">取消</button>
+                </div>
+            </div>
+        </div>
+    </script>
+</div>
+

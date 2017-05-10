@@ -1,0 +1,1 @@
+app.controller("MsgManCtrl",function($scope,$http,$stateParams){$scope.curPubName="集团通知_"+JSON.parse(localStorage.getItem("curPubMsg")).nickName});

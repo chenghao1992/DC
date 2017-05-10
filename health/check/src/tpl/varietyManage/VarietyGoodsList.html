@@ -1,0 +1,92 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="VarietyGoodsListCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">品种组查询品种</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="panel panel-default">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="dataTables_length">
+                                    <label>
+                                        每页
+                                        <select class="form-control input-sm" ng-model="pageSize" ng-change="InitTable(0, pageSize,keyWord)">
+                                            <option value="10" selected="selected">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                        条
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <div class="dataTables_filter">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control input-sm" placeholder="请输入通用名/商品名/生产厂家" ng-model="keyWord" ng-enter="InitTable(0,pageSize,keyWord)">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="InitTable(0,pageSize,keyWord)">搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped b-t dataTable no-footer m-t-sm">
+                        <thead>
+                            <tr>
+                                <th></th>
+                                <th>编码</th>
+                                <th>规格</th>
+                                <th>包装规格</th>
+                                <th>剂型</th>
+                                <th>批准文号</th>
+                                <th>管理类别</th>
+                                <th>产品类别</th>
+                                <th>创建时间</th>
+                                <th>状态</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="cItem in data track by $index">
+                                <td><img src="{{cItem.imageUrl}}" /></td>
+                                <td>{{cItem.drugFormCode}}</td>
+                                <td>{{cItem.specification}}</td>
+                                <td>{{cItem.packSpecification}}</td>
+                                <td>{{cItem.form}}</td>
+                                <td>{{cItem.number}}</td>
+                                <td>{{cItem.manageType}}</td>
+                                <td>{{cItem.productType}} </td>
+                                <td>{{cItem.createdDate | date:'yyyy/MM/dd'}}</td>
+                                <td>
+                                    <span ng-switch="cItem.stateAudit">
+                                        <span ng-switch-when="0">未审核</span>
+                                        <span ng-switch-when="1">未审核</span>
+                                        <span ng-switch-when="2">审核通过</span>
+                                        <span ng-switch-when="3"> 审核不通过</span>
+                                    </span>
+                                </td>
+                                <td>
+                                    <button class="btn btn-xs btn-primary text-xs" ui-sref="app.VarietyManage.editVart({ vartId: cItem.id})">编辑</button>
+                                    <button class="btn btn-xs btn-info text-xs">查看</button>
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr ng-if="!data||data.length<1">
+                                <td colspan="11" class="text-center">无数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <pagination ng-show="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

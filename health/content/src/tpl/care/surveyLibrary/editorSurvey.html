@@ -1,0 +1,207 @@
+<div class="row" ng-controller="EditorSurveyCtrl">
+    <div class="col-xs-8 col-xs-offset-2">
+        <div class="panel panel-default m-t">
+            <div class="panel-heading font-blod">
+                调查表
+            </div>
+            <div class="panel-body">
+                <div class="form-group clearfix">
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <label class="control-label">调查表标题</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <input type="text" class="form-control" placeholder="标题" ng-model="surveyData.title">
+                        </div>
+                    </div>
+                    <div class="col-sm-4">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="row text-right">
+                                    <label class="control-label">科室：</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="row">
+                                    <div class="input-group">
+                                        <input type="text" class="form-control" ng-model="surveyData.diseaseName" placeholder="科室" disabled>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default" type="button" ng-click="chooseDepartment()" ng-disabled="isDiseaseDisable">选择</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group clearfix">
+                    <div class="col-sm-2">
+                        <div class="row">
+                            <label class="control-label">调查表简介</label>
+                        </div>
+                    </div>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <textarea style="resize:none" class="form-control" rows="3" placeholder="简介" ng-model="surveyData.desc"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group clearfix">
+                    <div class="bg-light b clearfix m-b-sm" ng-repeat="item in surveyData.questions">
+                        <div class="col-sm-1 text-center clearfix">
+                            <h4 class="m-t-md">Q<span ng-bind="item.seq=$index+1"></span>:</h4>
+                            <div class="m-t-sm">
+                                <a title="向上移动" ng-click="putUpQuestion($index)"><i class="fa fa-arrow-up" ng-if="!$first"></i></a>
+                            </div>
+                            <div>
+                                <a title="向下移动" ng-click="putDownQuestion($index)" ng-if="!$last"><i class="fa fa-arrow-down"></i></a>
+                            </div>
+                            <div class="m-t-sm">
+                                <button class="btn btn-default btn-xs" ng-click="copyQyestiong($index, item)">复制</button>
+                            </div>
+                            <div class="m-t-xs">
+                                <button class="btn btn-default btn-xs" ng-click="removeQuestion($index)" ng-if="!$first">删除</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <div class="b-l b-grey clearfix" style="min-height:160px">
+                                <div class="m-l-md m-t-sm">
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="题目" ng-model="item.name" style="width:80%;display:inline-block;">
+                                        <span class="btn btn-default btn-upLoadingTitlePics" ng-show="item.type==1" ng-disabled="item.picUrls.length>7" ng-click="selectFile('isHeadTitlePic',item)" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">上传题目图片</span>
+                                    </div>
+                                    <div style="min-height: 116px; " ng-show="item.type==1" ng-hide="!item.picUrls||item.picUrls.length<1">
+                                        <lable ng-repeat="itemImg in item.picUrls track by $index" style="display:inline-block;position:relative;">
+                                            <img src="{{itemImg}}" ng-click="openLightboxModal(item.picUrls,$index)" style="margin:10px" ng-show="item.picUrls" width="80px" height="80px" />
+                                            <i class="icon-close optionImg" style="font-size:25px;line-height:25px;color:#909090;position:absolute;left: 75px;top: 0px;" ng-click="removeItemImg(item.picUrls,$index)"></i>
+                                        </lable>
+                                        <div class="progress m-b-none" ng-hide="item.uploadPenct==100||item.picUrls.length>7||!item.picUrls">
+                                            <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{item.uploadPenct}}" aria-valuemin="0" aria-valuemax="100" style="width: {{item.uploadPenct}}%;min-width: 2em;">
+                                                {{item.uploadPenct>0?item.uploadPenct:0}}%
+                                                <span class="sr-only">{{item.uploadPenct}}%</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- 选择题 -->
+                                    <div ng-if="item.type===1">
+                                        <ul class="m-b-sm">
+                                            <li class="clearfix m-t-sm m-b-md " ng-repeat="part in item.options">
+                                                <div class="pull-left m-t-sm">
+                                                    <label class="m-t-xs">
+                                                        <input type="radio"> &nbsp;&nbsp;
+                                                        <span ng-bind="part.seq=$index+1"></span>.</span>
+                                                        <a editable-text="part.name" blur="submit">{{part.name}}</a>
+                                                    </label>
+                                                    <span ng-if="part.isAddRemark">_____</span>
+                                                </div>
+                                                <div class="pull-right clearfix m-l-xs m-t-sm" ng-if="item.options.length>2">
+                                                    <button class="btn btn-default btn-sm" ng-click="removeOption($parent.$parent.$index,$index)">删除</button>
+                                                </div>
+                                                <div class="pull-right clearfix m-t-sm">
+                                                    <span class="btn btn-default btn-upLoadingTitlePics btn-sm" ng-disabled="part.picUrls[0]==1" ng-click="selectFile(part,part)" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">添加图片</span>
+                                                </div>
+                                                <div class="pull-right clearfix" style="width:60px">
+                                                    <label class="m-t-xs">
+                                                        <div class="input-group-btn optionImg" ng-hide="!part.picUrls[0]">
+                                                            <i class="icon-close optionImg" style="font-size:20px;line-height:20px;width:20px;height:20px;color:#909090;position:absolute;top: -15px;margin-left: 34px;" ng-click="removeOptionImg(part)" ng-show="part.picUrls[0]"></i>
+                                                            <div class="bg-white text-center" ng-class="{'ng-File-UpLoad-Bt':!part.picUrls[0]}" ng-click="part.picUrls[0]?openSingleLightboxModal($index,part.picUrls):''" over-class="b-info" style="margin:0;width: 40px;height: 40px" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">
+                                                                <img src="{{part.picUrls[0]}}" ng-show="part.picUrls[0]" width="40px" height="40px" />
+                                                                <img ngf-src="fontImgUrl1" width="40px" height="40px" ng-show="isshow">
+                                                                <i class="fa fa-file-picture-o optionImg" ng-show="!part.picUrls[0]" style="font-size:23px;line-height:35px;color:#dee5e7;width:35px;height:35px;"></i>
+                                                            </div>
+                                                            <div class="progress m-b-none progress-reset" ng-show="part.uploadPenct>0" style="margin-top:3px;">
+                                                                <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{part.uploadPenct}}" aria-valuemin="0" aria-valuemax="100" style="width: {{part.uploadPenct}}%;min-width: 2em;">
+                                                                    {{part.uploadPenct>0?part.uploadPenct:0}}%
+                                                                    <span class="sr-only">{{part.uploadPenct}}%</span>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </label>
+                                                </div>
+                                                <div class="pull-right clearfix" ng-show="whenIsShowTime">
+                                                    <div class="input-group">
+                                                        <div class="m-t-xs">
+                                                            <label>
+                                                                <input type="checkbox" value="" ng-model="part.isAddRemark"> 在选项后增加填空框
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </li>
+                                        </ul>
+                                        <div class="m-b-sm">
+                                            <button class="btn btn-default btn-sm" ng-click="addOption($index)">添加选项</button>
+                                            <span class="btn btn-default btn-sm" accept="image/*" type="file" ng-click="selectFile('uploadTotalPics',$index)" ng-model="fontImg">批量上传选项图片</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="m-t-sm">
+                        <button class="btn btn-default btn-md" ng-click="addQuestion(1)">添加选择题</button>
+                        <button class="btn btn-default btn-md" ng-click="addQuestion(2)">添加填空题</button>
+                        <button class="btn btn-default btn-md" ng-click="addQuestion(3)">添加问答题</button>
+                    </div>
+                </div>
+                <div class="text-right">
+                    <a class="btn btn-danger btn-md w-xs" ui-sref="app.care_plan.surveyLibrary">取消</a>
+                    <button class="btn btn-success btn-md w-xs" ng-click="saveEdit()">保存</button>
+                </div>
+                <!-- 七牛上传组件 -->
+                <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+                <!-- 七牛上传组件 end -->
+            </div>
+        </div>
+    </div>
+</div>
+<style type="text/css">
+.editable-controls {
+    margin-top: 0px !important;
+    border: 0px !important;
+}
+
+.input-xs {
+    height: 22px;
+    padding: 3px 12px;
+}
+
+.editable-click,
+a.editable-click {
+    border: 0px;
+    color: #666;
+}
+
+.questionImg {
+    float: left;
+    width: 99px;
+    top: -52px;
+    height: 99px;
+    position: absolute;
+    right: 101px;
+}
+
+.optionImg {
+    width: 40px;
+    display: inherit;
+    height: 40px;
+    margin-right: 23px;
+}
+
+.progress {
+    position: absolute;
+    display: inline-block;
+    height: 16px;
+    margin-top: 90px;
+    width: 80px;
+}
+
+.progress-reset {
+    width: 45px;
+    top: 45px;
+}
+</style>

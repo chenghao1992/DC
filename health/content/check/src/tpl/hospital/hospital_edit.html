@@ -1,0 +1,49 @@
+<div class="clearfix" ng-controller="HospitalEditCtrl">
+    <h4 class="m-t text-center">创建医院</h4>
+    <div class="row m-t bg-white">
+        <div class="col-xs-12 m-t-lg m-b">
+            <div class="form-group clearfix">
+                <label class="col-xs-3 control-label m-b-none text-right"><i class="fa fa-asterisk text-danger"></i>&nbsp;请输入医院名称：</label>
+                <div class="col-xs-7">
+                    <div class="r" ng-class="!hospital.selected&&keyWord?'b b-danger':''">
+                        <ui-select ng-model="hospital.selected" theme="bootstrap">
+                            <ui-select-match placeholder="请输入医院名称搜索...">{{$select.selected.name}}</ui-select-match>
+                            <ui-select-choices repeat="option in hospitalOption" refresh="getHospitalOption($select.search)">
+                                <div ng-if="option.name">
+                                    {{option.name}}<small class="text-muted">（{{option.provinceName?option.provinceName+'-':''}}{{option.cityName?option.cityName+'-':''}}{{option.countryName?option.countryName+'-':''}}{{option.address}}）</small>
+                                </div>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+                <div class="col-xs-7 col-xs-offset-3 m-t-xs">
+                    <a class="text-info" ng-click="addHospital()">没有您要创建的医院？点击添加新医院</a>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group clearfix">
+                <label class="col-xs-3 control-label m-b-none text-right"><i class="fa fa-asterisk text-danger"></i>&nbsp;请选择管理员：</label>
+                <div class="col-xs-7">
+                    <div class="input-group">
+                        <input type="text" class="form-control a-link" readonly ng-model="admin.name" ng-click="addAdmin([admin.userId],admin)">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button" ng-click="addAdmin([admin])">选择</button>
+                        </span>
+                    </div>
+                    <!-- {{admin.userId}} -->
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <div class="col-xs-offset-3 col-xs-2 col-xs-4">
+                    <button type="submit" class="w100 btn btn-primary" ng-click="createHospital(hospital.selected.id,admin.userId)" ng-disabled="!hospital.selected.id||!admin.userId">
+                        确定创建
+                    </button>
+                </div>
+                <div class="col-xs-2 col-xs-4">
+                    <a type="button" class="w100 btn btn-default" ui-sref="app.hospital.list">返回</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

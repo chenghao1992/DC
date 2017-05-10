@@ -1,0 +1,220 @@
+.tree-box {
+    padding: 2px;
+    border: 1px solid #dee5e7;
+    border-radius: 4px;
+    box-shadow: 0 0 2px rgba(0, 0, 0, .1);
+    overflow: auto;
+    width: 100%;
+    max-height: 100%;
+}
+
+.tree-xg {
+    display: block;
+    width: 100%;
+    position: relative;
+    font-size: 14px;
+}
+
+.tree-xg li {
+    line-height: 28px;
+}
+
+.tree-xg > ul {
+    margin-left: -14px;
+}
+
+.tree-xg li.tree-expanded,
+.tree-xg li.tree-leaf,
+.tree-xg li.tree-collapsed {
+    position: inherit;
+}
+
+.tree-xg leaf-mark {
+    position: absolute;
+    z-index: 1;
+    font-size: 16px;
+}
+
+.tree-xg selected-bg {
+    width: 100%;
+    position: absolute;
+    display: inline-block;
+    height: 28px;
+    left: 0px;
+    z-index: 0;
+    margin-top: -28px;
+    display: none;
+}
+
+.tree-xg selected-bg.tree-selected.labelSelected {
+    display: inline-block;
+    background-color: #71b3ff;
+}
+
+.tree-xg tree-label.tree-selected.labelSelected,
+.tree-xg leaf-mark.tree-selected.labelSelected {
+    color: #fff;
+}
+
+.tree-xg tree-label.tree-label {
+    display: block;
+    margin-left: 16px;
+    position: relative;
+    z-index: 1;
+}
+
+.tree-xg tree-label.tree-label:hover + selected-bg:not(.tree-selected) {
+    display: inline-block;
+    background-color: #e1e1e1;
+}
+
+.tree-xg leaf-mark:hover ~ selected-bg:not(.tree-selected) {
+    display: inline-block;
+    background-color: #e1e1e1;
+}
+
+.fa-hover:hover i.fa {
+    color: #ef11c2;
+}
+
+
+/*默认显示的节点icon*/
+
+.tree-xg tree-label.tree-selected.labelSelected i.fa-h-square,
+.tree-xg tree-label.tree-selected.labelSelected i.fa-ban {
+    color: #fff;
+}
+
+.tree-xg i.fa-h-square,
+.tree-xg i.fa-ban {
+    color: #ef11c2;
+}
+
+.tree-xg i.icheckbox {
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+    padding: 0;
+    color: #fff;
+    border: 1px solid #58666e;
+    border-radius: 2px;
+    background-color: #fff;
+}
+
+.tree-xg tree-label.tree-selected i.icheckbox {
+    color: #00f;
+}
+
+.tree-xg tree-label i.icheckbox.icheckColor {
+    color: #00f;
+}
+
+.tree-xg i.fa-square {
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+    padding: 0;
+    color: #00f;
+    border: 1px solid #5c5cff;
+    border-radius: 2px;
+    background-color: #fff;
+    padding: 0 1px;
+}
+
+.tree-xg i.fa-square.ok {}
+
+
+/*基于树的选择框*/
+
+.treeDataBoxModal .modal-dialog {
+    width: 700px;
+}
+
+.treeDataBox {
+    background: #fff;
+    width: 100%;
+}
+
+.treeDataBox .header {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #e8e8e8;
+    background-color: #f7f7f7;
+}
+
+.treeDataBox .body {}
+
+.treeDataBox .body .featureBar {
+    position: relative;
+    min-height: 34px;
+    line-height: 34px;
+}
+
+.treeDataBox .body .featureBar input {
+    border: 0px;
+}
+
+.treeDataBox .body .featureBar .searIcon {
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    width: 34px;
+    text-align: center;
+    cursor: pointer;
+    color: #aaa;
+    font-size: 16px;
+}
+
+.treeDataBox .body .featureBar .searIcon:hover {
+    background-color: #e1e1e1;
+}
+
+.treeDataBox .body .b-b {
+    border-bottom: 1px solid #eee;
+}
+
+.treeDataBox .body .b-r {
+    border-right: 1px solid #eee;
+}
+
+.treeDataBox .body .b-l {
+    border-left: 1px solid #eee;
+}
+
+.body:after {
+    display: block;
+    visibility: hidden;
+    clear: both;
+    height: 0;
+    content: '.';
+}
+
+.treeDataBox .footer {
+    border-top: 1px solid #eee;
+    padding: 15px 0px;
+}
+
+.treeDataBox .body .searchContent {
+    padding: 5px;
+    overflow: hidden;
+    overflow-y: auto;
+    height: 300px;
+}
+
+.treeDataBox .body .searchContent span.label-btn {
+    float: left;
+    margin-right: 3px;
+    margin-bottom: 3px;
+    padding: 8px 10px;
+    text-align: center;
+}
+
+.treeDataBox .body .searchContent span.label-btn i {
+    line-height: inherit;
+    position: inherit;
+    width: auto;
+    cursor: pointer;
+    text-align: center;
+    border-radius: 4px;
+    margin-left: 8px;
+}

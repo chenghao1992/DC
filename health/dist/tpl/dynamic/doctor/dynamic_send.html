@@ -1,0 +1,67 @@
+<div class="m-lg col-sm-12 col-md-12 col-lg-10 edit_a p-msg" ng-controller="doctorDynamicSendMsgCtrl"><div class="row"><div class="col-md-12 col-lg-10 col-lg-offset-1"><h4 class="info-title bdr-blue">群发消息</h4><span>( 患者可以在医生主页浏览您发布的动态，并且将推送给您的患者 )</span></div></div><form name="forma" class="form-horizontal form-validation ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-valid-url ng-valid-pattern ng-valid-validator ng-valid-blacklist"><div class="form-group form-counter"><label class="col-sm-2 control-label">标题<i class="fa fa-asterisk text-danger"></i></label><div class="col-sm-10"><input type="text" ng-model="title" class="input_counter form-control" maxlength="40"></div><em class="frm_input_append frm_counter">{{title.length}}/40</em></div><div class="line line-dashed b-b line-lg pull-in"></div><div ng-show="showToList"><div class="form-group"><label class="col-sm-2 control-label">发送范围</label><div class="col-sm-10"><div class="input-group"><div class="edit-kw"><span ng-show="formData.patients.length==0" class="label-btn btn-info" style="padding-left: 15px !important;padding-right:15px !important">全部</span> <span class="label-btn btn-info" ng-repeat="patient in formData.patients">{{patient.name||"undefined"}}<i class="fa fa-times" ng-click="removeItem(patient)"></i></span></div><span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="chooseDisease()">选择</button></span></div></div></div><div class="line line-dashed b-b line-lg pull-in"></div></div><div class="form-group"><label class="col-sm-2 control-label">题图<i class="fa fa-asterisk text-danger"></i></label><div class="col-sm-10"><div class="row"><div class="col-sm-6"><div class="bg-white text-center ng-File-UpLoad-Bt" ng-click="selectFile()" over-class="b-info" style="margin:0;width: 100%;height: 100%" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp"><img ngf-src="fontImgUrl" width="100%" height="100%" ng-show="fontImgUrl"> <i ng-show="!fontImgUrl" class="fa fa-file-picture-o" style="font-size:80px;line-height:100px;color:#dee5e7"></i></div><div class="progress m-b-none" ng-show="uploadPercent>0"><div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadPercent}}%;min-width: 2em">{{uploadPercent>0?uploadPercent:0}}% <span class="sr-only">{{uploadPercent}}%</span></div></div></div><div class="col-sm-6"><div class="btn-group"><!--<button class="btn m-b-xs w-xs btn-default" ngf-select ng-model="fontImg" name="fontImg" ngf-max-size="5000000" ng-model-rejected="reGroupLogo" accept=".jpg,.jpeg,.png,.bmp,.gif" required>上传</button>--><!--<button class="btn m-b-xs w-xs btn-default" ng-click="deleteImg()">删除</button>--></div><br><span class="text-danger">( 建议尺寸：540*270像素，不大于2M，请注意长宽比例，否则在用户端会出现变形 )</span><!--<span class="text-muted">推荐尺寸540X270；支持.jpg, .jpeg, .bmp, .gif, .png类型文件，2M以内</span>--></div></div></div></div><div class="line line-dashed b-b line-lg pull-in"></div><div class="form-group"><label class="col-sm-2 control-label">正文</label><div class="col-sm-10"><div id="myEditor"></div></div></div><div class="line line-dashed b-b line-lg pull-in"></div><div class="form-group text-center"><button class="btn m-b-xs w-xs btn-success" ng-disabled="isSend" ng-click="addDoctorDynamicForWeb()">发送</button> <button class="btn m-b-xs w-xs btn-primary" ng-disabled="isSaved" ng-click="toPreview()">预览</button></div></form><!-- 七牛上传组件 --><qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader><!-- 七牛上传组件 end --></div><script type="text/ng-template" id="previewModalContent.html"><style type="text/css">
+    ::-webkit-scrollbar {
+        width: 1px;
+        margin-right: 2px
+    }
+    
+    .btn-close {
+        position: absolute;
+        top: -11px;
+        right: -11px;
+    }
+    
+    .ipod-header {
+        width: 100%;
+    }
+    
+    .pre-content {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        height: 600px;
+        overflow: auto;
+        padding: 0px 10px 10px 10px;
+    }
+    
+    .pre-content article img {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .pre-content .a-t {
+        font-size: 16px;
+        color: #888888;
+        margin-top: 10px;
+    }
+    
+    .pre-content .author {
+        margin-left: 20px;
+    }
+    
+    .pre-content >h1 {
+        color: #333333;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    
+    .pre-content>img {
+        max-width: 100%;
+        margin: 15px 0 0;
+    }
+    
+    .pre-content article {
+        color: #333333;
+        font-size: 16px;
+        margin-top: 10px;
+        line-height: 150%;
+    }
+    </style>
+    <div style="position: relative;">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default b-dark btn-close" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <img class="ipod-header" ng-src="src/img/article_header_dynamic.png">
+        <div class="pre-content">
+            <h1>{{article.title}}</h1>
+            <div class="a-t"><span>{{article.time}}</span><span class="author">{{article.author}}</span></div>
+            <img ng-src="{{article.fontImgUrl}}" class="img-responsive">
+            <article ng-bind-html="article.content">
+            </article>
+        </div>
+    </div></script>

@@ -1,0 +1,23 @@
+<div class="modal-header">
+    <div class=" w-full position-relative">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-6px;top:-6px;" ng-click="cancel()"><i class="fa fa-close"></i></button>
+    </div>
+    <div class="p-sm text-base">
+        值班医生：{{options.intro}}
+    </div>
+</div>
+<div class="modal-body p-xl">
+    <div class="row">
+        <div class="col-md-12 p-sm selected-gray m-t-xs" style="line-height:34px;" ng-repeat="item in options.offlines">
+            <lebal>出诊时间：{{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}</leabl>
+            <button class="btn btn-default pull-right" ng-click="funEditScheduling(item.id)">撤销</button>
+        </div>
+        <div class="col-md-12 m-t-xl text-center">
+            <button class="btn btn-success" ng-click="openTimeScheduling()" style="width:110px;">增加值班时间</button>
+            <button class="btn btn-success" ng-click="cancel()" style="width:110px;">确&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+        </div>
+    </div>
+</div>
+
+<!-- TimeEditor -->
+<time-scheduling open="openTimeScheduling" minute-step="30" hour-step="1" min-date="{{minDate}}" max-date="{{maxDate}}" options="{{options}}" call-back="timeSchedulingCallBack"></time-scheduling>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>会诊说明</title>
+    <style>
+        html{
+            height: 100%;
+        }
+        body{
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            font: normal normal normal 20px/1.8em '微软雅黑', Arial;
+            background: #fff url(img/bg_texture.png) repeat;
+            color: #555;
+        }
+        .tabs{
+            position: fixed;
+            top: 0;
+            right: 0;
+            left: 0;
+            z-index: 100;
+            list-style: none;
+            overflow: hidden;
+            margin: 0;
+            padding: 0;
+            box-shadow: 0 1px 3px rgba(0,0,0,.15);
+            background: #fff;
+        }
+        .tabs li{
+            position: relative;
+            float: left;
+            width: 50%;
+            line-height: 50px;
+            text-align: center;
+            background-color: #eee;
+            font-weight: bold;
+            color: #999;
+        }
+        .tabs .cur{
+            background-color: transparent;
+            color: #ff8b49;
+        }
+        .cur i{
+            position: absolute;
+            top: 47px;
+            right: 0;
+            left: 0;
+            display: inline-block;
+            height: 6px;
+            background-color: #ff8b49;
+        }
+        .tab_cnt{
+            /*position: fixed;
+            top: 50px;
+            right: 0;
+            left: 10px;
+            bottom: 10px;
+            overflow: scroll;
+            -webkit-overflow-scrolling: touch;*/
+            margin: 50px 20px 0;
+        }
+        .tab_cnt div{
+            width: 100%;
+            background: #fff url(img/bg_texture.png) repeat;
+
+        }
+        .tab_cnt img{
+            display: block;
+            width: 100%;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+<div class="gd-step">
+    <ul class="tabs">
+        <li id="tab_b" class="cur">主诊医生<i></i></li>
+        <li id="tab_a">会诊医生<i></i></li>
+    </ul>
+    <div id="cnt_a" class="tab_cnt hide">
+        <div>
+            <img src="img/a01.png">
+            <img src="img/a02.png">
+            <img src="img/a03.png">
+            <img src="img/a04.png">
+            <img src="img/a05.png">
+        </div>
+
+    </div>
+    <div id="cnt_b" class="tab_cnt">
+        <div>
+            <img src="img/b01.png">
+            <img src="img/b02.png">
+            <img src="img/b03.png">
+            <img src="img/b04.png">
+            <img src="img/b05.png">
+            <img src="img/b06.png">
+        </div>
+
+    </div>
+</div>
+<script type="text/javascript">
+    window.onload = function(){
+        var tab_a = document.getElementById('tab_a'),
+                tab_b = document.getElementById('tab_b'),
+                cnt_a = document.getElementById('cnt_a'),
+                cnt_b = document.getElementById('cnt_b');
+
+        tab_a.addEventListener('touchstart', function(){
+            this.setAttribute('class', 'cur');
+            tab_b.setAttribute('class', '');
+            cnt_a.setAttribute('class', 'tab_cnt');
+            cnt_b.setAttribute('class', 'tab_cnt hide');
+        });
+
+        tab_b.addEventListener('touchstart', function(){
+            this.setAttribute('class', 'cur');
+            tab_a.setAttribute('class', '');
+            cnt_a.setAttribute('class', 'tab_cnt hide');
+            cnt_b.setAttribute('class', 'tab_cnt');
+        });
+    };
+</script>
+</body>
+
+</html>

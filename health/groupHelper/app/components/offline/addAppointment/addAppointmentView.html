@@ -1,0 +1,241 @@
+<div class="modal-header">
+    <div class="w-full position-relative">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-10px;top:-10px;" ng-click="close()"><i class="fa fa-close"></i></button>
+    </div>
+    <div class="group-reg-process text-center">
+        <span>
+            <b class="fa fa-circle text-lg text-success"></b>
+            <p>选择医生</p>
+        </span>
+        <span>
+            <i ng-class="{'text-success':stage>=2,'text-muted':stage<2}" class="fa fa-long-arrow-right" style="font-size: 12px;;"></i>
+        </span>
+        <span>
+            <b ng-class="{'text-success':stage>=2,'text-muted':stage<2}" class="fa fa-circle text-lg"></b>
+            <p>填写就诊人基本信息</p>
+        </span>
+        <span>
+            <i ng-class="{'text-success':stage>=3,'text-muted':stage<3}" class="fa fa-long-arrow-right" style="font-size: 12px;;"></i>
+        </span>
+        <span>
+            <b ng-class="{'text-success':stage>=3,'text-muted':stage<3}" class="fa fa-circle text-lg"></b>
+            <p>填写病情资料</p>
+        </span>
+        <span>
+            <i ng-class="{'text-success':stage>=4,'text-muted':stage<4}" class="fa fa-long-arrow-right" style="font-size: 12px;;"></i>
+        </span>
+        <span>
+            <b ng-class="{'text-success':stage>=4,'text-muted':stage<4}" class="fa fa-circle text-lg"></b>
+            <p>预约成功</p>
+        </span>
+    </div>
+    <div class="clearfix"></div>
+    <!--<h4 class="font-bold" ng-show="stage==1">请选择合适的医生：</h4>-->
+    <!--<h4 class="font-bold" ng-show="stage==2">请填写就诊人基本信息：</h4>-->
+    <!--<h4 class="font-bold" ng-show="stage==3">请填写病情资料：</h4>-->
+    <!--<h4 class="font-bold" ng-show="stage==4">预约成功：</h4>-->
+</div>
+<div class="modal-body appoint-view">
+    <div ng-show="stage==1">
+
+        <div class="form-group">
+            <label>医生：</label>
+            <div class="input-group" style="width: 200px;display: inline-flex;">
+                <input type="text" ng-model="doctorInfo.name" class="form-control" disabled="disabled">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="searchOffLineDoc()">搜索</button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label>执业点：</label>
+            <span>{{doctorInfo.hospital.name}}</span>
+        </div>
+        <div class="form-group">
+            <label>预约时间：</label>
+            <span>{{doctorInfo.bookTime.startTime|date:'yyyy-MM-dd HH:mm'}}</span>
+        </div>
+        <div class="form-group">
+            <label>金额：</label>
+            <span class="text-danger">{{doctorInfo.price?'￥'+doctorInfo.price/100:''}}</span>
+        </div>
+    </div>
+
+    <div style="position: relative;" ng-show="stage==2">
+        <div class="photo" ng-click="selectFile()" ng-disabled="disableEdit">
+            <img ng-src="{{patient.topPath||'./assets/img/peopleDefault.jpg'}}" >
+            <div>上传/拍摄头像</div>
+        </div>
+        <div class="form-group">
+            <label>手机号：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <div class="input-group" style="width: 200px;display: inline-flex;">
+                <input type="text" ng-enter="searchByPatientPhone()" ng-model="patient.telephone" class="form-control">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="searchByPatientPhone()">搜索</button>
+                </span>
+            </div>
+        </div>
+        <div class="form-group" style=" position: relative;line-height: 32px;">
+            <label>姓名：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <input type="text" ng-model="patient.userName"  ng-disabled="disableEdit" ng-show="editInfo" class="form-control"  style="width: 200px;display: inline;position: absolute;left:63px;">
+            <select  ng-model="patientId" ng-change="setCurPatient(patientId)" ng-show="!editInfo" class="form-control"   style="width: 200px;display: inline;position: absolute;left:63px;">
+                <option value="{{item.id}}" ng-repeat="item in patients">{{item.userName}}</option>
+                <option value="new">新增</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>性别：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <select class="form-control" ng-disabled="disableEdit" ng-model="patient.sex" required="" style="width: 200px;display: inline;">
+                <option value="1">男</option>
+                <option value="2">女</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>证件类型：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <select class="form-control" ng-disabled="disableEdit" ng-model="patient.idtype" required="" style="width: 200px;display: inline;">
+                <option value="1">身份证</option>
+                <option value="2">护照</option>
+                <option value="3">军官</option>
+                <option value="4">台胞</option>
+                <option value="5">香港身份证</option>
+            </select>
+
+            <label>证件号码：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <input type="text" ng-model="patient.idcard" ng-disabled="disableEdit" class="form-control"  style="width: 200px;display: inline;">
+        </div>
+        <div class="form-group">
+            <label>出生日期：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <p class="input-group"  style="width: 250px;display: inline-flex;">
+                <input type="text" ng-disabled="disableEdit" class="form-control" uib-datepicker-popup ng-model="patient.birthday" is-open="birthdayOpen" datepicker-options="dateOptions" current-text="今天" clear-text="清除" ng-required="true" close-text="关闭" />
+                <span class="input-group-btn">
+                    <button type="button" ng-disabled="disableEdit" class="btn btn-default" ng-click="birthdayOpen=!birthdayOpen"><i class="glyphicon glyphicon-calendar"></i></button>
+                </span>
+            </p>
+        </div>
+        <div class="form-group">
+            <label>现居住地：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <input type="text" ng-disabled="disableEdit" ng-model="patient.area" class="form-control"  style="width: 200px;display: inline;">
+        </div>
+        <div class="form-group">
+            <label>与患者关系：</label>
+            <i class="fa fa-asterisk text-danger"></i>
+            <select class="form-control" ng-disabled="disableEdit" ng-model="patient.relation" required="" style="width: 200px;display: inline;">
+                <option value="本人" selected>本人</option>
+                <option value="家人">家人</option>
+                <option value="朋友">朋友</option>
+            </select>
+        </div>
+        <div class="form-group">
+            <label>身高：</label>
+            <input type="number" ng-disabled="disableEdit" ng-model="patient.height" class="form-control"  style="width: 100px;display: inline;" placeholder="单位cm">
+            <label>体重：</label>
+            <input type="number" ng-disabled="disableEdit" ng-model="patient.weight" class="form-control"  style="width: 100px;display: inline;" placeholder="单位kg">
+            <label>婚姻：</label>
+            <select class="form-control" ng-disabled="disableEdit" ng-model="patient.marriage" required="" style="width: 100px;display: inline;">
+                <option value="已婚" selected>已婚</option>
+                <option value="未婚">未婚</option>
+            </select>
+            <label>职业：</label>
+            <input type="text" ng-disabled="disableEdit" ng-model="patient.professional" class="form-control"  style="width: 100px;display: inline;">
+        </div>
+    </div>
+
+    <div class="clearfix" ng-show="stage==3">
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-left">病情描述:<i class="fa fa-asterisk text-danger"></i></label>
+
+            <div class="col-sm-9 p-l-0">
+                <textarea ng-model="orderParam.diseaseDesc" class="form-control" rows="2"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="col-sm-3 control-label text-left">是否到医院就诊过:</label>
+            <div class="col-sm-9 p-l-0">
+                <div class="radio inline">
+                    <label class="i-checks">
+                        <input type="radio" ng-model="orderParam.isSee" name="isSee" value="true">
+                        <i></i>
+                        是
+                    </label>
+                </div>
+                <div class="radio inline">
+                    <label class="i-checks">
+                        <input type="radio" ng-model="orderParam.isSee" name="isSee" value="false">
+                        <i></i>
+                        否
+                    </label>
+                </div>
+            </div>
+        </div>
+        <div class="form-group" ng-show="orderParam.isSee=='true'">
+            <label class="col-sm-3 control-label text-left">诊治情况:</label>
+            <div class="col-sm-9 p-l-0">
+                <textarea ng-model="orderParam.seeDoctorMsg" class="form-control ng-pristine ng-untouched ng-valid" rows="2"></textarea>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="form-group">
+                <label class="col-sm-3 control-label text-left">影像资料:</label>
+                <div class="col-sm-9 p-l-0">
+                    <ul>
+                        <li ng-repeat="image in orderParam.imagePaths track by $index" class="pull-left m-r-xs m-t-sm">
+                            <a ng-click="openLightboxModal($index)">
+                                <img style="width: 75px;height: 50px;" ng-src="{{image}}" class="img-thumbnail">
+                            </a>
+                        </li>
+                        <li class="pull-left m-r-xs m-t-sm" ng-click="selectDiseaseImgs()">
+                            <button class="img-add">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-show="stage==4"  class="text-center">
+        <img src="./assets/img/sucess.png" style="width: 100px;height: 100px;"/>
+        <p style="font-size: 18px;margin-top: 10px;">您已成功帮<span class="text-warning">{{patient.userName}}</span>患者预约了<span class="text-warning">{{doctorInfo.name}}</span>医生的<span class="text-warning">{{doctorInfo.bookTime.startTime|date:'yyyy-MM-dd HH:mm'}}</span>在<span class="text-warning">{{doctorInfo.hospital.name}}</span>的服务</p>
+    </div>
+</div>
+<div class="modal-footer text-center">
+    <div ng-show="stage==1">
+        <button class="btn m-b-xs w-xs btn-success" ng-click="toStage2()">
+            下一步
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
+    </div>
+    <div ng-show="stage==2">
+        <button class="btn m-b-xs w-xs btn-success" ng-click="toStage1()">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            上一步</button>
+        <button class="btn m-b-xs w-xs btn-success" ng-click="toStage3()">
+            下一步
+            <i class="glyphicon glyphicon-chevron-right"></i>
+        </button>
+    </div>
+    <div ng-show="stage==3">
+        <button class="btn m-b-xs w-xs btn-success" ng-click="toStage2()">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+            上一步</button>
+        <button class="btn m-b-xs w-xs btn-success" ng-click="submit()" ng-disabled="submiting">
+            预约</button>
+    </div>
+    <div ng-show="stage==4">
+        <button class="btn m-b-xs btn-success" ng-click="showOrderDetail()">
+            查看订单情况</button>
+        <button class="btn m-b-xs w-xs btn-default" ng-click="close()">
+            关闭</button>
+    </div>
+</div>
+<!-- 七牛上传组件 -->
+<qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+<!-- 七牛上传组件 end -->

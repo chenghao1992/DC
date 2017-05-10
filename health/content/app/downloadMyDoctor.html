@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>下载玄关医生</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="base.css"/>
+    <link rel="stylesheet" href="page.css">
+
+</head>
+<body>
+    <div class="imgWrapper">
+        <img src="img/bg4.png" alt="" class="img2">
+
+    </div>
+    <!--<div id="download"  style="background: #13abd3;">下载玄关医生</div>-->
+    <a id="down_btn_and_a"  style="background: #13abd3;" class="btn2 download" href="javascript:void(0)" >下载玄关医生</a>
+    <div id="tip_win_mask" class="tip-win-mask none"></div>
+    <div id="tip_win" class="tip-win none">
+        <div class="inline-block v-l-m">
+            <p class="ft-s-16 ft-w-b p-b-6">链接打不开？</p>
+            <p>请点击右上角</p>
+            <p id="option_and">选择“
+                <span class="clr-d-red">在浏览器中打开</span>”</p>
+            <p id="option_ios">选择“
+                <span class="clr-d-red">在Safari中打开</span>”</p>
+        </div>
+        <img class="v-l-m" src="img/goToClick.png" />
+    </div>
+    <script type="text/javascript">
+        window.onload = function() {
+            var desc = document.getElementById('desc');
+            var downLoad_b = document.getElementById('downLoad_b');
+//            downLoad_b.setAttribute('class', 'text-center mrt-20 mrb-20');
+            var protocol = window.protocol || 'http://';
+            (function function_name(argument) {
+                var device = {},
+                        title = document.getElementById('title'),
+                        name = document.getElementById('name'),
+                        btn_and_a = document.getElementById('down_btn_and_a'),
+                        btn_and_b = document.getElementById('down_btn_and_b'),
+                        btn_ios_a = document.getElementById('down_btn_ios_a'),
+                        btn_ios_b = document.getElementById('down_btn_ios_b'),
+                        option_and = document.getElementById('option_and'),
+                        option_ios = document.getElementById('option_ios'),
+                        tip_win_mask = document.getElementById('tip_win_mask'),
+                        tip_win = document.getElementById('tip_win'),
+                        and_d_url = protocol+'www.chinamediportal.com/replease/dGroupDoctor-release.apk',
+                        ios_d_url = 'https://itunes.apple.com/cn/app/xuan-guan-yi-sheng/id1092840420?mt=8';
+//                        parameterArry = Tools.parameterArry;
+
+
+//                if (parameterArry && parameterArry.app == 'bd') {
+//
+//                    var logo = document.getElementById('logo');
+//                    logo.src = "img/logo_d_bd.png";
+//
+//                    and_d_url = protocol+'www.chinamediportal.com/replease/dGroupDoctor-release.apk_1.07.apk';
+//                    ios_d_url = protocol+'fir.im/bdys';
+//                    title.innerHTML = "安装「博德嘉联医生端」，打造专业医生品牌";
+//                    name.innerHTML = "博德嘉联医生端";
+//                    desc.setAttribute('content', '博德嘉联医生端');
+//                }
+
+                //识别设备
+                function discernDevice() {
+                    var agent = navigator.userAgent.toLowerCase();
+                    if (agent.match(/MicroMessenger/i) == "micromessenger") {
+                        device.app = 'weixin'; //在微信中打开
+                    } else if (agent.match(/QQ\//i) == "qq/") {
+                        device.app = 'qq'; //在QQ打开
+                    } else if (agent.match(/WeiBo/i) == "weibo") {
+                        device.app = 'weibo'; //在新浪微博客户端打开
+                    }
+
+                    if (agent.indexOf('android') != -1) {
+                        device.platform = 'Android';
+                    } else if (agent.indexOf('iphone') != -1) {
+                        device.platform = 'iOS';
+                    }
+                }
+
+                discernDevice();
+                //alert(device.platform + ', ' + device.app)
+
+
+                if (device.platform === 'Android') {
+//                    btn_and_a.setAttribute('class', 'link-btn');
+//                    btn_and_b.setAttribute('class', 'link-btn');
+//                    btn_ios_a.setAttribute('class', 'link-btn none');
+//                    btn_ios_b.setAttribute('class', 'link-btn none');
+//
+                    option_and.setAttribute('class', '');
+                    option_ios.setAttribute('class', 'none');
+
+//                    btn_and_a.addEventListener('touchstart', initDownLoad);
+                    down_btn_and_a.addEventListener('touchstart', initDownLoad);
+                } else if (device.platform === 'iOS') {
+//                    btn_ios_a.setAttribute('class', 'link-btn');
+//                    btn_ios_b.setAttribute('class', 'link-btn');
+//                    btn_and_a.setAttribute('class', 'link-btn none');
+//                    btn_and_b.setAttribute('class', 'link-btn none');
+//
+                    option_and.setAttribute('class', 'none');
+                    option_ios.setAttribute('class', '');
+
+//                    btn_ios_a.addEventListener('touchstart', initDownLoad);
+                    down_btn_and_a.addEventListener('touchstart', initDownLoad);
+                }
+
+                function initDownLoad() {
+                    switch (device.app) {
+                        case 'weixin':
+                        case 'qq':
+                        case 'weibo':
+                            tip_win_mask.setAttribute('class', 'tip-win-mask');
+                            tip_win.setAttribute('class', 'tip-win');
+                            break;
+                        default:
+                            if (device.platform === 'Android') {
+                                location.href = and_d_url;
+                                console.log("安卓");
+                            } else {
+                                location.href = ios_d_url;
+                                console.log("苹果");
+                            }
+                            break;
+                    }
+                }
+            })()
+
+            return; // 微信分享现需要授权，一下代码目前不可用
+
+            var imgUrl = protocol+"120.24.94.126/health/web/app/img/logo_d.png";
+            var lineLink = protocol+"120.24.94.126/health/web/app/downDoctor.html";
+            var descContent = '玄关健康医生端';
+            var shareFriendTitle = '玄关医生,主要服务于医生集团，医生可以随时随地记录，检索，跟踪和持续管理自己的患者，实时掌握患者病情，以缩短治疗周期，减少患者痛苦，提升服务质量，并可同圈子好友进行专业方面的交流与分享。';
+            var shareTitle = '安装「玄关医生」，打造专业医生品牌';
+            var appid = '';
+
+            function shareFriend() {
+                WeixinJSBridge.invoke('sendAppMessage', {
+                    "appid": appid,
+                    "img_url": imgUrl,
+                    "img_width": "200",
+                    "img_height": "200",
+                    "link": lineLink,
+                    "desc": descContent,
+                    "title": shareFriendTitle
+                }, function(res) {
+                    //_report('send_msg', res.err_msg);
+                })
+            }
+
+            function shareTimeline() {
+                WeixinJSBridge.invoke('shareTimeline', {
+                    "img_url": imgUrl,
+                    "img_width": "200",
+                    "img_height": "200",
+                    "link": lineLink,
+                    "desc": descContent,
+                    "title": shareTitle
+                }, function(res) {
+                    //_report('timeline', res.err_msg);
+                });
+            }
+
+            function shareWeibo() {
+                WeixinJSBridge.invoke('shareWeibo', {
+                    "content": descContent,
+                    "url": lineLink,
+                }, function(res) {
+                    //_report('weibo', res.err_msg);
+                });
+            }
+            // 当微信内置浏览器完成内部初始化后会触发WeixinJSBridgeReady事件。
+            document.addEventListener('WeixinJSBridgeReady', function onBridgeReady() {
+                // 发送给好友
+                WeixinJSBridge.on('menu:share:appmessage', function(argv) {
+                    shareFriend();
+                });
+                // 分享到朋友圈
+                WeixinJSBridge.on('menu:share:timeline', function(argv) {
+                    shareTimeline();
+                });
+                // 分享到微博
+                WeixinJSBridge.on('menu:share:weibo', function(argv) {
+                    shareWeibo();
+                });
+            }, false);
+
+        };
+    </script>
+
+</body>
+</html>

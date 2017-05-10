@@ -1,0 +1,84 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="../common.css">
+    <script type="text/javascript" src="../../assets/config.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <title>加入医院邀请函</title>
+</head>
+
+<body style="padding: 20px 10px; background: #f1f2f4;">
+    <div class="content">
+        <div class="boday p-t-xxxl">
+            <div class="text-center">
+                <img src="../img/LOGO.png" width="80" height="80" id="doctorLogo">
+                <h3 class="font-sm m-t-xs" id="doctorName"></h3>
+                <p class="font-xl">
+                    邀请您加入
+                    <br/>【 <strong id="groupName"></strong> 】
+                </p>
+            </div>
+            <div class="m-t-xl clearfix ">
+                <a class="btn bg-success cl-white btn-block width-100 p-t-b-xs border-radius-sm font-lg" id="joinBt" style="display: none">立即加入</a>
+            </div>
+        </div>
+    </div>
+    <script type="text/javascript">
+    (function() {
+
+        // 调用通用方法
+        var parameterArry = Tools.parameterArry;
+        var ajax = Tools.ajax;
+
+        // 检查参数
+        if (!parameterArry.groupId && !parameterArry.doctorId) {
+            return alert("缺少参数：集团或邀请人ID");
+        };
+
+
+
+        // 获取dom
+        var joinBt = document.getElementById('joinBt');
+
+        // 获取邀请人医院信息
+        (function getInviteStatus() {
+
+            var url = serverApiRoot + "group/doctor/getInviteGroupDoctors?";
+            var data = 'doctorId=' + parameterArry.doctorId + '&groupId=' + parameterArry.groupId;
+
+            ajax({
+                type: "post",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data && data.resultCode === 1) {
+                        // 设置文案
+                        document.getElementById('groupName').innerHTML = data.data.groupName;
+                        document.getElementById('doctorLogo').src = data.data.headPicFileName;
+                        document.getElementById('doctorName').innerHTML = data.data.name;
+
+                        // 设置条转地址
+                        joinBt.href = '../verification.html?groupId=' + parameterArry.groupId + '&inviteId=' + parameterArry.doctorId + '&groupName=' + data.data.groupName + '&organizeType=1';
+                        joinBt.style.display = 'block';
+
+                    } else if (data && data.resultMsg) {
+                        alert(data.resultMsg)
+                    } else {
+                        console.warn(data);
+                    }
+                }
+            });
+
+        })();
+
+    })()
+    </script>
+</body>
+
+</html>

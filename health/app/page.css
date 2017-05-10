@@ -1,0 +1,181 @@
+html,body{
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.imgWrapper{
+    width: 100%;
+}
+
+.imgWrapper img{
+    width:100%;
+}
+
+.download{
+    height: 49px;
+    background: #23ba91;
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    color: #fff0f5;
+    line-height: 49px;
+    text-align: center;
+    font-size: 16px;
+    display: block;
+    text-decoration: none;
+}
+/*@media(min-width:414px) and (max-width:765px){*/
+    /*img{*/
+        /*!*height: 100%;*!*/
+        /*position: absolute;*/
+    /*}*/
+    /*#download{*/
+        /*top:130%;*/
+    /*}*/
+/*}*/
+
+.text-center {
+    text-align: center;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.none {
+    display: none !important;
+}
+
+.fl {
+    float: left;
+}
+
+.logo {
+    width: 70px;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.v-l-m {
+    vertical-align: middle;
+}
+
+.link-btn {
+    display: inline-block;
+    width: 70%;
+    border-radius: 8px;
+    line-height: 60px;
+    text-align: center;
+    color: #fff;
+    font-size: 22px;
+    background-color: #5681D3;
+    vertical-align: middle;
+}
+
+.link-btn img {
+    width: 35px;
+    margin-bottom: -10px;
+}
+
+.mrt-20 {
+    margin-top: 20px;
+}
+
+.mrt-50 {
+    margin-top: 50px;
+}
+
+.mrb-20 {
+    margin-bottom: 20px;
+}
+
+.mrl-10 {
+    margin-left: 10px;
+}
+
+.p-t-b-5 {
+    padding: 5px 0;
+}
+
+.p-t-b-10 {
+    padding: 10px 0;
+}
+
+.p-t-3 {
+    padding-top: 3px;
+}
+
+.p-t-6 {
+    padding-top: 6px;
+}
+
+.p-b-3 {
+    padding-bottom: 3px;
+}
+
+.p-b-6 {
+    padding-bottom: 6px;
+}
+
+.ft-s-24 {
+    font-size: 24px;
+}
+
+.ft-s-20 {
+    font-size: 20px;
+}
+
+.ft-s-16 {
+    font-size: 16px;
+}
+
+.ft-s-14 {
+    font-size: 14px;
+}
+
+.img-ga img {
+    max-width: 80%;
+    margin: 10px 0;
+    box-shadow: 0 0 1px rgba(0, 0, 0, .5);
+}
+
+.ft-w-b {
+    font-weight: bold;
+}
+
+.tip-win-mask {
+    position: fixed;
+    top: 1px;
+    right: 1px;
+    left: 1px;
+    bottom: 1px;
+    z-index: 100;
+    background: rgba(000, 000, 000, .3);
+}
+
+.tip-win {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    left: 10px;
+    z-index: 1000;
+    height: 95px;
+    padding: 20px 0 0 35%;
+    line-height: 24px;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, .95);
+}
+
+.clr-d-red {
+    color: #e80000;
+}
+
+.tip-win img {
+    position: absolute;
+    top: 2px;
+    right: 5%;
+    height: 55%;
+}

@@ -1,0 +1,211 @@
+<style type="text/css">
+    html{
+        background-color: #fff !important;
+        background-image: none;
+    }
+    body {
+        background-color: #fff !important;
+    }
+</style>
+<div ng-controller="PostDetailCtrl" class="post-detail col-xs-8 col-xs-offset-2 m-b-lg">
+    <div class="header">
+        <p class="title">{{post.title}}</p>
+        <p>{{post.createTime|date:'yyyy-MM-dd HH:mm'}}</p>
+        <p style="border-left: 3px solid #b3b1b1; text-indent: 0.5em;margin-top: 5px;">作者：{{post.createUserName + '
+            '}}{{post.jobTitle||''}}</p>
+    </div>
+    <div class="content m-t-sm">
+        <p ng-bind-html="post.content">
+        </p>
+        <div class="m-b-md">
+            <img ng-repeat="image in post.imgUrls track by $index" class="img-thumbnail m-r-sm m-t-sm" width="150px" height="150px" ng-src="{{image}}"/>
+        </div>
+    </div>
+    <ul class="comment">
+        <li ng-repeat="reply in replyList track by $index" class="p-lg c-list">
+            <button class="btn btn-success pull-right" ng-click="openComment(post.id,reply.id,reply.id,reply.userId)">评论</button>
+            <span class="thumb-sm avatar m-r pull-left">
+                <img ng-src="{{reply.userHeadUrl||'src/img/a0.jpg'}}" alt="..." class="img-circle">
+                <i class="on b-white bottom"></i>
+            </span>
+            <div class="inline-block ">
+                <div>{{reply.userName}}</div>
+                <small class="text-muted">{{reply.createTime | date:'yyyy-MM-dd HH:mm'}}</small>
+            </div>
+            <div class="m-t-sm">
+                <face-icon-filter-content data="reply.content"></face-icon-filter-content>
+                <!--{{reply.content}}-->
+            </div>
+            <ul class="m-t-sm">
+                <li class="pull-left" ng-repeat="image in reply.imgUrls">
+                    <img style="width: 100px;height: 100px;"  ng-src="{{image}}" class="img-thumbnail m-r-sm">
+                </li>
+                <li class="clearfix"></li>
+            </ul>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <ul>
+                <li ng-repeat="subReply in reply.replys" class="hover-pointer subReply" ng-click="openComment(post.id,reply.id,subReply.id,subReply.userId)"><span class="text-info">{{subReply.userName}}</span> 回复 <span class="text-info">{{subReply.toUserName}}</span>：<span><face-icon-filter-content data="subReply.content"></face-icon-filter-content></span></li>
+            </ul>
+            <p class="text-center text-info hover-pointer" ng-show="reply.replyCount>3" ng-click="loadMoreReply(reply)">{{reply.isMore?'收起':'查看更多'}}</p>
+        </li>
+    </ul>
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <div class="btn-ctrl">
+        <button class="btn m-b-xs w-xs btn-success" ng-click="openComment(post.id,null,null,null)">评论</button>
+    </div>
+
+</div>
+
+<script type="text/ng-template" id="commentModalContent.html">
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload"
+                    filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb"
+                    unique-names="true" multi-selection="false" success-call-back="uploaderSuccess"
+                    error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+    <div class="panel panel-default post-detail">
+        <div class="panel-heading text-center">评价</div>
+
+        <div class="panel-body">
+            <div class="input-area">
+                <textarea class="form-control" rows="6" placeholder="内容" style="resize:none"
+                          ng-model="editorData"></textarea>
+                <div style="border:1px solid #ddd;border-top: none;margin-bottom: 12px;">
+                    <button class="btn btn-sm btn-default no-shadow b-none bg-f8" title="表情"
+                            uib-popover-template="'faceIcon.html'" popover-placement="bottom"
+                            popover-is-open="data.isOpen" ng-click="goRunning.closePopover('faceIcon')">
+                        <i class="fa fa-smile-o inline m-t-xs fa-lg fa-fw"></i>
+                    </button>
+                </div>
+
+                <ul ng-show="isShowUploadImg">
+                    <li style="width: 100px;height: 100px;margin-right: 15px;"
+                        ng-repeat="image in fontImgs track by $index"
+                        class="pull-left position-relative">
+                        <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-grey"
+                                style="position:absolute;right:-10px;top:-10px;" ng-click="removeImg(image)"><i
+                                class="fa fa-minus"></i></button>
+                        <img style="width: 102px;height: 102px;" ng-src="{{image.url}}" class="img-thumbnail">
+                            <span ng-show="image.uploadPercent>0&&image.uploadPercent<100"
+                                  style="position: absolute;top:46%;left: 37%;">{{image.uploadPercent+'%'}}</span>
+                    </li>
+                    <li class="pull-left m-r-sm clearfix" ng-show="fontImgs.length<3">
+                        <button class="img-add" ng-click="selectFile()">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                    </li>
+                    <li class="clearfix"></li>
+                </ul>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group m-t-md">
+                    <div>
+                        <!--<label class="text-md">选取身份</label>-->
+                        <button class="btn m-b-xs w-xs btn-success" ng-click="addIdentity()">添加身份</button>
+                    </div>
+
+
+                    <ul class="list-group no-bg  pull-in">
+                        <li ng-repeat="item in identities track by $index"
+                            class="list-group-item inline-block position-relative m-r-md  m-t-sm hover-pointer"
+                            ng-click="indentitySelect(item)" ng-class="{'active':item.selected,'forbid':item.disabled}">
+
+                            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-grey"
+                                    style="position:absolute;right:-10px;top:-10px;"
+                                    ng-click="removeIdentity($event,item)" ng-show="!item.communityRole"><i
+                                    class="fa fa-minus"></i></button>
+                            <span class="pull-left thumb-sm avatar m-r">
+                                <img ng-src="{{item.headPic||'./src/img/a0.jpg'}}" alt="..." class="img-circle">
+                                <i class="on b-white bottom"></i>
+                            </span>
+
+                            <div class="inline-block">
+                                <div>{{item.userName}}</div>
+                                <small class="text-muted">{{{1:'患者',3:'医生',4:'管理员'}[item.userType]}}</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-success" ng-click="replyTopic()" ng-disabled="!replyCan">确定</button>
+            <button class="btn btn-default" ng-click="close()">取消</button>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="faceIcon.html">
+    <div class="form-group clearfix">
+        <div class="w-full position-relative">
+            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark"
+                    style="right:-23px;top:-23px;" ng-click="data.isOpen=false"><i class="fa fa-close"></i></button>
+        </div>
+        <face-icon-filter class="hide" arry="faceIconArry"></face-icon-filter>
+        <ul class="block clearfix h-max-100 clear">
+            <li class="inline pull-left p-xs b b-hover-dark a-link" style="padding: 3px;"
+                ng-repeat="item in faceIconArry track by $index" ng-click="submit(item)">
+                <face-icon-filter class="inline" style="width:22px;height:22px;" code="item.key"
+                                  url="'./app/shared/chat_window/faceIcon/filter/faceimages'"></face-icon-filter>
+            </li>
+        </ul>
+        <div class="clearfix"></div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="addIdentityModalContent.html">
+    <div class="panel panel-default edit-post">
+        <div class="panel-heading text-center">添加身份</div>
+        <div class="panel-body">
+            <form class="bs-example form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">选择用户身份<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-9">
+                        <div class="btn-group">
+                            <label ng-repeat="item in identities track by $index" ng-click="indentitySelect(item)"
+                                   ng-class="{'active':item.selected}" class="btn btn-sm btn-default m-r-md">{{item.type}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">账号<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" autocomplete="off" placeholder="请输入账号"
+                               ng-model="telephone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">密码<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-10">
+                        <input type="text" onfocus="this.type='password'" placeholder="请输入密码" class="form-control"
+                               autocomplete="off" ng-model="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <p class="text-danger">{{errorInfo}}</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-success" ng-click="addIdentityAccount()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+</script>
+
+
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">确认删除该身份？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>
+
+

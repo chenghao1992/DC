@@ -1,0 +1,146 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" type="text/css" href="../common.css">
+    <script type="text/javascript" src="../../assets/config.js"></script>
+    <script type="text/javascript" src="../js/tools.js"></script>
+    <title>检查账号</title>
+</head>
+
+<body>
+    <div class="popup font-lg border-radius-sm" id="popup" style="display:none">
+        <p class="text-center p-l-r-sm" id="popupInfo">
+            123
+        </p>
+        <div>
+            <a class="btn bg-success cl-white btn-block p-t-b-xs width-90 m-auto m-t-lg  border-radius-sm" id="popupOk">确认</a>
+            <a class="btn bg-danger cl-white btn-block p-t-b-xs width-90 m-auto  m-t-lg border-radius-sm" id="popupNo">拒绝</a>
+        </div>
+    </div>
+    <script type="text/javascript">
+    (function() {
+
+        // 调用通用方法
+        var parameterArry = Tools.parameterArry;
+        var ajax = Tools.ajax;
+
+        var joinHospitalName = parameterArry.groupName;
+
+        var doctorId = null;
+
+
+        // if (!parameterArry.telephone)
+        //     return alert('缺少参数:telephone')
+        // if (!parameterArry.inviteId)
+        //     return alert('缺少参数:inviteId')
+        // if (!parameterArry.groupId)
+        //     return alert('缺少参数:groupId')
+        // if (!parameterArry.doctorId)
+        //     return alert('缺少参数:doctorId')
+
+        // 获取邀请状态
+        (function getInviteStatus() {
+            var url = serverApiRoot + "group/hospital/getGroupHospitalByTelephone";
+            var data = 'telephone=' + parameterArry.telephone;
+
+            ajax({
+                type: "post",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(data) {
+
+                    doctorId = data.data.doctorId;
+
+                    // 已有医院
+                    if (data && data.resultCode === 1 && data.data.hospitalStatus == 'hospitalDoctor') {
+
+                        if (data.data.hospitalName == joinHospitalName) {
+                            alert('您已经在该医院');
+                            history.go(-1);
+                            return
+                        }
+
+                        var _jionConfirmText = '您已是' + data.data.hospitalName + '的医生，加入' + joinHospitalName + '时会自动退出' + data.data.hospitalName + '！ ';
+                        openConfirm(_jionConfirmText);
+                    }
+                    // 未有医院且正常注册
+                    else if (data && data.resultCode === 1 && data.data.hospitalStatus == 'register') {
+                        // infoBox.style.display = 'block';
+                        postDecision('C')
+                    }
+                    // 未有医院且未填写用户信息
+                    else if (data && data.resultCode === 1 && data.data.hospitalStatus == 'noUserName') {
+                        return window.location.href = 'addUserInfo.html?telephone=' + parameterArry.telephone + '&groupId=' + parameterArry.groupId + '&inviteId=' + parameterArry.inviteId + '&groupName=' + joinHospitalName + '&organizeType=1&doctorId=' + data.data.doctorId;
+                    }
+                    // 已加入医院并且是超级管理员
+                    else if (data && data.resultCode === 1 && data.data.hospitalStatus == 'root') {
+                        alert('你是' + data.data.hospitalName + '的超级管理员不能加入其他医院')
+                        history.go(-1);
+                    }
+                    // 已加入医院并且是唯一管理员
+                    else if (data && data.resultCode === 1 && data.data.hospitalStatus == 'onlyManage') {
+                        alert('你是' + data.data.hospitalName + '的唯一管理员不能加入其他医院')
+                        history.go(-1);
+                    } else if (data && data.resultMsg) {
+                        alert(data.resultMsg);
+                    } else {
+                        console.warn(data);
+                    }
+                }
+            });
+
+        })();
+
+        // 提交是否加入集团
+        function postDecision(status) {
+
+            var url = serverApiRoot + "group/hospital/completeJoinHospital";
+            var data = 'inviteDoctorId=' + parameterArry.inviteId + '&groupHospitalId=' + parameterArry.groupId + '&telephone=' + parameterArry.telephone + '&doctorId=' + doctorId + '&status=' + status;
+
+            ajax({
+                type: "post",
+                url: url,
+                data: data,
+                dataType: "json",
+                success: function(data) {
+                    if (data.resultCode === 1 && status == 'C') {
+                        return window.location.href = 'joinHospitalSucces.html?result=1&groupName=' + joinHospitalName;
+                    }
+                    if (data.resultCode === 1 && status == 'N') {
+                        return window.location.href = 'joinHospitalSucces.html?result=0&groupName=' + joinHospitalName;
+                    }
+                    if (data.resultCode === 0) {
+                        return alert(data.resultMsg);
+                    }
+                    return alert(data.resultMsg);
+                }
+            })
+        };
+
+
+        // 确认弹窗
+        function openConfirm(text) {
+
+            document.getElementById('popup').style.display = 'block';
+            document.getElementById('popupInfo').innerHTML = text;
+
+            document.getElementById('popupNo').addEventListener("touchstart", function() {
+                postDecision('N');
+            });
+
+            document.getElementById('popupOk').addEventListener("touchstart", function() {
+                postDecision('C');
+            });
+        };
+
+    })()
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,87 @@
+<!-- navbar -->
+<div data-ng-include=" 'src/tpl/blocks/header.html' " class="app-header navbar">
+</div>
+<!-- / navbar -->
+<!-- menu -->
+<div data-ng-include=" 'src/tpl/blocks/aside.html' " class="app-aside hidden-xs {{app.settings.asideColor}}">
+</div>
+<!-- / menu -->
+<!-- content -->
+<div class="app-content">
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <ui-medicine open="medicineDialog"></ui-medicine>
+    <div ui-butterbar></div>
+    <a href class="off-screen-toggle hide" ui-toggle-class="off-screen" data-target=".app-aside"></a>
+    <div class="app-content-body" ui-view></div>
+</div>
+<!-- /content -->
+<!-- modal dialog -->
+<div id="dialog-container" class="none">
+    <div id="dialog" class="col-md-offset-2 col-md-8 col-sm-offset-2 col-sm-8 col-xs-12 m-dialog animating fade-in-down">
+        <div class="panel panel-default">
+            <div class="panel-heading font-bold" ng-bind="pop_title">操作确认</div>
+            <div class="panel-body">
+                <div class="form-content">
+                    <p>你确定要执行该操作吗？</p>
+                </div>
+                <div class="form-opr">
+                    <div class="col-md-offset-2 col-md-4 col-sm-offset-2 col-sm-5 col-xs-6">
+                        <button ng-click="do()" type="submit" class="pull-right w100 btn btn-sm btn-primary disabled">
+                            确 定
+                        </button>
+                    </div>
+                    <div class="col-md-4 col-sm-5 col-xs-6">
+                        <button ng-click="cancel()" type="button" class="pull-right w100 btn btn-sm btn-default">取 消
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- /modal dialog -->
+<div class="preview-gl hide">
+    <button class="preview-close icon-close"></button>
+    <div class=preview-top-bar>
+        <div>
+            <button class="icon-pin"></button>
+            <button class="icon-refresh"></button>
+            <button class="icon-reload reverse"></button>
+            <button class="icon-reload"></button>
+            <button class="icon-magnifier-remove"></button>
+            <button class="icon-magnifier-add"></button>
+            <button class="icon-trash"></button>
+        </div>
+    </div>
+    <div class="preview-wrapper">
+        <img src="src/img/c0.jpg" />
+    </div>
+    <div class="preview-mini">
+        <img src="src/img/c2.jpg" />
+        <img class="cur" src="src/img/bg.jpg" />
+        <img src="src/img/c0.jpg" />
+        <img src="src/img/c1.jpg" />
+        <img src="src/img/e.jpg" />
+        <img src="src/img/c3.jpg" />
+        <img src="src/img/c4.jpg" />
+    </div>
+    <div class="preview-desc">
+        移轴摄影:把现实变成微缩世界--金羊网
+        640×419|更多尺寸|按图片搜索
+    </div>
+    <div class="preview-opr-go-back">
+        <span class="arrow-left"></span>
+    </div>
+    <div class="preview-opr-go-ahead">
+        <span class="arrow-right"></span>
+    </div>
+</div>
+<!-- footer -->
+<div class="app-footer wrapper b-t bg-light">
+    <span class="pull-right">{{app.version}} <a href ui-scroll-to="app" class="m-l-sm text-muted"><i
+            class="fa fa-long-arrow-up"></i></a></span>
+    &copy; 2015 版权所有
+</div>
+<!-- / footer -->
+<div data-ng-include=" 'src/tpl/blocks/settings.html' " class="settings panel panel-default">
+</div>

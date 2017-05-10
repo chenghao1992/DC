@@ -1,0 +1,119 @@
+<style>
+    .pagination{
+        margin:0 !important;
+    }
+    .table{
+        margin-bottom: 10px !important;
+    }
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="columnCtrl">
+    <!-- <div class="row">
+        <div class="col-md-12">
+            <h2 class="org-title text-center">栏目管理</h2>
+        </div>
+    </div> -->
+    <uib-tabset>
+        <button class="btn btn-info pull-right m-r-xxs" ng-click="funNewColumn()">新建栏目</button>
+        <uib-tab heading="已启用栏目" active="activeTab[0]" select="funChangeColumn(0)">
+           <div>
+                <table class="table table-striped b-b" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                    <thead>
+                    <tr>
+                        <th width="30%">栏目名称</th>
+                        <th class="text-center" width="20%">创建时间</th>
+                        <th class="text-center" width="20%">帖子数量</th>
+                        <th class="text-center" width="30%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="column in columnList">
+                        <td>{{column.name}}</td>
+                        <td class="text-center">{{column.createTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="text-center">{{column.topicCount}}</td>
+                        <td class="text-right" style="padding-right: 5%;">
+                            <button class="btn btn-link btn-link-4" ng-click="upColumn(column)" ng-show="$index!=0">上移</button>
+                            <button class="btn btn-link btn-link-4" ng-click="markColumn(column)" ng-show="column.sign==0">取消标记</button>
+                            <button class="btn btn-link btn-link-4" ng-click="markColumn(column)" ng-hide="column.sign==0">标记</button>
+                            <button class="btn btn-link btn-link-4" ng-click="editColumn(column)">编辑</button>
+                            <button class="btn btn-link btn-link-4" ng-click="enableColumn(column, 1)">停用</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="columnList.length<1">
+                        <td colspan="4" class="text-center">
+                            无数据
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+           </div>
+        </uib-tab>
+        <uib-tab heading="已停用栏目" active="activeTab[1]" select="funChangeColumn(1)">
+            <div>
+                <table class="table table-striped b-b" style="border-left: 1px solid #ddd;border-right: 1px solid #ddd;">
+                    <thead>
+                     <tr>
+                        <th width="30%">栏目名称</th>
+                        <th class="text-center" width="20%">创建时间</th>
+                        <th class="text-center" width="20%">帖子数量</th>
+                        <th class="text-center" width="30%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="column in columnList">
+                        <td>{{column.name}}</td>
+                        <td class="text-center">{{column.createTime | date: 'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="text-center">{{column.topicCount}}</td>
+                        <td class="text-center">
+                            <button class="btn btn-link btn-link-4" ng-click="editColumn(column)">编辑</button>
+                            <button class="btn btn-link btn-link-4" ng-click="enableColumn(column, 0)">启用</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="columnList.length<1">
+                        <td colspan="4" class="text-center">
+                            无数据
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label>
+                            每页
+                            <select class="input-sm" ng-model="page.size" ng-change="funPageSizeChange()">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label>
+                        <label class="dataTables_info ng-binding m-l-sm" id="columnList_info">
+                            当前第 {{(page.index-1)*page.size + 1}} - {{page.index*page.size > columnTotal ? columnTotal:  page.index*page.size}} 条，共 {{columnTotal}} 条
+                        </label>
+                    </div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination total-items="columnTotal" ng-model="page.index" items-per-page="page.size" max-size="7" boundary-link-numbers="true" rotate="false" boundary-links="true" first-text="首页" last-text="尾页" previous-text="<" next-text=">" ng-change="pageChange()"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+
+<script type="text/ng-template" id="addColumn.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">{{columnTitle}}</div>
+        <div class="panel-body">
+            <div class="form-group form-counter">
+                <label class="col-sm-3 control-label text-right">栏目名称<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-9 edit_a">
+                    <input type="text" ng-model="columnName" class="input_counter form-control" required="required" maxlength="20" ng-change="funGetLength()" ng-trim="false"/>
+                    <em class="frm_input_append frm_counter">{{titleLength}}/20</em>
+                </div>  
+            </div>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+            <button class="btn btn-success" ng-disabled="!columnName || columnName.trim().length<1" ng-click="ok()">保存</button>
+        </div>
+    </div>
+</script>

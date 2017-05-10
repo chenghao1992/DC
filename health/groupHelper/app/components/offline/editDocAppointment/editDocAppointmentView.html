@@ -1,0 +1,151 @@
+<div class="modal-body clearfix p-t-lg p-l-lg doc-detail position-relative h-600 p-r-none" ng-click="triggerClick($event)">
+    <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark fancybox-close" style="right:-10px;top:-12px;" ng-click="cancel()"><i class="fa fa-close"></i></button>
+    <!--<button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="position:absolute;right:-15px;top:-15px;" ng-click="cancel()"><i class="fa fa-close"></i></button>-->
+    <div class="col-xs-12 clearfix b-r" style="height: 100%;overflow-y: auto;">
+        <div class="text-center" ng-if="infoIsloading&&introduceIsloading&&remarksIsloading">
+            <i class="fa fa-spinner fa-spin"></i>
+        </div>
+        <div class="row" ng-if="!(infoIsloading&&introduceIsloading&&remarksIsloading)">
+            <div class="col-xs-2">
+                <div class="row position-relative  r r-3x clear">
+                    <img class="w-full" ng-src="{{data.info.headPicFileName}}">
+                    <div class="position-absolute absolute-bottom absolute-left absolute-right bg-danger text-center text-white text-md p-t-xs p-b-xs" ng-if="data.doctorInfo&&data.doctorInfo.troubleFree==2">开启免打扰</div>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <h4><span style="font-size: 18px;">{{data.info.name}}</span></span>
+                    <button class="text-info btn-xs no-shadow b-none bg-f8" title="拨打电话" uib-popover-template="'docInfoCallView.html'" popover-placement="bottom" popover-is-open="callView.isOpen"  ng-show="data.info.telephone"><i class="fa fa-phone inline m-t-xs fa-lg fa-fw"></i>{{data.info.telephone}}</button>
+                    <!--<button class="btn btn-info btn-xs" ng-click="callPhone(data.info.telephone)"><i class="fa fa-phone"></i>&nbsp;{{data.info.telephone}}-->
+                    <!--<i class="fa" ng-class="{true:'fa-spinner fa-spin'}[call.isCalling]"></i>-->
+                    <!--</button>-->
+                    <!--<span class="text-xs" ng-class="{false:'text-danger',true:'text-succes'}[call.result.type]" ng-if="call.result">{{call.result.content}}</span>-->
+                </h4>
+                <div class="m-t-xs">{{data.info.title}}/{{data.info.groupName}}/{{data.info.departments}}</div>
+                <!--<div class="m-t-xs m-t">线下职业信息：</div>-->
+                <div>{{data.info.hospital}} | {{data.info.departments}}</div>
+            </div>
+        </div>
+        <div class="row" ng-if="!(infoIsloading&&introduceIsloading&&remarksIsloading)">
+            <div class="col-xs-12">
+                <div class="row m-t-xs hmax400" style="overflow-y: auto;">
+                    <h5>擅长：</h5>
+                    <ul class="clearfix m-t-n-xs">
+                        <li class="pull-left m-t-xs m-b-xs m-r-sm bg-light p-l-xs p-r-xs r-2x" ng-repeat="tip in data.introduce.expertise">
+                            {{tip.name}}
+                        </li>
+                    </ul>
+                    <h5>简介：</h5>
+                    <p class="m-t-xs">
+                        {{data.introduce.introduction}}
+                    </p>
+                    <div class="m-t-sm">
+                        <label>价格：</label>
+                            <span class="text-danger">
+                                ￥{{inputData.price/100}}
+                            </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <label class="text-left">线下执业地点：</label>
+            <ui-select ng-change="hospChange()" ng-model="selectedHosp.selected" style="display:inline-block;width: 250px;">
+                <ui-select-match placeholder="请输入医院名称搜索...">
+                    <span ng-bind="$select.selected.name"></span>
+                </ui-select-match>
+                <ui-select-choices repeat="item in (hospitalList | filter: $select.search) track by item.id">
+                    <span ng-bind="item.name"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+        <div class="line line-dashed b-b line-lg pull-in" style="margin-left: -15px;"></div>
+        <div class="row" style="padding-right: 15px;height: 220px;">
+            <div class="clearfix">
+                <div class="col-xs-6 m-t-md m-b-md">
+                    <div>
+                        <uib-datepicker class="datepicker w-full text-lg" ng-model="selectDate" current-text="今天" clear-text="清理" close-text="关闭" show-weeks="false" starting-day="1" custom-class="getDayClass(date,mode)" />
+                    </div>
+                    <div class="text-center m-t">
+                        <button class="btn btn-info r r-2x text-base p-r-sm p-l-sm" ng-click="today()">今天</button>
+                    </div>
+                </div>
+                <div class="col-xs-6 m-t-md m-b-md">
+                    <span class="text-danger">灰色按钮为不可预约状态</span>
+                    <div class="b-b grey">上午</div>
+                    <ul class="clearfix m-t-sm">
+                        <li class="pull-left m-r-xs m-b-xs" ng-repeat="time in timeLables[1]" ng-click="funSelectBookTime(time)" ng-show="timeLables[1]&&timeLables[1].length>0">
+                            <button class="btn btn-sm" ng-disabled="time.status!=1"  ng-class="bookTime.id==time.id?'btn-info':'btn-default'">{{time.startTime | date:'HH:mm'}}</button>
+                        </li>
+                        <li class="pull-left m-r-xs m-b-xs text-center" ng-hide="timeLables[1]&&timeLables[1].length>0">
+                            没有可预约时间
+                        </li>
+                    </ul>
+                    <div class="b-b grey">下午</div>
+                    <ul class="clearfix m-t-sm">
+                        <li class="pull-left m-r-xs m-b-xs" ng-repeat="time in timeLables[2]" ng-click="funSelectBookTime(time)" ng-show="timeLables[2]&&timeLables[2].length>0">
+                            <button class="btn btn-sm" ng-disabled="time.status!=1" ng-class="bookTime.id==time.id?'btn-info':'btn-default'">{{time.startTime | date:'HH:mm'}}</button>
+                        </li>
+                        <li class="pull-left m-r-xs m-b-xs text-center" ng-hide="timeLables[2]&&timeLables[2].length>0">
+                            没有可预约时间
+                        </li>
+                    </ul>
+                    <div class="b-b grey">晚上</div>
+                    <ul class="clearfix m-t-sm">
+                        <li class="pull-left m-r-xs m-b-xs" ng-repeat="time in timeLables[3]" ng-click="funSelectBookTime(time)" ng-show="timeLables[3]&&timeLables[3].length>0">
+                            <button class="btn btn-sm" ng-disabled="time.status!=1" ng-class="bookTime.id==time.id?'btn-info':'btn-default'">{{time.startTime | date:'HH:mm'}}</button>
+                        </li>
+                        <li class="pull-left m-r-xs m-b-xs text-center" ng-hide="timeLables[3]&&timeLables[3].length>0">
+                            没有可预约时间
+                        </li>
+                    </ul>
+                    <div class="line line-dashed b-b pull-in"></div>
+                    <div class="p-md bg-light">
+                        <div>
+                            <div>
+                                <label class="text-left">填写预约时间：</label>
+                                <div class="control-label" style="display: inline-block;">{{appointTime | amDateFormat:'YYYY/MM/DD H:mm - '}}{{appointTime |amAdd : '30' : 'minutes'| amDateFormat:'H:mm'}}
+                                    <button class="btn btn-primary r r-2x btn-xs inline" ng-click="openTimeEditor(appointTime)">{{appointTime?'修改':'选择'}}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                            <label class="text-left">本次预约价格：</label>
+                            <input type="number" class="form-control" min="1" ng-model="price" style="display:inline-block;width: 150px;"/>元
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+<time-editor open="openTimeEditor" minute-step="30" min-date="{{minDate}}" call-back="timeEditorCallBack"></time-editor>
+</div>
+<div class="modal-footer text-center">
+    <button class="btn m-b-xs w-xs btn-success" ng-click="submit()">确定</button>
+    <button class="btn m-b-xs w-xs btn-default" ng-click="cancel()">取消</button>
+</div>
+
+<!-- 拨打电话 -->
+<script type="text/ng-template" id="docInfoCallView.html">
+    <div class="form-group w-300 h-max-200">
+        <div class=" w-full position-relative">
+            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-23px;top:-23px;" ng-click="closeCallView()"><i class="fa fa-close"></i></button>
+        </div>
+        <div class="p-t-sm text-center">
+            确定用平台来拨通医生与您的电话吗？
+        </div>
+        <div class="m-t-xs text-center text-xs" ng-class="{true:'text-success',false:'text-danger'}[call.result.type]" ng-if="call.result">{{call.result.content}}</div>
+        <div class="clearfix text-center m-t-sm">
+            <button type="button" class="btn btn-sm btn-success m-r-xs" ng-click="callPhone(data.info.telephone)">
+                <span ng-if="call.isCalling">拨打中 <i class="fa" ng-class="{true:'fa-spinner fa-spin'}[call.isCalling]"></i>
+                </span>
+                <span ng-if="!call.isCalling">确定</span>
+            </button>
+            <button type="button" class="btn btn-sm btn-info" ng-click="closeCallView()">取消</button>
+        </div>
+    </div>
+</script>
+<!-- 拨打电话 end -->
+
+

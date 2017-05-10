@@ -1,0 +1,271 @@
+<div class="edit-post row" ng-controller="EditPostCtrl">
+    <div class="main col-sm-12 col-md-12 col-lg-12">
+        <form class="form-horizontal">
+            <div class="form-group form-counter">
+                <label class="col-sm-2 control-label">标题<i class="fa fa-asterisk text-danger"></i></label>
+
+                <div class="col-sm-10">
+                    <input type="text" ng-model="formData.title" class="input_counter form-control" required="required"
+                           maxlength="80">
+                </div>
+                <em class="frm_input_append frm_counter">{{titleLength}}/80</em>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">栏目<i class="fa fa-asterisk text-danger"></i></label>
+
+                <div class="col-sm-10">
+                    <div class="btn-group">
+                        <button ng-repeat="item in columns track by $index" ng-click="columnSelect(item)"
+                                ng-disabled="isEdit" ng-class="{'active':item.selected}"
+                                class="m-t-xs btn btn-sm btn-default m-r-md">{{item.name}}
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">题图<i class="fa fa-asterisk text-danger"></i>
+
+                    <p class="text-danger">(注意：最多只能上传3张)</p></label>
+
+                <div class="col-sm-10">
+                    <ul>
+                        <li style="width: 100px;height: 100px;margin-right: 15px;"
+                            ng-repeat="image in formData.fontImgs track by $index"
+                            class="pull-left position-relative">
+                            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-grey"
+                                    style="position:absolute;right:-10px;top:-10px;" ng-click="removeImg(image)"><i
+                                    class="fa fa-minus"></i></button>
+                            <img style="width: 102px;height: 102px;" ng-src="{{image.url}}" class="img-thumbnail">
+                            <span ng-show="image.uploadPercent>0&&image.uploadPercent<100"
+                                  style="position: absolute;top:46%;left: 37%;">{{image.uploadPercent+'%'}}</span>
+                        </li>
+                        <li class="pull-left m-r-sm" ng-show="formData.fontImgs.length<3">
+                            <button class="img-add" ng-click="selectFile()">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">摘要<i class="fa fa-asterisk text-danger"></i></label>
+
+                <div class="col-sm-10">
+                    <textarea  ng-model="formData.summary" class="form-control" rows="6"></textarea>
+                    <label class="pull-right">{{summaryLength}}/80</label>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">正文<i class="fa fa-asterisk text-danger"></i></label>
+
+                <div class="col-sm-10" id="editorContent">
+                    <div id="myEditor"></div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+
+            <div class="form-group">
+                <label class="col-sm-2 control-label">选取身份</label>
+
+                <div class="col-sm-10">
+                    <button class="btn m-b-xs w-xs btn-success" ng-disabled="isEdit" ng-click="addIdentity()">添加身份</button>
+                    <ul class="list-group no-bg  pull-in">
+                        <li ng-repeat="item in identities track by $index"
+                            class="list-group-item inline-block position-relative m-r-md  m-t-sm hover-pointer"
+                            ng-click="indentitySelect(item)" ng-class="{'active':item.selected,'forbid':isEdit}">
+
+                            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-grey"
+                                    style="position:absolute;right:-10px;top:-10px;"
+                                    ng-click="removeIdentity($event,item)" ng-show="item.communityRole!=1"><i
+                                    class="fa fa-minus"></i></button>
+                            <span class="pull-left thumb-sm avatar m-r">
+                                <img ng-src="{{item.headPic||'./src/img/a0.jpg'}}" alt="..." class="img-circle">
+                                <i class="on b-white bottom"></i>
+                            </span>
+
+                            <div class="inline-block">
+                                <div>{{item.userName}}</div>
+                                <small class="text-muted">{{{1:'患者',3:'医生',4:'官方管理员'}[item.userType]}}</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group text-center">
+                <button class="btn m-b-xs w-xs btn-success" ng-click="saveDoc()" ng-disabled="isSaved">保存</button>
+                <button class="btn m-b-xs w-xs btn-primary" ng-click="toPreview()" ng-disabled="isSaved">预览</button>
+                <button class="btn m-b-xs w-xs btn-info" ui-sref="app.community.myPost">取消</button>
+            </div>
+        </form>
+
+    </div>
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload"
+                    filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb"
+                    unique-names="true" multi-selection="false" success-call-back="uploaderSuccess"
+                    error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+
+</div>
+
+
+<script type="text/ng-template" id="addIdentityModalContent.html">
+    <div class="panel panel-default edit-post">
+        <div class="panel-heading text-center">添加身份</div>
+        <div class="panel-body">
+            <form class="bs-example form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">选择用户身份<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-9">
+                        <div class="btn-group">
+                            <label ng-repeat="item in identities track by $index" ng-click="indentitySelect(item)"
+                                   ng-class="{'active':item.selected}" class="btn btn-sm btn-default m-r-md">{{item.type}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">账号<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" autocomplete="off" placeholder="请输入账号"
+                               ng-model="telephone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">密码<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-10">
+                        <input type="text" onfocus="this.type='password'" placeholder="请输入密码" class="form-control"
+                               autocomplete="off" ng-model="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <p class="text-danger">{{errorInfo}}</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-success" ng-click="addIdentityAccount()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+</script>
+
+
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">确认删除该身份？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="previewModalContent.html">
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            width:1px;
+            margin-right:2px
+        }
+        .btn-close{
+            position: absolute;
+            top: -11px;
+            right: -11px;
+        }
+        .ipod-header{
+            width: 100%;
+        }
+        .container{
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 100%;
+            height: 600px;
+            overflow: auto;
+            padding:0px 10px 10px 10px;
+            word-wrap: break-word;
+        }
+        .container>.title{
+            color: #333333;
+            font-size:22px;
+            font-weight: bold;
+        }
+        .container>.disease>.tag{
+            display: inline-block;
+            background-color: #f8f8f8;
+            border: 1px solid #888888;
+            border-radius: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 2px 6px;
+            color: #888888;
+            font-size: 12px;
+        }
+        .container>.a-t{
+            font-size: 14px;
+            color: #888888;
+            margin-top:10px;
+        }
+        .container>.a-t>.author{
+            margin-left: 20px;
+        }
+        .container>.summary{
+            border-left:3px solid #CCCCCC;
+            padding-left: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 150%;
+            color: #888888;
+        }
+        .container >.font-img{
+            max-width: 100%;
+            margin: 10px 0 0;
+        }
+        .container >.article{
+            color: #333333;
+            font-size: 14px;
+            margin-top: 10px;
+            line-height: 150%;
+        }
+        .article img{
+            max-width: 100% !important;
+
+        }
+    </style>
+
+
+    <div style="position: relative;">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default b-dark btn-close" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <img class="ipod-header" ng-src="src/img/banner_header_pat.png">
+        <div class="container">
+            <div class="m-t-sm">
+                        <span class="pull-left thumb-sm avatar m-r">
+                <img ng-src="{{article.headPic}}" alt="..." class="img-circle">
+                <i class="on b-white bottom"></i>
+            </span>
+                <div class="inline-block">
+                    <div>{{article.doctorName}}</div>
+                    <small class="text-muted m-r-sm">{{article.doctorTitle}}</small>
+                    <small class="text-muted">{{article.groupName}}</small>
+                </div>
+            </div>
+
+            <div class="a-t"><span>{{article.dateTime|date:'yyyy-MM-dd HH:mm'}}</span><span class="author text-success">来自{{article.columnName}}</span></div>
+
+            <h1 class="title">{{article.title}}</h1>
+            <div class="article" ng-bind-html="article.richText">
+
+            </div>
+        </div>
+    </div>
+
+</script>

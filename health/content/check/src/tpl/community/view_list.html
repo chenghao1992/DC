@@ -1,0 +1,20 @@
+<style type="text/css">
+    body {
+        background-color: #fff !important;
+    }
+
+    .app-header-fixed {
+        padding-top: 0;
+    }
+</style>
+<div ng-controller="viewlistlCtrl" class="post-detail col-xs-8 col-xs-offset-2">
+    <div class="header">
+        <p class="title">{{post.title}}</p>
+        <p>{{post.createTime|date:'yyyy-MM-dd HH:mm'}}</p>
+        <p style="border-left: 3px solid #b3b1b1; text-indent: 0.5em;margin-top: 5px;">作者：{{post.createUserName + '
+            '+post.jobTitle}}</p>
+    </div>
+    <div class="content"  >
+        {{post.contentUrl}}
+    </div>
+</div>

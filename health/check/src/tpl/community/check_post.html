@@ -1,0 +1,217 @@
+<style>
+    .table{
+        margin-bottom: 0 !important;
+    }
+    .borderleif-right{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+    /*.table > tbody > tr > td, .table > tfoot > tr > td{*/
+        /*padding:5px 15px;*/
+    /*}*/
+    .borderleif-right-bootm{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+    /*.checkTypeName{*/
+        /*word-break:break-all;*/
+        /*display:-webkit-box;*/
+        /*-webkit-line-clamp:2;*/
+        /*-webkit-box-orient:vertical;*/
+        /*overflow:hidden;*/
+    /*}*/
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="checkpostlist">
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<h2 class="org-title text-center">帖子审核列表</h2>-->
+        <!--</div>-->
+    <!--</div>-->
+    <uib-tabset >
+        <uib-tab heading="待审核" select="byPostCheck(0)">
+            <div>
+                <div class="col-md-12 form-inline  borderleif-right-bootm" style="padding:8px;">
+                    <button class="btn btn-info  pull-right" ng-click="queryReportList(0,search.keyword)" style="width:80px;margin-left: 1em;">查询</button>
+                    <div class="input-group pull-right " style="width: 300px; position: relative;">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword" ng-enter="queryReportList(0,search.keyword)">
+                    </div>
+                </div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th style="width: 5%"></th>
+                        <th style="width: 35%">标题</th>
+                        <th style="width:15% ">作者</th>
+                        <th style="width: 20%">发帖时间</th>
+                        <th style="width: 25%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in datalist">
+                        <td><input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/></td>
+                        <td style="color: #2A9CDB;" class="checkTypeName" ng-click="funGoDetail(i.id,0,page.index,d)" ng-init="d=9">{{i.title}}</td>
+                        <td >
+                            {{i.author}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.userType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.userType==4">官方账号</span>
+                        </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>
+                            <button class="btn btn-link btn-link-2" ng-click="bypassPost(i.id)">已审核</button>
+                            <button class="btn btn-link btn-link-2" ng-click="bydelPost(i.id)">删除</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="5" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label><input type="checkbox" ng-model="check.isCheckAll" ng-click="allSelected(check.isCheckAll)" />全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="bypassPost()">已审核</button> <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="bydelPost()">删除</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size" ng-change="funPageSizeChange(0)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info0" role="status" aria-live="polite">
+                        当前第 {{(page.index-1)*page.size+1}} - {{page.index*page.size > search.postTotal0 ? search.postTotal0:  page.index*page.size}} 条，共 {{search.postTotal0}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination ng-change="funPageindex(0)" max-size="7" items-per-page="page.size" boundary-links="true" total-items="search.postTotal0" ng-model="page.index" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="已审核" select="byPostCheck(1)">
+            <div>
+                <div class="col-md-12 form-inline  borderleif-right-bootm" style="padding:8px;">
+                    <button class="btn btn-info  pull-right" ng-click="queryReportList(1,search.keyword1)" style="width:80px;margin-left: 1em;">查询</button>
+                    <div class="input-group pull-right " style="width: 300px; position: relative;">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword1" ng-enter="queryReportList(1,search.keyword1)">
+                    </div>
+                </div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th style="width: 5%"></th>
+                        <th style="width: 35%">标题</th>
+                        <th style="width:15% ">作者</th>
+                        <th style="width: 20%">审核时间</th>
+                        <th style="width: 25%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in datalist">
+                        <td><input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/></td>
+                        <td style="color: #2A9CDB;" class="checkTypeName" ng-click="funGoDetail(i.id,1,page.index1,9)">{{i.title}}</td>
+                        <td>
+                            {{i.author}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.userType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.userType==4">官方账号</span>
+                        </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>
+                            <button class="btn btn-link btn-link-2" ng-click="checkPostview(i.id,1)">撤销</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="5" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label><input type="checkbox" ng-model="check.isCheckAll1" ng-click="allSelected(check.isCheckAll1)" />全选({{numberlsit}})</label>
+                        <label><button class="btn btn-link btn-link-2 checkbtn-1" ng-click="checkPostview(0,1)">撤销</button></label>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size1" ng-change="funPageSizeChange(1)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info1" role="status" aria-live="polite">
+                        当前第 {{(page.index1-1)*page.size1+1}} - {{page.index1*page.size1 > search.postTotal1 ? search.postTotal1: page.index1*page.size1}} 条，共 {{search.postTotal1}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination ng-change="funPageindex(1)" max-size="7" items-per-page="page.size1" boundary-links="true" total-items="search.postTotal1" ng-model="page.index1" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="已删除" select="byPostCheck(2)">
+            <div>
+                <div class="col-md-12 form-inline  borderleif-right-bootm" style="padding:8px;">
+                    <button class="btn btn-info  pull-right" ng-click="queryReportList(2,search.keyword2)" style="width:80px;margin-left: 1em;">查询</button>
+                    <div class="input-group pull-right " style="width: 300px; position: relative;">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword2" ng-enter="queryReportList(2,search.keyword2)">
+                    </div>
+                </div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th style="width: 5%"></th>
+                        <th style="width: 35%">标题</th>
+                        <th style="width:15% ">作者</th>
+                        <th style="width: 20%">删除时间</th>
+                        <th style="width: 25%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in datalist">
+                        <td><input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/></td>
+                        <td style="color: #2A9CDB;" class="checkTypeName" ng-click="funGoDetail(i.id,2,page.index2,9)">{{i.title}}</td>
+                        <td>
+                            {{i.author}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.userType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.userType==4">官方账号</span>
+                        </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>
+                            <button class="btn btn-link btn-link-2" ng-click="checkPostview(i.id,2)">撤销</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="5" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label><input type="checkbox" ng-model="check.isCheckAll2" ng-click="allSelected(check.isCheckAll2)" />全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="checkPostview(0,2)">撤销</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size2" ng-change="funPageSizeChange(2)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info2" role="status" aria-live="polite">
+                        当前第 {{(page.index2-1)*page.size2+1}} - {{page.index2*page.size2 > search.postTotal2 ? search.postTotal2:  page.index2*page.size2}} 条，共 {{search.postTotal2}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination ng-change="funPageindex(2)"  max-size="7" items-per-page="page.size2" boundary-links="true" total-items="search.postTotal2" ng-model="page.index2" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+<script type="text/ng-template" id="deletebanner.html">
+    <div class="modal-header text-center">
+        <h3 class="modal-title">确认是否删除</h3>
+    </div>
+    <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-primary " ng-click="modalOk()" style="margin: 0 2em;">确定</button>
+        <button class="btn btn-warning " ng-click="modalCancel()" style="margin: 0 2em;">取消</button>
+    </div>
+</script>

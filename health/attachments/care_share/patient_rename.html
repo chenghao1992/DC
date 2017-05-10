@@ -1,0 +1,266 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0"/>
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>健康关怀计划</title>
+    <link href="base.css" type="text/css" rel="stylesheet">
+    <script src="../../assets/config.js"></script>
+    <style>
+        html, body, p, ul, h1, h2, h3, h4, h5, h6 {
+            margin: 0;
+            padding: 0;
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        body {
+            background: #EBEBEB;
+            font: normal normal normal 16px/1.4em '微软雅黑', Arial;
+            color: #555;
+        }
+
+        .gd-next a {
+            display: block;
+            width: 100%;
+            line-height: 40px;
+            border-radius: 10px;
+            background-color: #39CF78;
+            text-align: center;
+            text-decoration: none;
+            color: #fff;
+        }
+
+        .gd-step-set div input {
+            width: 100%;
+            height: 42px;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            background-color: #fff;
+            font: normal normal normal 18px/40px '微软雅黑', Arial;
+            outline: none;
+            color: #666;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .gd-step-set div textarea {
+            width: 100%;
+            min-height: 100px;
+            border: 1px solid #d0d0d0;
+            border-radius: 6px;
+            padding: 10px;
+            margin-bottom: 20px;
+            font: normal normal normal 14px/18px '微软雅黑', Arial;
+            color: #666;
+            background-color: #fff;
+            outline: none;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .gd-step-set div .code-wapper {
+            width: 100%;
+            height: 42px;
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .gd-step-set div .code-wapper input{
+            padding-right: 105px;
+        }
+
+        .gd-step-set div .code-wapper .code{
+            width: 100px;
+            height: 100%;
+            font: normal normal normal 14px/42px '微软雅黑', Arial;
+            color: #39CF78;
+            text-align: center;
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-left: 1px solid #d0d0d0;
+            -webkit-box-sizing: border-box;
+            -moz-box-sizing: border-box;
+            box-sizing: border-box;
+        }
+
+        .gd-step-set div button, .gd-step-status div button {
+            width: 100%;
+            height: 40px;
+            line-height: 40px;
+            border: none;
+            border-radius: 6px;
+            background-color: #39CF78;
+            text-align: center;
+            color: #fff;
+            font: normal normal normal 18px/40px '微软雅黑', Arial;
+            outline: none;
+            cursor: pointer;
+        }
+
+        .gd-step-set {
+            margin-top: 20px;
+            padding: 20px;
+        }
+
+        .none {
+            display: none;
+        }
+
+        .color-gray {
+            color: #a9a9a9 !important;
+        }
+
+    </style>
+</head>
+
+<body>
+<div class="gd-step-set">
+    <div>
+        <input id="patient_name" type="text" placeholder="输入您的真实姓名" tabindex="0" maxlength="20"/>
+        <div class="code-wapper">
+            <input id="patient_code" type="text" placeholder="输入验证码" tabindex="0"/>
+            <div id="code_btn" class="code">获取验证码</div>
+        </div>
+        <textarea id="patient_desc" placeholder="请详细描述您的症状及您的家族病史，过敏史等信息。" maxlength="300"></textarea>
+        <button id="submit">提 交</button>
+    </div>
+</div>
+<div id="mask" class="mask mask-bg none">
+    <div class="mask-text">
+        <p id="mask_text">正在处理，请稍候！</p>
+
+        <p id="mask_process"><span></span><b></b><span></span><span></span><span></span><span></span></p>
+    </div>
+</div>
+<script src="base.js"></script>
+<script>
+    window.onload = function () {
+        
+        var inTimer = false; // 60倒计时状态
+        var params = getParameter(window.location);
+
+        var mask = document.getElementById('mask');
+        var maskText = document.getElementById('mask_text');
+        var submit = document.getElementById('submit');
+        var patientName = document.getElementById('patient_name');
+        var patientCode = document.getElementById('patient_code');
+        var patientDesc = document.getElementById('patient_desc');
+        var codeBtn = document.getElementById('code_btn');
+
+        var funGetCode = function() {
+            if(inTimer) {
+                return;
+            } else {
+                inTimer = true;
+            }
+
+            var timer = 60; // 获取验证码计时器
+            codeBtn.innerHTML = timer;
+            codeBtn.setAttribute('class', 'code color-gray');
+            var codeTimer = setInterval(function() {
+                if(timer > 0) {
+                    timer--;
+                    codeBtn.innerHTML = timer;
+                } else {
+                    clearInterval(codeTimer);
+                    codeBtn.innerHTML = '获取验证码';
+                    codeBtn.setAttribute('class', 'code');
+                    timer = 60;
+                    inTimer = false;
+                }
+            }, 1000)
+
+            ajax({
+                url: serverApiRoot + '/sms/randcode/getSMSCode',
+                data: 'telephone=' + params.telephone,
+                type: 'post',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.resultCode != '1') {
+                        alert(resp.resultMsg);
+                    }
+                },
+                error: function () {
+                    alert("服务端出错！");
+                }
+            });
+        }
+
+        funGetCode(); // 进来时自动获取验证码
+
+        codeBtn.addEventListener('touchstart', funGetCode);
+
+        submit.addEventListener('touchstart', function () {
+            var valueName = document.getElementById('patient_name').value;
+            var valueCode = document.getElementById('patient_code').value;
+            var valueDesc = document.getElementById('patient_desc').value;
+
+            if (!valueName || !valueName.trim()) {
+                alert('请输入您的真实姓名！');
+                return;
+            }
+            if (!valueCode || !valueCode.trim()) {
+                alert('请输入验证码！');
+                return;
+            }
+            if (!valueDesc || !valueDesc.trim()) {
+                alert('请详细描述您的症状及您的家族病史，过敏史等信息！');
+                return;
+            }
+            if (valueDesc.length > 300) {
+                alert('详细描述不能超过300个字！');
+                return;
+            }
+
+            if (params.packId) {
+                var dataStr = 'packId=' + (params.packId || '') + '&access_token=' + (params.actk || '') + '&name=' + valueName + '&verifyCode=' + valueCode + '&diseaseDesc=' + valueDesc;
+            } else {
+                var dataStr = 'tk=' + (params.tk || '') + '&access_token=' + (params.actk || '') + '&name=' + valueName + '&verifyCode=' + valueCode + '&diseaseDesc=' + valueDesc;
+            }
+
+            mask.setAttribute('class', 'mask mask-bg');
+            addProcess();
+
+            ajax({
+                url: serverApiRoot + '/pack/order/submitCareOrder',
+                data: dataStr,
+                type: 'post',
+                dataType: 'json',
+                success: function (resp) {
+                    if (resp.resultCode == '1') {
+                        mask.setAttribute('class', 'mask none');
+
+                        // var url = 'order_success.html';
+                        // window.location.href = url;
+                        var pathname = window.location.pathname;
+                        var pathnameArr = pathname.split('/');
+                        pathnameArr[pathnameArr.length - 1] = 'order_success.html';
+                        pathname = pathnameArr.join('/');
+                        window.location.replace(window.location.protocol + '//' + window.location.host + pathname);
+                    } else {
+                        mask.setAttribute('class', 'mask none');
+                        alert(resp.resultMsg);
+                    }
+                },
+                error: function () {
+                    mask.setAttribute('class', 'mask none');
+                    alert("服务端出错！");
+                }
+            });
+
+        });
+
+    };
+
+</script>
+</body>
+
+</html>

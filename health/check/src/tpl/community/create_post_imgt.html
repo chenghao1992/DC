@@ -1,0 +1,199 @@
+<div class="frame-panel-a edit_a row creat-post" ng-controller="creatImgtCtrl">
+    <div class="form-group creat-post-top">
+        <div class="creat-post-button">
+            <button class="btn btn-default mrl-15 w-xs" type="button" ng-click="cancelCreate()">取消</button>
+            <button class="btn w-xs btn-info" ng-disabled="isSaved || !digestImgUrls || !formData.content || !formData.title || !indentity.userId" ng-click="showPost()">预览</button>
+            <button class="btn w-xs btn-danger" ng-disabled="isSaved || !digestImgUrls || !formData.content || !formData.title || !indentity.userId" ng-click="saveDoc(0)">发布</button>
+        </div>
+    </div>
+
+    <div class="main col-sm-12 col-md-12 col-lg-10 pdt-0 mrt-0" style="max-width: 660px;">
+        <form role="form" name="forma" class="form-horizontal form-validation ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-valid-url ng-valid-pattern ng-valid-validator ng-valid-blacklist">
+            <div style="height: 65px;"></div>
+            <div class="my-form-group">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12 mb20">
+                            <div class="bg-white text-center ng-File-UpLoad-Bt" over-class="b-info" style="margin:0;width: 100%;height: 100%;position: relative;" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">
+                                <img ngf-src="digestImgUrls" width="100%" height="100%" ng-show="digestImgUrls">
+                                <div ng-show="!digestImgUrls" style="padding:30px 0px;" ng-click="selectFile()">
+                                    <i class="fa fa-file-picture-o" style="font-size:55px;line-height:65px;color:#dee5e7;"></i>
+                                    <p>上传题图</p>
+                                </div>
+                                <div ng-show="digestImgUrls" style="position: absolute;bottom: 5px;right: 5px;">
+                                    <i class="glyphicon glyphicon-camera file-ioc" ng-click="selectFile()"></i>
+                                    <i class="glyphicon glyphicon-trash file-ioc" ng-click="cancelFile()"></i>
+                                </div>
+                            </div>
+                            <div class="progress m-b-none" ng-show="uploadPercent>0">
+                                <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadPercent}}%;min-width: 2em;">
+                                    {{uploadPercent>0?uploadPercent:0}}%
+                                    <span class="sr-only">{{uploadPercent}}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="my-form-group form-counter">
+                <div class="col-sm-12 mb20">
+                    <input type="text" ng-model="formData.title" class="input_counter form-control bd-b-1 pdr-50" maxlength="80" ng-change="funGetLength()" placeholder="请输入标题">
+                    <em class="frm_input_append frm_counter">{{titleLength}}/80</em>
+                </div>
+            </div>
+
+            <div class="my-form-group">
+                <div class="col-sm-12 mb20" id="editorContent">
+                    
+                    <ng-umeditor class="block w-full" token="{{token}}" config="config" content="formData.content" umeditor="umeditor"  errorcallback="umerrorcallback" maxlength="100"></ng-umeditor>
+                    <em class="frm_input_append font-count">{{contentCount}}/10000</em>
+                </div>
+            </div>
+            <div class="my-form-group">
+                <div class="col-sm-12 mb20">
+                    <p class="mrb-5"><b>栏目(必选)：</b></p>
+                    <button ng-disabled="isEdit" class="btn btn-sm m-r-xs m-b-xs" ng-repeat="circle in circleSideList" ng-class="{'btn-success':(circle.id == chooseCircleId || $index == chooseCircleId )}" ng-click="chooseCircle($index)">{{circle.name}}</button>
+                </div>
+            </div>
+
+            <div class="my-form-group">
+                <div class="col-sm-10 mb20">
+                    <b>选取身份(必选)：</b>&nbsp;
+                    <button ng-disabled="isEdit" class="btn w-xs btn-info btn-sm" ng-click="addIdentity()"><i class="glyphicon glyphicon-plus"></i>添加身份</button>
+                </div>
+            </div>
+            <div class="my-form-group">
+                <div class="col-sm-12 mb20">
+                    <ul class="list-group no-bg  pull-in">
+                        <li ng-repeat="item in identities track by $index"
+                            class="list-group-item inline-block position-relative m-r-md  m-t-sm hover-pointer"
+                            ng-click="indentitySelect(item)" ng-class="{'active':item.selected || item.userId == indentity.userId,'forbid':isEdit, 'li-disabled': isEdit}">
+
+                            <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-grey"
+                                    style="position:absolute;right:-10px;top:-10px;"
+                                    ng-disabled="isEdit"
+                                    title="删除"
+                                    ng-click="removeIdentity($event,item)" ng-show="item.communityRole!=1"><i
+                                    class="fa fa-minus"></i></button>
+                            <span class="pull-left thumb-sm avatar m-r">
+                                <img ng-src="{{item.headPic||'./src/img/a0.jpg'}}" alt="..." class="img-circle">
+                                <i class="on b-white bottom"></i>
+                            </span>
+
+                            <div class="inline-block">
+                                <div>{{item.userName}}</div>
+                                <small class="text-muted">{{{1:'患者',3:'医生',4:'官方管理员'}[item.userType]}}</small>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+</div>
+
+<script type="text/ng-template" id="saveCPostModal.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading text-center">确定放弃这次修改？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="closeShow()">取消</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="savePostModal.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading text-center">是否修改？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">是</button>
+            <button class="btn btn-primary" ng-click="cancel()">否</button>
+            <button class="btn btn-default" ng-click="closeShow()">取消</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="showPostModal.html">
+    <div class="post-wrapper">
+        <div class="post-content" style="overflow-wrap: break-word;">
+            <h4 class="text-center m-b-md">{{formData.title}}</h4>
+            <div class="post-author m-b-md">
+                <img ng-src={{formData.headUrl}} alt="">
+                <div class="post-author-desc m-l-xs">
+                    <p style="font-size: 16px;">{{formData.createName}}
+                        <span class="post-circle m-l-sm">{{formData.circleName}}</span>
+                    </p>
+                    <p style="color:#c0c0c0;" class="m-t-xs">{{formData.createTime}}</p>
+                </div>
+            </div>
+            <div ng-show="formData.digestImgUrls" class="mrb-10">
+                <img ng-src="{{formData.digestImgUrls}}" class="w-full">
+            </div>
+            <div class="post-richText">
+                <span ng-bind-html="formData.content" ></span>
+            </div>
+            <div>
+                <button class="btn btn-info w-full mrt-15" type="button" ng-click="cancelShow()">取消</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">确认删除该身份？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="addIdentityModalContent.html">
+    <div class="panel panel-default edit-post">
+        <div class="panel-heading text-center">添加身份</div>
+        <div class="panel-body">
+            <form class="bs-example form-horizontal ng-pristine ng-valid">
+                <div class="form-group">
+                    <label class="col-lg-3 control-label">选择用户身份<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-9">
+                        <div class="btn-group">
+                            <label ng-repeat="item in identities track by $index" ng-click="indentitySelect(item)"
+                                   ng-class="{'active':item.selected}" class="btn btn-sm btn-default m-r-md">{{item.type}}</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">账号<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-10">
+                        <input type="text" class="form-control" autocomplete="off" placeholder="请输入账号"
+                               ng-model="telephone">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-lg-2 control-label">密码<i class="fa fa-asterisk text-danger"></i></label>
+
+                    <div class="col-lg-10">
+                        <input type="text" onfocus="this.type='password'" placeholder="请输入密码" class="form-control"
+                               autocomplete="off" ng-model="password">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <div class="col-lg-offset-2 col-lg-10">
+                        <p class="text-danger">{{errorInfo}}</p>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-success" ng-click="addIdentityAccount()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>

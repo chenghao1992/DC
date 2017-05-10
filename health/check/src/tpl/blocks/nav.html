@@ -1,0 +1,360 @@
+<!-- list -->
+<ul class="nav" ng-model="datas">
+    <li ng-class="{active:$state.includes('app.check')}" ng-show="communityRole != 1">
+        <a href class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-gavel"></i>
+            <span>审核管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li class="nav-sub-header">
+                <a href>
+                    <span>审核管理</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.check.doctor.check_list({type:'un_check', page:'page_1'})" href>
+                    <b class="badge bg-primary pull-right" id="doctor_check" ng-bind="datas.doctor_check">0</b>
+                    <span>医生资格审核</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.check.group.check_list({type:'un_check', page: 'page_1'})" href>
+                    <b class="badge bg-info pull-right" id="group_check" ng-bind="datas.group_check">0</b>
+                    <span>医生集团审核</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.check.group.with_v_list({type:'un_check', page: 'page_1'})" href>
+                    <b class="badge bg-success pull-right" id="group_check_with_v" ng-bind="datas.group_check_with_v">0</b>
+                    <span>集团加V认证</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a href class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa icon-globe"></i>
+            <span>运营管理</span>
+            <b class="badge bg-danger pull-right" ng-if="feedback.hasNew">*</b>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li class="nav-sub-header">
+                <a href>
+                    <span>运营管理</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.patients_list" href>
+                    <i class="fa fa-rss"></i>
+                    <span>患者端推荐管理</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a target="_blank" href="{{'/drugmanage/web/#/app/disease_list?access_context='+ nav_token}}">
+                    <i class="fa fa-rss"></i>
+                    <span>疾病库管理</span>
+                </a>
+                <!-- <a ui-sref="app.disease_list" href>
+                    <i class="fa fa-rss"></i>
+                    <span>疾病库管理</span>
+                </a> -->
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.public_msg_list" href>
+                    <i class="fa fa-rss"></i>
+                    <span>运营通知</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.operate.feedback" href>
+                    <i class="fa fa-tasks"></i>
+                    <span>意见反馈</span>
+                    <b class="badge bg-danger pull-right" ng-if="feedback.hasNew">*</b>
+                </a>
+            </li>
+        </ul>
+    </li>
+
+    <li>
+        <a class="nav-item" ng-click="funCommunityClick()">
+            <i class="glyphicon glyphicon-comment"></i>
+            <span>健康社区</span>
+        </a>
+    </li>
+
+    <li ng-class="{active:$state.includes('app.document')}" ng-show="communityRole != 1">
+        <a href class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-database"></i>
+            <span>文档中心</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li class="nav-sub-header">
+                <a href>
+                    <span>患教资料</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.document.health_science">
+                    <b class="badge bg-primary pull-right"></b>
+                    <span>健康科普</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.document.patient_ad">
+                    <b class="badge bg-success pull-right"></b>
+                    <span>患者广告条</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a target="_blank" href="{{'/drugmanage/web/#/app/document/drug_ad?access_context='+ nav_token}}">
+                <!-- <a ui-sref="app.document.drug_ad"> -->
+                    <b class="badge bg-success pull-right"></b>
+                    <span>药店广告条</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-class="{active:$state.includes('app.care_plan')}" ng-show="communityRole != 1">
+        <a href="" class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-heart"></i>
+            <span class="ng-scope">健康关怀计划</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li ui-sref-active="active">
+                <a ui-sref="app.care_plan.list" href class="nav-item">
+                    <span>关怀计划列表</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.care_plan.diseaseTrackDatabase" href class="nav-item">
+                    <span>病情跟踪题库</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.care_plan.lifeQualityLibrary" href class="nav-item">
+                    <!-- <span>生活量表题库</span> -->
+                    <span>指数与量表题库</span>
+                </a>
+            </li>
+            <li ui-sref-active="active">
+                <a ui-sref="app.care_plan.surveyLibrary" href class="nav-item">
+                    <span>调查表题库</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-class="{active:$state.includes('app.follow_up_table')}" ng-if="canSee">
+        <a href="" class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa icon-emoticon-smile"></i>
+            <span class="ng-scope">随访计划</span>
+        </a>
+        <!-- <ul class="nav nav-sub dk">
+            <li>
+                <a ui-sref="app.follow_up_table" href class="nav-item">
+                    <span>随访计划列表</span>
+                </a>
+            </li>
+        </ul> -->
+    </li>
+    <li ng-class="{active:$state.includes('app.reports_of_finance')}" ng-show="communityRole != 1">
+        <a href="" class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-rmb"></i>
+            <span class="ng-scope">收入结算</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li>
+                <a ui-sref="app.reports_of_finance({name:'group'})" href class="nav-item">
+                    <span>集团报表</span>
+                </a>
+            </li>
+            <li>
+                <a ui-sref="app.reports_of_finance({name:'doctor'})" href class="nav-item">
+                    <span>医生报表</span>
+                </a>
+            </li>
+            <li>
+                <!-- <a ui-sref="app.reports_of_finance({name:'salesclerk'})" href class="nav-item"> -->
+                <a target="_blank" href="{{'/drugmanage/web/#/app/reports_of_finance/salesclerk?access_context='+ nav_token}}" class="nav-item">
+                    <span>店员报表</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-class="{active:$state.includes('app.account')}" ng-show="communityRole != 1">
+        <a href="" class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-lock"></i>
+            <span class="ng-scope">账号管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li>
+                <a ui-sref="app.account.guider" href class="nav-item">
+                    <span>导医账号</span>
+                </a>
+            </li>
+            <li>
+                <a ui-sref="app.account.docHelper" href class="nav-item">
+                    <span>医生助手账号</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a target="_blank" href="{{'/drugmanage/web/#/app/topUp_confirm?access_context='+ nav_token}}" class="three">
+        <!-- <a class="three" ui-sref="app.topUp_confirm"> -->
+            <i class="fa fa-money"></i>
+            <span>充值确认</span>
+        </a>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a class="three" ui-sref="app.hospital.list">
+            <i class="fa fa-hospital-o"></i>
+            <span>医院管理</span>
+        </a>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a ui-sref="app.consultation.list" href class="nav-item">
+            <i class="fa fa-eye"></i>
+            <span>会诊</span>
+        </a>
+    </li>
+    <li class="line dk"></li>
+    <li ng-class="{active:$state.includes('app.order_query')}" ng-show="communityRole != 1">
+        <a class="three" ui-sref="app.order_query">
+            <i class="glyphicon glyphicon-list text-primary-lter"></i>
+            <span>订单查询</span>
+        </a>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a ui-sref="app.order.done" href>
+            <i class="fa fa-file-text text-success-lter"></i>
+            <b class="badge bg-success pull-right" id="order_done" ng-bind="datas.order_done">0</b>
+            <span class="ng-scope">已支付订单</span>
+        </a>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a ui-sref="app.order.undo" href class="nav-item">
+            <i class="fa fa-file-text text-danger-lter"></i>
+            <b class="badge bg-danger pull-right" id="order_undo" ng-bind="datas.order_undo">0</b>
+            <span>待退款订单</span>
+        </a>
+    </li>
+    <li ng-class="{active:$state.includes('app.message')}" ng-show="communityRole != 1">
+       <!--  <a ui-sref="app.ComMan.list" href class="nav-item">
+            <i class="fa fa-file-text text-danger-lter"></i>
+            <b class="badge bg-danger pull-right" id="ComMan_CompanyManage" ng-bind="datas.ComMan_CompanyManage">0</b>
+            <span>企业管理</span>
+        </a> -->
+        <a ng-class="{active:$state.includes('app.message')}" ng-show="communityRole != 1">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-file-text text-danger-lter"></i>
+            <span>企业管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li>
+                <a target="_blank" href="/drugorgmanage/web/" class="nav-item">
+                    <span>药企管理</span>
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="{{'/drugmanage/web/#/app/ComMan/list?access_context='+ nav_token}}" class="nav-item">
+                    <span>药店管理</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-class="{active:$state.includes('app.message')}" ng-show="communityRole != 1">
+        <a ng-class="{active:$state.includes('app.message')}">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-lock"></i>
+            <span>品种库管理</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li>
+                <a target="_blank" href="{{'/drugmanage/web/#/app/VarietyManage/list?access_context='+ nav_token}}">
+                <!-- <a ui-sref="app.VarietyManage.list"> -->
+                    <span>品种库管理</span>
+                </a>
+            </li>
+            <li>
+                <a target="_blank" href="{{'/drugmanage/web/#/app/VarietyManage/check?access_context='+ nav_token}}">
+                <!-- <a ui-sref="app.VarietyManage.check"> -->
+                    <span>品种审核</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-class="{active:$state.includes('app.message')}" ng-show="isShowMsg && communityRole != 1">
+        <a href class="auto">
+            <span class="pull-right text-muted">
+                <i class="fa fa-fw fa-angle-right text"></i>
+                <i class="fa fa-fw fa-angle-down text-active"></i>
+            </span>
+            <i class="fa fa-envelope text-info"></i>
+            <span>短信平台</span>
+        </a>
+        <ul class="nav nav-sub dk">
+            <li>
+                <a ui-sref="app.message.tpl">
+                    <span>短信模板</span>
+                </a>
+            </li>
+            <li>
+                <a ui-sref="app.message.query">
+                    <span>短信查询</span>
+                </a>
+            </li>
+            <li>
+                <a ui-sref="app.message.sending">
+                    <span>短信发送</span>
+                </a>
+            </li>
+            <li>
+                <a ui-sref="app.message.sending_BDJL">
+                    <span>短信群发(博德嘉联)</span>
+                </a>
+            </li>
+        </ul>
+    </li>
+    <li ng-show="communityRole != 1">
+        <a target="_blank" href="{{'/drugmanage/web/#/app/drug_data?access_context='+ nav_token}}" class="nav-item">
+        <!-- <a ui-sref="app.drug_data" href class="nav-item"> -->
+            <i class="fa fa-file-text text-danger-lter"></i>
+            <span>药品基础数据</span>
+        </a>
+    </li>
+</ul>
+<!-- / list -->

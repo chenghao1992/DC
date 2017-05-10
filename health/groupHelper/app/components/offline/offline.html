@@ -1,0 +1,178 @@
+<div class="col-lg-8 col-lg-offset-2 offline">
+    <div class="row m-t-lg clearfix">
+        <div class="col-xs-3">
+            <div uib-dropdown>
+                <button type="button" class="btn btn-default btn-block p-sm r r-3x text-md" uib-dropdown-toggle>
+                    {{curentHospital.name||'无'}}
+                    <span class="caret"></span>
+                </button>
+                <ul class="dropdown-menu w-full" uib-dropdown-menu ng-show="hospitals||hospitals.lenth>0">
+                    <li ng-repeat="hospital in hospitals" ng-click="funUpdateCurrentHospital(hospital)"><a href>{{hospital.name}}</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="col-xs-9">
+            <div class="bg-white r r-3x box-shardow ">
+                <div class="input-group p-xs">
+                    <span class="form-control a-link" placeholder="姓名、手机号、证件号" ng-click="funSearchOrder()">姓名、手机号、证件号</span>
+                            <span class="input-group-btn ">
+                                <button class="btn btn-default " type="button" ng-click="funSearchOrder()">搜索</button>
+                            </span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-md clearfix">
+        <!--<div class="col-xs-4" ng-show="false">-->
+        <!--<div uib-dropdown style="width: 308px;">-->
+        <!--<button type="button" class="btn btn-default btn-block p-sm r r-3x text-md" uib-dropdown-toggle>-->
+        <!--{{curentHospital.name||'无'}}-->
+        <!--<span class="caret"></span>-->
+        <!--</button>-->
+        <!--<ul class="dropdown-menu w-full" uib-dropdown-menu ng-show="hospitals||hospitals.lenth>0">-->
+        <!--<li ng-repeat="hospital in hospitals" ng-click="funUpdateCurrentHospital(hospital)"><a href>{{hospital.name}}</a></li>-->
+        <!--</ul>-->
+        <!--</div>-->
+        <!--<div class="bg-white r r-3x pull-left box-shardow p b m-t-sm">-->
+        <!--<div>-->
+        <!--<uib-datepicker class="datepicker w-full text-lg" ng-model="selectDate" current-text="今天" clear-text="清理" close-text="关闭" show-weeks="false" starting-day="1" custom-class="getDayClass(date,mode)" />-->
+        <!--</div>-->
+        <!--<div class="text-center m-t">-->
+        <!--<button class="btn btn-info r r-2x text-base p-r-sm p-l-sm" ng-click="today()">今天</button>-->
+        <!--</div>-->
+        <!--</div>-->
+        <!--</div>-->
+
+        <div class="col-xs-12">
+            <button class="btn m-b-xs w-xs btn-success" ng-click="preWeek()">
+                <i class="glyphicon glyphicon-chevron-left"></i>
+                上周</button>
+            <button class="btn m-b-xs w-xs btn-success" ng-click="nextWeek()">
+                下周
+                <i class="glyphicon glyphicon-chevron-right"></i>
+            </button>
+            <button class="btn m-b-xs w-xs btn-success" ng-click="curWeek()">本周</button>
+            <button class="btn m-b-xs w-xs btn-default pull-right" ng-click="addAppointment()">
+                <i class="fa fa-plus"></i>
+                新增预约</button>
+        </div>
+
+    </div>
+
+    <div class="row m-t-md clearfix">
+        <div class="col-xs-12">
+            <button class="btn btn-rounded btn-sm btn-info btn-day" ng-class="item.active?'active':''" ng-click="updateDate(item,1)" ng-repeat="item in currWeek" style="width:14%">{{item.date}}{{item.day}}</button>
+        </div>
+    </div>
+
+
+    <div class="row m-t-md">
+        <div class="col-xs-12">
+            <div class="bg-white r r-3x box-shardow p b">
+                <div class="ng-isolate-scope">
+                    <ul class="nav nav-tabs nav-justified">
+                        <li class="ng-isolate-scope" ng-click="funUpdatePeriod(1)" ng-class="period==1?'active':''">
+                            <a>上午</a>
+                        </li>
+                        <li class="ng-isolate-scope" ng-click="funUpdatePeriod(2)" ng-class="period==2?'active':''">
+                            <a>下午</a>
+                        </li>
+                        <li class="ng-isolate-scope" ng-click="funUpdatePeriod(3)" ng-class="period==3?'active':''">
+                            <a>晚上</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="row m-t-md">
+                    <div class="col-xs-5 h-500 clear overflow-y-scroll">
+                        <div class="list-group clearfix">
+                            <div class="m-b-sm clearfix" ng-repeat="doctor in doctorList" ng-show="doctorList&&doctorList.length>0">
+                                <a class="list-group-item clearfix pull-left" ng-click="funUpdateCurentDoctor(doctor)" title="{{doctor.name}} {{doctor.departments}} {{doctor.title}}" style="width:90%">
+                                    <div class="clearfix">
+                                        <span class="pull-left thumb-sm avatar m-r">
+                                            <img style="height: 40px;width: 40px;" ng-src="{{doctor.headPicFileName}}">
+                                        </span>
+                                        <span class="clear text-md">
+                                            <span class="clear text-ellipsis">{{doctor.name}} </span>
+                                            <small class="text-muted clear text-ellipsis">{{doctor.departments}} {{doctor.title}}</small>
+                                        </span>
+                                    </div>
+                                    <div class="m-t-sm text-#000000-lter">
+                                        时间：
+                                        <span ng-if="doctor.timeSegment">
+                                            <span ng-repeat="item in doctor.timeSegment" class="m-r-sm">{{item.beginTime | date:'HH:mm'}}-{{item.overTime | date:'HH:mm'}}</span>
+                                        </span>
+                                        <span ng-if="!doctor.timeSegment">
+                                            0
+                                        </span>
+                                        <br> 预约：{{doctor.realCount||0}}/{{doctor.totalCount||0}}人
+                                    </div>
+                                </a>
+                                <div class="text-center pull-left" style="width:10%">
+                                    <div class="row" ng-show="curentDoctor.doctorId == doctor.doctorId">
+                                        <i class="fa fa-caret-right text-lg m-t-xl"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="text-center text-danger text-lg" ng-show="!doctorList||doctorList.length<1">
+                                无数据
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-7">
+                        <div class="b-l b-grey row h-500 clear overflow-y-scroll">
+                            <div class="p-l-md m-r-sm ">
+                                <div class="list-group clearfix row" ng-repeat="order in orderList" ng-show="orderList&&orderList.length>0">
+                                    <div class="col-xs-2 text-center text-md">
+                                        {{order.appointTime | date:'HH:mm'}}
+                                    </div>
+                                    <div class="m-b-sm bg-f8 col-xs-9 r r-2x">
+                                        <div class="row" ng-if="order.orderId">
+                                            <div class="list-group-item hover-default b-none bg-f8 col-xs-8">
+                                                <span class="pull-left thumb avatar m-r">
+                                                    <img ng-src="{{order.topPath?order.topPath:'assets/img/peopleDefault.jpg'}}" style="width:40px;height:40px">
+                                                </span>
+                                                <span class="clear text-md">
+                                                    <span>{{order.patientName}}</span>
+                                                    <small class="text-muted clear text-ellipsis" title="电话：{{order.telephone}}">电话：{{order.telephone}}</small>
+                                                </span>
+                                            </div>
+                                            <ul class="col-xs-4 text-right">
+                                                <li class="m-t-sm">
+                                                    <button class="btn btn-xs btn-default" ng-click="funEditRemarks(order)">
+                                                        <i class="fa fa-edit"></i>
+                                                        <span class="text">备注</span>
+                                                    </button>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="row m-b-sm" ng-if="order.orderId">
+                                            <div class="col-xs-12 text-right">
+                                                <button class="btn btn-default btn-xs w-xxs" type="button" ng-click="funOrderDetails(order.orderId)">详情</button>
+                                                <button class="btn btn-xs btn-default w-xxs" type="button" ng-if="order.orderStatus==1" ng-disabled="true">待预约</button>
+                                                <button class="btn btn-xs btn-default w-xxs" type="button" ng-if="order.orderStatus==2" ng-disabled="true">待支付</button>
+                                                <button class="btn btn-xs btn-success w-xxs" type="button" ng-if="order.orderStatus==3&&!order.serviceBeginTime" ng-click="funBeginService(order.orderId)">开始服务</button>
+                                                <button class="btn btn-xs btn-danger w-xxs" type="button" ng-if="order.orderStatus==3&&order.serviceBeginTime" ng-click="funFinishService(order.orderId)">结束服务</button>
+                                                <button class="btn btn-xs btn-dark w-xxs" type="button" ng-if="order.orderStatus==4" ng-disabled="true">已完成</button>
+                                                <button class="btn btn-xs btn-dark w-xxs" type="button" ng-if="order.orderStatus==5" ng-disabled="true">已取消</button>
+                                            </div>
+                                        </div>
+                                        <div class="row text-center" ng-if="!order.orderId">
+                                            <div class="m-t-sm m-b-sm">
+                                                无预约
+                                                <button class="btn btn-xs btn-icon btn-default pull-right m-r-sm" ng-click="addDocAppointment(order)"><i class="fa fa-plus"></i></button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="list-group clearfix row text-center text-danger text-lg" ng-show="!orderList||orderList.length<1">
+                                    无数据
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

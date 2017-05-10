@@ -1,0 +1,284 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="CompanyInfoCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">查看企业</h2>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 text-center">
+                <h4>基本信息</h4>
+            </div>
+            <div class="col-md-12 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">企业名称<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入企业名称" ng-model="infoData.name">
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">企业类型<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <label ng-switch="infoData.type">
+                            <input type="text" ng-switch-when="1" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" value="经营企业">
+                            <input type="text" ng-switch-when="2" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" value="生产企业">
+                            <input type="text" ng-switch-when="3" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" value="连锁药店总部">
+                            <input type="text" ng-switch-when="4" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" value="连锁药店分店">
+                            <input type="text" ng-switch-when="5" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" value="单体药店">
+                        </label>
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">经营范围</label>
+                    </div>
+                    <div class=" col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" ng-disabled="true" ng-model="infoData.businessScope" placeholder="请选择经营范围">
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">企业简介</label>
+                    </div>
+                    <div class="col-lg-9 col-md-8 col-sm-10 col-xs-12">
+                        <textarea class="form-control ng-pristine ng-untouched ng-invalid ng-invalid-required ng-valid-maxlength" readonly="readonly" rows="6" placeholder="请输入企业简介" ng-model="infoData.description" maxlength="500" required=""></textarea>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>联系信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">负责人<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入企业负责人" ng-model="infoData.headUserName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">负责人手机<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-6 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入负责人手机" ng-model="infoData.headUserPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">管理员<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入企业管理员" ng-model="infoData.manageUserName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">管理员手机<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-8 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入管理员手机" ng-model="infoData.manageUserPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">所在区域<span class="necsr-Item">*</span></label>
+                    </div>
+                      <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <select style="width:90%;display: inline-block" class="form-control"   id="province"  ng-change="AreaChange(infoData.areaProvince,1)"  name="x" ng-model="infoData.areaProvince" disabled="disabled">
+                            <option ng-repeat="l in ProvinceList" value="{{l.code}}" ng-selected="infoData.areaProvince==l.code">{{l.name}}</option>
+                        </select> 省
+                    </div>
+
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <select style="width:90%;display: inline-block" class="form-control" id="city"    ng-change="AreaChange(infoData.areaCity,2)" name="y" ng-model="data.areaCity" disabled="disabled">
+                            <option ng-repeat="m in CityList" value="{{m.code}}" ng-selected="infoData.areaCity==m.code">{{m.name}}</option>
+                        </select> 市
+                    </div>
+                    <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
+                        <select style="width:86%;display: inline-block" class="form-control"  id="area" name="z" ng-model="infoData.areaCounty" disabled="disabled">
+                            <option ng-repeat="n in CountyList" value="{{n.code}}" ng-selected="infoData.areaCounty==n.code">{{n.name}}</option>
+                        </select> 区/县
+                    </div>
+
+                </div>
+            </div>
+            <div class="col-md-12 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">联系地址<span class="necsr-Item">*</span></label>
+                    </div>
+                    <div class="col-lg-9 col-md-7 col-sm-10 col-xs-12">
+                        <div class="top" style="width:100%; margin-bottom: 20px;">
+                            <div id="r-result">
+                                <input type="text" ng-model='infoData.address' readonly="readonly" name="areaDetail" class="form-control w400 text mapinputs">
+                                <span style="color:#ff0000" id="areaDetailspan"></span>
+                            </div>
+                        </div>
+                        <div id="searchResultPanel" style="border:1px solid #C0C0C0;width:150px;height:auto; display:none;"></div>
+                        <div id="allmap" style="width: 100%; height: 400px; overflow: hidden; position: relative; z-index: 0; color: rgb(0, 0, 0); text-align: left; background-color: rgb(243, 241, 236);"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row" ng-show="infoData.type==1||infoData.type==2||infoData.type==3">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>银行信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">所属银行</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入企业开户银行" ng-model="infoData.bankName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">银行卡号</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4` col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入银行卡号" ng-model="infoData.bankCardAccount">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">持卡人</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入银行持卡人姓名" ng-model="infoData.bankCardUserName">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">预留手机</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入持卡人预留手机号" ng-model="infoData.bankCardUserPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row" ng-show="infoData.type==4||infoData.type==5">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>其它信息</h4>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">营业时间</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4 col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入企业营业时间" ng-model="infoData.businessHours">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">联系电话</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-4` col-xs-12">
+                        <input type="text" class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly" placeholder="请输入联系电话" ng-model="infoData.contactPhone">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">支持送药上门</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <label class="control-label" ng-switch="infoData.doorService">
+                            <label ng-switch-when="1">是</label>
+                            <label ng-switch-when="2">否</label>
+                        </label>
+                        <label>
+                            {{infoData.deliveryNote}}
+                        </label>
+                        <!--   <input type="text"  class="form-control ng-pristine ng-untouched ng-valid ng-valid-maxlength" readonly="readonly"  placeholder="请输入送药说明" ng-model="data.deliveryNote"> -->
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label">支持医保医疗保险</label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <label class="control-label" ng-switch="infoData.medicalInsurance">
+                            <label ng-switch-when="1">是</label>
+                            <label ng-switch-when="2">否</label>
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="col-md-2 text-center">
+                    <h4>企业状态</h4>
+                </div>
+            </div>
+            <div class="col-md-6 cnt-col-rt">
+                <div class="row m-t-sm">
+                    <div class="col-sm-4 text-right">
+                        <label class="control-label"></label>
+                    </div>
+                    <div class="col-lg-6 col-md-8 col-sm-10 col-xs-12">
+                        <label class="control-label" ng-switch="infoData.status">
+                            <label ng-switch-when="1">生效</label>
+                            <label ng-switch-when="2">失效</label>
+                        </label>
+                        <!-- <label>
+    <input type="radio" name="radio1" ng-model="data.status" value="1" ng-disabled="disabled">生效</label>
+<label>
+    <input type="radio" name="radio1" ng-model="data.status" value="2">失效</label>
+ -->
+                    </div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+        </div>
+        <div class="form-group text-center">
+            <!--<button class="btn m-b-xs w-xs btn-success" ng-click="update()" >更新</button>-->
+            <!--<button class="btn m-b-xs w-xs btn-danger" ng-click="delete()" >删除</button>-->
+            <!--<button class="btn m-b-xs w-xs btn-info" ng-if="data.status==1" ng-click="editStatus('2','已失效')" >失效</button>-->
+            <!--<button class="btn m-b-xs w-xs btn-info" ng-if="data.status==2" ng-click="editStatus('1','已生效')" >生效</button>-->
+            <button class="btn m-b-xs w-xs btn-primary" ng-click="goBack()">返回</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,717 @@
+<style>
+    #group_member_list > tbody > tr > td{
+        cursor: default;
+    }
+</style>
+<div class="hbox-auto-xs hbox-auto-sm" ng-controller="GroupCheckEditview">
+    <div class="panel-heading font-bold text-center">
+        <p class="text-lg">{{isChecking ? "集团信息审核" : "集团信息"}}</p>
+    </div>
+    <div class="panel-body" ng-model="formData">
+        <tabset class="tab-container" ng-if="!isChecking && isPassed">
+            <tab heading="集团信息" select="tabs.unCheck()" active="tabs.active[0]">
+                <div name="form" class="form-horizontal">
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团Logo：</label>
+                        <p class="col-sm-6 form-text">
+                            <img style="max-width:200px;border:1px solid #eee" ng-src="{{viewData.logoUrl}}"/>
+                        </p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">医生集团名称：</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.groupName"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团简介：</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.introduction"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团擅长：</label>
+                        <p class="col-sm-1 " ng-if="dataDom.length">
+                            <!--<div class="col-lg-3 col-md-8 col-sm-10" >-->
+                                <div class="lab-container">
+                                    <div ng-repeat="item in dataDom">
+                                        <!--<i class="fa fa-times" ng-click="removeItem(item)"></i>-->
+                                        <h3>{{item.name}}</h3>
+                                    </div>
+                                </div>
+                            <!--</div>-->
+                        </p>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">集团负责人姓名</label>-->
+                        <!--<p class="col-sm-6 form-text">新增字段</p>-->
+                    <!--</div>-->
+
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团负责人姓名：</label>
+                        <p class="col-sm-1 form-text" ng-bind="viewData.doctorName"></p>
+                        <div class=" col-lg-1 col-md-2 col-sm-1 col-xs-3">
+                            <a type="button" class=" btn btn-info " ng-click="toDoctorDetail()">查看负责人信息</a>
+                        </div>
+                        <div class=" col-lg-1 col-md-2 col-sm-1 col-xs-3">
+                            <a type="button" class=" btn btn-info " >变更负责人</a>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">负责人联系电话：</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.telephone"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团成员数：</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.memberNum"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团状态：</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.activeStatus"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">是否被屏蔽：</label>
+                        <p class="col-sm-6 form-text">{{myBlocked}}</p>
+                    </div>
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">医疗机构</label>-->
+                        <!--<p class="col-sm-6 form-text" ng-bind="viewData.hospitalName"></p>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">医院级别</label>-->
+                        <!--<p class="col-sm-6 form-text" ng-bind="viewData.level"></p>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">科室</label>-->
+                        <!--<p class="col-sm-6 form-text" ng-bind="viewData.departments"></p>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">职称</label>-->
+                        <!--<p class="col-sm-6 form-text" ng-bind="viewData.title"></p>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">证书编号</label>-->
+                        <!--<p class="col-sm-6 form-text" ng-bind="viewData.licenseNum"></p>-->
+                    <!--</div>-->
+                    <!--<div class="form-group">-->
+                        <!--<label class="col-sm-3 control-label">证书到期时间</label>-->
+                        <!--<p class="col-sm-6 form-text" ng-bind="viewData.licenseExpire"></p>-->
+                    <!--</div>-->
+                    <!--<div class="form-group" ng-model="imgs">-->
+                        <!--<label class="col-sm-3 control-label">证书图片</label>-->
+                        <!--<div class="col-sm-6" ng-if="imgs">-->
+                            <!--<div class="certificate-list">-->
+                                <!--<div id="gl_point">-->
+                                    <!--<a ng-repeat="val in imgs" ng-class="{{cur-img}}" href>-->
+                                        <!--<img ng-src="{{val}}"/>-->
+                                    <!--</a>-->
+                                <!--</div>-->
+                                <!--<div id="gl_preview">-->
+                                    <!--<img src=""/>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<p class="col-sm-6 form-text" ng-if="!imgs">暂无证件图片！</p>-->
+                    <!--</div>-->
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">集团二维码：</label>
+                        <p class="col-sm-2 form-text"><img style="height: 150px;width: 150px;" ng-src="{{viewData.groupImgText+'?download/'}}{{viewData.groupName}}.jpg" alt=""></p>
+                        <p class="col-sm-3 form-text"><a style="padding-right: 20px;color:#337ab7;" href="{{viewData.groupImgText+'?download/'}}{{viewData.groupName}}.jpg" download="集团二维码.jpg" target="_blank">下载二维码</a></p>
+                    </div>
+                    <div class="form-group" >
+                        <label class="col-sm-3 control-label"></label>
+                        <p class="col-sm-6 form-text" style="margin-top: -1.5em;"><span>提示:使用玄关健康医生端扫描二维码可立即申请加入</span></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">审核人员：</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.adminName"></p>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 control-label">审核时间：</label>
+                        <p class="col-sm-6 form-text">{{viewData.auditDate}}</p>
+                    </div>
+
+                </div>
+            </tab>
+            <tab heading="集团成员" select="tabs.passed()" active="tabs.active[1]">
+                <form name="form" class="form-validation form-horizontal">
+                    <div class="table-responsive">
+                        <div class="row">
+                            <div class="col-sm-8">
+                                <div class="dataTables_length">
+                                    <label>每页
+                                        <select ng-model="page.size" class="form-control input-sm" ng-change="funBySize()">
+                                            <option value="5">5</option>
+                                            <option value="10">10</option>
+                                            <option value="15">15</option>
+                                            <option value="20">20</option>
+                                        </select> 条</label>
+                                    <label class="m-l-lg">平台审核状态</label>
+                                    <select ng-model="page.status" class="form-control input-sm mrl-10" ng-change="funStatus()">
+                                        <option value="">全部</option>
+                                        <option value="2">待审核</option>
+                                        <option value="1">已通过</option>
+                                        <option value="3">未通过</option>
+                                        <option value="7">未认证</option>
+                                    </select>
+                                    <label style="position: relative"><input style="width: 300px;display: inline-block;" ng-enter="funByDor()" ng-model="page.keyword" type="search" class="form-control input-sm" placeholder="按姓名 / 电话 / 职称 / 邀请人搜索" aria-controls="group_member_list" autocomplete="off">
+                                        <i style="box-shadow:none;color:#6C92D8;position: absolute;right: 0;" class="fa icon-magnifier btn" ng-click="funByDor()"></i>
+                                        <i ng-show="page.keyword" class="glyphicon glyphicon-remove btn" style="box-shadow:none;position: absolute;right: 4px;width: 20px;height: 20px;background-color: #fff;line-height:1;" ng-click="clerFunByDor()"></i>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="dataTables_filter text-right">
+                                    <button class="btn btn-success btn-sm" ng-click="addByGroup()">添加集团成员</button>
+                                </div>
+                            </div>
+                        </div>
+                        <table id="group_member_list" class="table table-striped b-t b-b">
+                            <thead>
+                            <tr>
+                                <th></th>
+                                <th></th>
+                                <th>姓名</th>
+                                <th>医疗机构</th>
+                                <th>科室</th>
+                                <th>职称</th>
+                                <th>电话</th>
+                                <th>注册来源</th>
+                                <th>邀请人</th>
+                                <th>平台审核状态</th>
+                                <th>操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                               <tr ng-repeat="item in groupDoctorList track by $index" >
+                                   <td><input type="checkbox" ng-model="item.isCheckOne" ng-click="singleSelected(item)"></td>
+                                   <td><img ng-src="{{item.headPicFileName || 'src/img/logoDefault.jpg'}}"></td>
+                                   <td ng-click="seeDetails(item.userId,item.status)" style="cursor: pointer;color:#027EC1">{{item.name}}</td>
+                                   <td>{{item.hospital}}</td>
+                                   <td>{{item.departments}}</td>
+                                   <td>{{item.title}}</td>
+                                   <td>{{item.telephone}}</td>
+                                   <td>{{item.source}}</td>
+                                   <td>{{item.inviterName || '无'}}</td>
+                                   <td>
+                                       <p ng-show="item.status==2">待审核</p>
+                                       <p ng-show="item.status==1">审核通过</p>
+                                   </td>
+                                   <td><button class="btn btn-link btn-link4" style="box-shadow:none;color:#027EC1" ng-click="delGrouplist(item,0)">移出集团</button></td>
+                               </tr>
+                                <tr ng-show="groupDoctorList.length<=0">
+                                    <td colspan='11' class="text-center b-b">无数据</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </form>
+                <div class="row">
+                    <div class="col-sm-6">
+                        <label><input type="checkbox" ng-model="check.isOne"  ng-click="allSelected(check.isOne)" />全选</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="delAllGroup()">移出集团</button>
+                        <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info" role="status" aria-live="polite">
+                            当前第 {{(page.index-1)*page.size+1}} - {{page.index*page.size > page.totle ? page.totle:  page.index*page.size}} 条，共 {{page.totle}} 条
+                        </label>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="dataTables_paginate paging_simple_numbers">
+                            <uib-pagination class="pagination-sm" total-items="page.totle" ng-change="funPageindex()" ng-model="page.index" items-per-page="page.size" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                        </div>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+        <div ng-if="!isChecking && !isPassed">
+            <form name="form" class="form-validation form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">医生集团名称</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.groupName"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">集团简介</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.introduction"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">集团Logo</label>
+                    <p class="col-sm-6 form-text">
+                        <img style="max-width:200px;border:1px solid #eee" ng-src="{{viewData.logoUrl}}"/>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">创建人姓名</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.doctorName"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系电话</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.telephone"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">医疗机构</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.hospitalName"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">医院级别</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.level"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">科室</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.departments"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职称</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.title"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">证书编号</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.licenseNum"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">证书到期时间</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.licenseExpire"></p>
+                </div>
+                <div class="form-group" ng-model="imgs">
+                    <label class="col-sm-3 control-label">证书图片</label>
+
+                    <div class="col-sm-6" ng-if="imgs">
+                        <div class="certificate-list">
+                            <div id="gl_point">
+                                <a ng-repeat="val in imgs" ng-class="{{cur-img}}" href>
+                                    <img ng-src="{{val}}"/>
+                                </a>
+                            </div>
+                            <div id="gl_preview">
+                                <img src=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="col-sm-6 form-text" ng-if="!imgs">暂无证件图片！</p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">审核未通过原因</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.auditMsg"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">审核员</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.adminName"></p>
+                </div>
+            </form>
+        </div>
+
+        <div ng-if="isChecking">
+            <form name="form" class="form-validation form-horizontal">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">医生集团名称</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.groupName"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">集团简介</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.introduction"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">集团Logo</label>
+                    <p class="col-sm-6 form-text">
+                        <img style="max-width:200px;border:1px solid #eee" ng-src="{{viewData.logoUrl}}"/>
+                    </p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">创建人姓名</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.doctorName"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">联系电话</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.telephone"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">医疗机构</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.hospitalName"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">医院级别</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.level"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">科室</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.departments"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">职称</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.title"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">证书编号</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.licenseNum"></p>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">证书到期时间</label>
+                    <p class="col-sm-6 form-text" ng-bind="viewData.licenseExpire"></p>
+                </div>
+                <div class="form-group" ng-model="imgs">
+                    <label class="col-sm-3 control-label">证书图片</label>
+
+                    <div class="col-sm-6" ng-if="imgs">
+                        <div class="certificate-list">
+                            <div id="gl_point">
+                                <a ng-repeat="val in imgs" ng-class="{{cur-img}}" href>
+                                    <img ng-src="{{val}}"/>
+                                </a>
+                            </div>
+                            <div id="gl_preview">
+                                <img src=""/>
+                            </div>
+                        </div>
+                    </div>
+                    <p class="col-sm-6 form-text" ng-if="!imgs">暂无证件图片！</p>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group check-opr">
+                    <label class="col-sm-3 control-label">审核意见<i class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-sm-6">
+                        <div class="check-items">
+                            <label class="i-checks text-success" for="pass">
+                                <input type="radio" name="check" id="pass" checked required/>
+                                <i></i>
+                                审核通过
+                            </label>
+                        </div>
+                        <div class="check-items">
+                            <label class="i-checks text-danger" for="nopass">
+                                <input type="radio" name="check" id="nopass" required/>
+                                <i></i>
+                                审核不通过
+                                <div class="inner-items">
+                                    <label class="i-checks text-muted">
+                                        <input type="radio" name="check-remark" checked/>
+                                        <i></i>
+                                        <span>医疗机构信息有误</span>
+                                    </label>
+                                    <label class="i-checks text-muted">
+                                        <input type="radio" name="check-remark"/>
+                                        <i></i>
+                                        <span>管理员信息不全</span>
+                                    </label>
+                                    <label class="i-checks text-muted">
+                                        <input id="other_remark" type="radio" name="check-remark"/>
+                                        <i></i>
+                                        其他原因
+                                        <div class="inner-items">
+                                        <textarea id="remarkNopass" placeholder="审核意见" class="form-control"
+                                                  ng-model='viewData.remarkNopass'></textarea>
+                                        </div>
+                                    </label>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="line line-dashed b-b line-lg pull-in"></div>
+
+        <div class="form-group" ng-if="isChecking">
+            <div class="col-sm-offset-3 col-sm-2 col-xs-4">
+                <button type="submit" class="w100 btn btn-primary" ng-click="submit()" ng-disabled='form.$invalid'>确 定</button>
+            </div>
+            <div class="col-sm-2 col-xs-4">
+                <button type="button" class="w100 btn btn-default" ng-click="return()">取 消</button>
+            </div>
+        </div>
+        <div class="form-group" ng-if="!isChecking && isPassed">
+            <div class="col-sm-offset-3 col-lg-1 col-md-2 col-sm-1 col-xs-3">
+                <a type="button" class="w100 btn btn-info" ng-click="groupEdit()">编辑</a>
+            </div>
+            <div class="col-lg-1 col-md-2 col-sm-2">
+                <button type="button" class="w100 btn btn-info" ng-click="operatingRecord()">操作记录</button>
+            </div>
+            <div class="col-lg-1 col-md-2 col-sm-2">
+                <button type="button" class="w100 btn btn-info" ng-click="return()">返 回</button>
+            </div>
+            <div class="col-sm-2 col-xs-4 col-lg-1">
+                <button type="button" class="w100 btn btn-danger" ng-click="block(true)" ng-disabled="isVisiting" ng-bind="btnName"></button>
+            </div>
+            <div class="col-sm-2 col-xs-4 col-lg-1" ng-if="!isActive" >
+                <button type="button" class="w100 btn btn-success" ng-click="active()" ng-disabled="hasActivated" ng-bind="btnNameActive">设为已激活</button>
+            </div>
+
+        </div>
+        <div class="form-group" ng-if="!isChecking && !isPassed">
+            <div class="col-sm-offset-3 col-sm-2 col-xs-4">
+                <button type="button" class="w100 btn btn-default" ng-click="return()">返 回</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--添加集团信息编辑-->
+<script type="text/ng-template" id="groupEdit.html">
+    <div class="groupEdit">
+        <div class="panel-heading font-bold text-center">
+            <p class="text-lg">编辑集团基础信息</p>
+        </div>
+        <div class="panel-body" ng-model="viewData">
+        <div name="form" class="form-horizontal">
+            <div class="form-group">
+                <label class="col-sm-3 control-label">集团Logo：</label>
+                <div class="col-sm-12 text-center">
+                    <div ng-click="selectFile('usrPic')" class="bg-white text-center ng-File-UpLoad-Bt" style="display:inline-block;width:106px;height:106px;cursor:pointer;overflow: hidden;position: relative;" ng-model="usrPic" name="usrPic">
+                        <img ng-src="{{usrPicUrl}}" style="width:100px;height:100px;">
+                        <i ng-show="!usrPic.progress && !usrPicUrl" class="fa fa-file-picture-o" style="font-size:80px;color:#dee5e7;"></i>
+                        <div class="img-load-circle" ng-hide="loaded">
+                            <div style="height:{{usrPicProgress}}%;"></div>
+                            <p>
+                                {{usrPicProgress>0?usrPicProgress:0}}%
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!--<p class="col-sm-6 form-text">-->
+                    <!--<img style="max-width:200px;border:1px solid #eee" ng-src="{{viewData.logoUrl}}"/>-->
+                <!--</p>-->
+            </div>
+            <!-- 七牛上传组件 -->
+            <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+            <!-- 七牛上传组件 end -->
+
+            <div class="form-group">
+                <label class="col-sm-3 control-label">医生集团名称：</label>
+                <div class="col-sm-6">
+                    <input type="text" placeholder="医生集团名称" class="form-control" ng-model="viewData.groupName" />
+                </div>
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.groupName"></p>-->
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">集团简介：</label>
+                <div class="col-sm-6">
+                    <textarea class="form-control" rows="6" placeholder="请输入集团简介" name="introduce" ng-model="viewData.introduction" ng-maxlength="4000"></textarea>
+                </div>
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.introduction"></p>-->
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">集团擅长：</label>
+                <p class="col-sm-1 " ng-if="dataDom.length">
+                    <!--<div class="col-lg-3 col-md-8 col-sm-10" >-->
+                <div class="lab-container">
+                    <div ng-repeat="item in dataDom">
+                        <i class="fa fa-times" ng-click="removeItem(item)"></i>
+
+                        <h3>{{item.name}}</h3>
+                    </div>
+                </div>
+                <!--</div>-->
+                </p>
+                <div class="col-sm-offset-3 col-lg-6 col-md-8 col-sm-10 btn-container mrb-15">
+                    <button type="button" class="btn btn-primary" ng-click="addData()">
+                        <i class="fa fa-pencil"></i>
+                        <span class="hid">修改病种标签</span>
+                    </button>
+                </div>
+            </div>
+            <div class="form-group">
+                <div class="col-lg-offset-4 col-lg-2 col-md-2 col-sm-2" >
+                    <button type="button" class="w100 btn btn-info" ng-click="ok()">保存</button>
+                </div>
+                <div class="col-lg-offset-1 col-lg-2 col-md-2 col-sm-2">
+                    <button type="button" class="w100 btn btn-info" ng-click="myCancel()">取消</button>
+                </div>
+            </div>
+        </div>
+        </div>
+    </div>
+</script>
+<!--添加操作记录-->
+<script type="text/ng-template" id="operatingRecord.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">操作记录</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="position: relative;">
+            <div class="col-md-12">
+                <div class="input-group" style="width: 400px;float:right;position: relative;">
+                    <input type="text" class="form-control" placeholder="搜索修改内容" ng-model="keyWord" ng-enter="InitTable(0,pageSize,keyWord)">
+                    <a ng-show="keyWord.length>0" style="position: absolute;top: 10px;right: 60px;z-index: 999;" ng-click="clearKW()" class="glyphicon glyphicon-remove"></a>
+                    <span class="input-group-btn">
+                       <button class="btn btn-info" type="button" ng-click="InitTable(0,pageSize,keyWord)">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-sm">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0">
+                        <tr>
+                            <th class="text-center col-xs-3">
+                                修改时间
+                            </th>
+                            <th class="text-center col-xs-3">
+                                操作人
+                            </th>
+                            <th class="text-center">
+                                修改内容
+                            </th>
+                        </tr>
+                        <tr ng-repeat="item in data.pageData track by $index">
+                            <td align="center">{{item.createTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                            <td align="center">{{item.creatorName}}</td>
+                            <!--<td align="center">{{item.content}}</td>-->
+                            <td align="center" ng-bind-html="item.content"></td>
+                        </tr>
+                    </table>
+                    <div class="text-center">
+                        <pagination ng-s="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()"  previous-text="上一页" next-text="下一页" max-size="10" boundary-links="true" rotate="false" first-text="首页" last-text="尾页"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="recordCancel()">关闭</button>
+    </div>
+</script>
+
+
+
+
+
+<script type="text/ng-template" id="delModalContent.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">确认审核？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="delModalByGroup.html">
+    <style type="text/css">
+        .btn-close {
+            position: absolute;
+            right:5px;
+            font-size: 18px;
+            top:-2px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="panel panel-default del-modal" style="position: relative;">
+        <span class="btn-close" ng-click="cancel()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center">是否将<span style="color:red;">"{{items.list.name}}"</span>医生移出集团？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-info btn-sm" ng-click="ok()">是，移出</button>
+            <button class="btn btn-info btn-sm" ng-click="cancel()" style="width: 70px;margin-left:3em;">否</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="delAllGrouplist.html">
+    <style type="text/css">
+        .btn-close {
+            position: absolute;
+            right:5px;
+            font-size: 18px;
+            top:-2px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="panel panel-default del-modal" style="position: relative;">
+        <span class="btn-close" ng-click="cancel()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center">是否将所有已选中的<span style="color:red;" ng-bind="listlength"></span>个医生移出集团？</div>
+        <div class="panel-body">
+            <button class="btn btn-info btn-sm" ng-click="ok()">是，全部移出集团</button>
+            <button class="btn btn-info btn-sm" ng-click="cancel()" style="width: 70px;float: right;">否</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="addModalByGroup.html">
+    <style>
+        .table>tbody>tr>td{
+            text-align: left;
+        }
+        .btn-close {
+            position: absolute;
+            right:5px;
+            font-size: 18px;
+            top:-2px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="panel panel-default " style="max-height: 800px;overflow: auto;position: relative;">
+        <span class="btn-close" ng-click="cancel()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center">选择医生</div>
+        <div class="dataTables_processing" ng-show="isShowLoad"><img style="position:fixed;top:30%;left:50%;z-index:10000;height:80px;border:1px solid #aaa;border-radius:6px;box-shadow:0 0 10px rgba(0,0,0,.5)" src="src/img/loading.gif"></div>
+        <div class="panel-body text-center">
+            <label class="col-sm-3 text-left">每页
+                <select ng-model="page.size" class="input-sm" ng-change="funBySize()">
+                    <option value="10">10</option>
+                    <option value="20">20</option>
+                    <option value="50">50</option>
+                    <option value="100">100</option>
+                </select> 条</label>
+            <label class="col-sm-9 text-left" style="">
+                <input autofocus ng-init="this.focus()" ng-enter="funByDotdor()" style="width: 350px;display: inline-block" ng-model="page.keyword" type="search" class="form-control" placeholder="按姓名 /医院 " aria-controls="group_member_list" autocomplete="off">
+                <i class="fa icon-magnifier btn" ng-click="funByDotdor()" style="box-shadow:none;font-size:18px;color:#169BD5"></i>
+            </label>
+            <div class="row">
+                <table class="table table-striped b-t b-b">
+                    <thead>
+                        <tr class="text-center">
+                            <th style="width: 2%"></th>
+                            <th style="width: 15%">医生姓名</th>
+                            <th style="width: 20%">医疗机构</th>
+                            <th style="width: 12%">科室</th>
+                            <th style="width: 13%">职称</th>
+                            <th style="width: 24%">所属集团</th>
+                            <th style="width: 14%;">平台审核状态</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="itme in dataGroupList track by $index">
+                            <td><input type="checkbox" ng-model="itme.isCheckTwo" ng-click="singleSelected(itme)"></td>
+                            <td>{{itme.name}}</td>
+                            <td>{{itme.hospital}}</td>
+                            <td>{{itme.department}}</td>
+                            <td>{{itme.title}}</td>
+                            <td>
+                                <p ng-repeat="x in itme.group track by $index"><span>{{x.name}}</span></p>
+                            </td>
+                            <td>
+                                <p ng-if="itme.status==1">审核通过</p>
+                                <p ng-if="itme.status==2">待审核</p>
+                                <p ng-if="itme.status==3">未通过</p>
+                                <p ng-if="itme.status==7">未认证</p>
+                            </td>
+                        </tr>
+                        <tr ng-show="dataGroupList.length<=0">
+                            <td colspan="7" style="text-align: center;">无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="row">
+                <label class="col-sm-12 text-left"><input type="checkbox" ng-model="check.isOne"  ng-click="allSelected(check.isOne)"/> <sapn> 全选</sapn></label>
+            </div>
+            <div class="row">
+                <div class="col-sm-6 text-left">
+                    <label class="dataTables_info ng-binding" id="contactsList" role="status" aria-live="polite">
+                        当前第 {{(page.index-1)*page.size+1}} - {{page.index*page.size > page.totle ? page.totle:  page.index*page.size}} 条，共 {{page.totle}} 条
+                    </label>
+                </div>
+                <div class="col-sm-6">
+                    <div class="dataTables_paginate paging_simple_numbers">
+                        <uib-pagination class="pagination-sm" max-size="7" total-items="page.totle" ng-change="funPageindex()" ng-model="page.index" items-per-page="page.size" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-info btn-sm " style="width:100px;" ng-click="ok()" ng-disabled="isShowSaved==false">确 定</button>
+            <button class="btn btn-info btn-sm " style="width: 100px;margin-left: 2em;" ng-click="cancel()">取 消</button>
+        </div>
+    </div>
+</script>
+<script type="text/ng-template" id="addGroupModallist.html">
+    <div class="panel panel-default del-modal" style="margin-top: 50%;position: relative;">
+        <span class="btn-close" ng-click="cancel()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center">是否将所有已选中的医生加入<span style="color:red">{{groupDataList.groupName}}</span>集团？</div>
+        <div class="panel-body">
+            <button class="btn btn-info btn-sm" ng-click="ok()">是，确定</button>
+            <button class="btn btn-info btn-sm" ng-click="cancel()" style="width: 70px;float: right;">否</button>
+        </div>
+    </div>
+</script>

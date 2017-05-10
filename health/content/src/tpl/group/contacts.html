@@ -1,0 +1,105 @@
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="Contacts">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-4 col-xs-0">
+                <button type="button" class="btn btn-primary" ng-click="back()" ng-show="isSearching">返 回</button>
+            </div>
+            <div class="col-md-4 mrb-15">
+                <h2 class="title-3 text-center">人员管理</h2>
+            </div>
+            <div class="col-md-4">
+                <form class="group-search">
+                    <div>
+                        <input id="key_ipt" type="text" autocomplete="off" placeholder="按（姓名 / 电话 / 职称）搜索">
+                        <i ng-show="loaded" class="fa icon-magnifier" ng-click="submit()"></i>
+                        <span ng-show="!loaded" class="loading ng-hide"><i class="glyphicon glyphicon-repeat"></i></span>
+                    </div>
+                    <div class="hide">
+                        <button type="submit" ng-click="submit()"></button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row mrb-5" ng-hide="isSearching">
+            <div class="tab-wrapper col-md-8">
+                <a class="group-mark mark-focus" ng-click="getFilterData(1, $event)" href>
+                    <div>
+                        <span>集团成员</span>
+                        <b class="badge bg-info pull-right" id="doctor_normal">563</b>
+                    </div>
+                </a>
+                <a class="group-mark" ng-click="getFilterData(2, $event)" href>
+                    <div>
+                        <span>已申请,待集团审核</span>
+                        <b class="badge bg-info pull-right" id="doctor_asked">63</b>
+                    </div>
+                </a>
+                <a class="group-mark" ng-click="getFilterData(3, $event)" href>
+                    <div>
+                        <span>已邀请,待医生验证</span>
+                        <b class="badge bg-info pull-right" id="doctor_invited">1231</b>
+                    </div>
+                </a>
+                <a class="group-mark" ng-click="getFilterData(4, $event)" href>
+                    <div>
+                        <span>已解除</span>
+                        <b class="badge bg-info pull-right" id="doctor_quit">12</b>
+                    </div>
+                </a>
+            </div>
+            <div class="col-md-4">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-success" ng-click="addDoctor()">
+                        <i class="fa fa-fw fa-plus"></i>
+                        <span class="hid">新建医生</span>
+                    </button>
+                </div>
+                <div class="pull-right mrr-10">
+                    <button type="button" class="btn btn-info" ng-click="invite()">
+                        <i class="fa fa-comments"></i>
+                        <span class="hid">邀请医生</span>
+                    </button>
+                </div>
+                <div class="pull-right mrr-10 hide">
+                    <button type="button" class="btn btn-primary" ng-click="addUnit()">
+                        <i class="fa fa-fw fa-plus"></i>
+                        <span class="hid">添加组织</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row pos-r" ng-show="isSearching">
+            <div class="col-md-12">
+                <div ui-view="groupSearch"></div>
+            </div>
+        </div>
+
+        <div class="pnl-wrap row pos-r" ng-hide="isSearching">
+            <div class="col-md-3 cnt-col-lt" ng-show="memberNotInGroup">
+                <div class="list-group">
+                    <div class="text-center">
+                        <select ng-change="changeType()" ng-model="showType" class="mrt-10 mrb-5" style="background:none;border:none">
+                            <option value="1">按医生科室</option>
+                            <option value="2">按医生所在地区</option>
+                            <option value="3">按医生开启的服务</option>
+                            <option value="4">按自定义组织</option>
+                        </select>
+                    </div>
+                    <div id="cnt_list">
+                        <div ng-if="loading" class="loading">
+                            <i class="glyphicon glyphicon-repeat"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="cnt-col-rt {{memberNotInGroup ? 'col-md-9' : 'col-md-12 pl-0'}}">
+                <div class="panel panel-default">
+                    <div ui-view>
+                        <p class="text-center form-text">无数据</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,1 @@
+"use strict";app.controller("verifyCtrl",["$scope","$http","$state",function($scope,$http,$state){var company=JSON.parse(localStorage.getItem("company"));console.log(company),company.checkRemarks&&($scope.problem=company.checkRemarks),$scope.verifyState=company.status}]);

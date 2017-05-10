@@ -1,0 +1,21 @@
+<div class="modal-body p-xl">
+    <div class=" w-full position-relative">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default position-absolute b-dark" style="right:-25px;top:-23px;" ng-click="cancel()"><i class="fa fa-close"></i></button>
+    </div>
+    <div class="row" ng-show="type==true">
+        <div class="col-md-12 p-sm" style="line-height:34px;">
+            <lebal>当前时间段已有患者预约，不可以撤销排班。请联系患者取消订单后撤销排班！</leabl>
+        </div>
+        <div class="col-md-12 m-t-lg text-center">
+            <button class="btn btn-success" ng-click="cancel()" style="width:110px;">确&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+        </div>
+    </div>
+    <div class="row" ng-hide="type==true">
+        <div class="col-md-12 p-sm" style="line-height:34px;">
+            <lebal>确认删除该条排班吗？</leabl>
+        </div>
+        <div class="col-md-12 m-t-lg text-center">
+            <button class="btn btn-success" ng-click="funDeleteOffline()" style="width:110px;">确&nbsp;&nbsp;&nbsp;&nbsp;定</button>
+        </div>
+    </div>
+</div>

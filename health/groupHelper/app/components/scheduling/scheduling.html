@@ -1,0 +1,120 @@
+<div class="frame-panel col-lg-8 pull-none" style="margin:50px auto 0;">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="pull-left">
+                <button class="btn btn-success" ng-click="funGetDay('last')" ng-disabled="weekKeep==0">上一周</button>
+                <button class="btn btn-success" ng-click="funGetDay('next')" ng-disabled="weekKeep==2">下一周</button>
+                <button class="btn btn-success" ng-click="funGetDay()">本周</button>
+            </div>
+        </div>
+    </div>
+    <div class="row m-t-lg clearfix">
+    	<div class="col-md-12">
+			<select class="form-control w-250 pull-left" ng-model="search.hospital" ng-change="getOfflines(search.hospital)">
+                <option value="{{hospital.id}}-{{hospital.name}}" ng-repeat="hospital in hospitalList">{{hospital.name}}</option>
+            </select>
+
+    		<button class="btn btn-success pull-right" ng-click="funAddDoctor()" ng-disabled="!search.doctor.doctorId">添加值班医生</button>
+
+    		<div class="pull-right m-r-sm w-400	">
+                <ui-select ng-model="search.doctor">
+                    <ui-select-match placeholder="请输入医生姓名搜索">
+                        <span ng-bind="$select.selected.doctorName"></span>
+                    </ui-select-match>
+                    <ui-select-choices repeat="item in (doctorList | filter: $select.search) track by item.doctorId">
+                        <span ng-if="item.doctorId">{{item.doctorName}}-{{item.title}}-{{item.departments}}-{{item.hospitalName}}</span>
+                        <span ng-if="!item.doctorId">{{item.doctorName}}</span>
+                    </ui-select-choices>
+                </ui-select>
+	        </div>
+	    </div>
+    </div>
+    <div class="row m-t-sm">
+        <div class="col-md-12">
+            <div class="panel panel-default" style="margin-bottom:0;">
+                <table class="table table-striped dataTable no-footer text-center mask-table-sp">
+                    <thead>
+                        <tr>
+                            <th class="text-center" style="vertical-align:middle;width:9%;">医生</th>
+                            <th class="text-center" style="width:13%;">周一</br>{{paramDate.mon}}</th>
+                            <th class="text-center" style="width:13%;">周二</br>{{paramDate.tue}}</th>
+                            <th class="text-center" style="width:13%;">周三</br>{{paramDate.wed}}</th>
+                            <th class="text-center" style="width:13%;">周四</br>{{paramDate.thu}}</th>
+                            <th class="text-center" style="width:13%;">周五</br>{{paramDate.fri}}</th>
+                            <th class="text-center" style="width:13%;">周六</br>{{paramDate.sat}}</th>
+                            <th class="text-center" style="width:13%;border-right:0;">周日</br>{{paramDate.sun}}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="offline in offlineList track by offline.doctorId">
+                            <td>{{offline.doctorName}}</td>
+                            <td ng-click="!paramDate.monMask?funEditSch(offline.doctorId,offline.docIntro,offline.aMon,1):''">
+                                <div class="maskTd" ng-show="paramDate.monMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aMon">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-click="!paramDate.tueMask?funEditSch(offline.doctorId,offline.docIntro,offline.aTue,2):''">
+                                <div class="maskTd" ng-show="paramDate.tueMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aTue">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-click="!paramDate.wedMask?funEditSch(offline.doctorId,offline.docIntro,offline.aWed,3):''">
+                                <div class="maskTd" ng-show="paramDate.wedMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aWed">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-click="!paramDate.thuMask?funEditSch(offline.doctorId,offline.docIntro,offline.aThu,4):''">
+                                <div class="maskTd" ng-show="paramDate.thuMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aThu">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-click="!paramDate.friMask?funEditSch(offline.doctorId,offline.docIntro,offline.aFri,5):''">
+                                <div class="maskTd" ng-show="paramDate.friMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aFri">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-click="!paramDate.satMask?funEditSch(offline.doctorId,offline.docIntro,offline.aSat,6):''">
+                                <div class="maskTd" ng-show="paramDate.satMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aSat">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                            <td ng-click="!paramDate.sunMask?funEditSch(offline.doctorId,offline.docIntro,offline.aSun,7):''" style="border-right:0;" >
+                                <div class="maskTd" ng-show="paramDate.sunMask"></div>
+                                <div class="scheduling">
+                                    <button class="btn btn-success m-t-xxs" ng-repeat="item in offline.aSun">
+                                        {{item.startTime | date:'HH:mm'}} ~ {{item.endTime | date:'HH:mm'}}
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr ng-if="!doctorList||doctorList.length<1">
+                            <td colspan="8" class="text-center">无数据</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="clearfix">
+                <uib-pagination boundary-links="true" total-items="totalItems" ng-model="currentPage" items-per-page="pageNum" ng-change="pageChanged()" class="pagination-sm pull-right" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+            </div>
+        </div>
+    </div>
+</div>
+

@@ -1,0 +1,63 @@
+<div class="dialog-heading font-bold text-center"><div class="text-md">调查表</div></div><div class="modal-body"><div class="row"><div class="col-xs-12"><div class="form-inline clearfix" ng-if="surveyData.tmpType===1"><div class="col-xs-12"><div class="row"><div class="form-group">请选择发送时间：</div><time-set-cpn time="surveyData.sendTime" hour-step="1" minute-step="30" class="form-inline"></time-set-cpn></div></div></div><div class="m-t clearfix"><div class="row"><div class="col-md-3 cnt-col-lt"><div id="lifeQualityLibraryTree" class="list-group" style="height: 300px;overflow: auto"></div></div><div class="col-md-9 cnt-col-rt"><div class="panel panel-default" style="height: 300px;overflow: auto"><div class="col-md-12"><div class="dataTables_wrapper form-inline dt-bootstrap no-footer"><div class="dataTables_length"><label>每页<select class="form-control input-sm" ng-model="pageSize" ng-change="setTable(null, 1, pageSize)"><option value="1">1</option><option value="10">10</option><option value="15">15</option><option value="20">20</option></select>条</label></div></div></div><table class="table table-striped b-t dataTable no-footer"><thead><tr><th></th><th>计划名称</th><th></th></tr></thead><tbody><tr ng-repeat="item in surveyList track by $index"><td class="text-center"><input ng-click="selectLifeQuality(item)" type="radio" name="radio" ng-checked="selectItem.surveyId==item.surveyId"></td><td>{{item.title}}</td><td><button class="btn btn-xs btn-primary" ng-click="surveyCheck(item.surveyId,item.version)">预览</button></td></tr></tbody></table></div><div class="text-right"><pagination class="m-n" ng-show="page_count>0" total-items="page_count" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination><!-- <uib-pagination class="m-n" ng-show="page_count>0" total-items="page_count" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></uib-pagination> --></div></div></div></div></div></div></div><div class="modal-footer"><div class="col-md-offset-2 col-md-4"><button type="button" class="btn-block btn btn-success" ng-click="ok()">确 定</button></div><div class="col-md-4"><button type="button" class="btn-block btn btn-default" ng-click="cancel()">取 消</button></div></div><!-- 预览弹窗 --><script type="text/ng-template" id="surveyChickCtrl.html"><div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default m-t">
+                <div class="panel-heading font-blod text-center">
+                    <h3>预览调查表</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group clearfix">
+                        <div class="col-sm-12" style="padding-left:0">
+                            <strong class="control-label">量表标题: {{surveyData.title}}</strong>
+                        </div>
+                    </div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="form-group clearfix">
+                        <div class="col-sm-12" style="padding-left:0">
+                            <strong class="control-label ">量表简介: {{surveyData.desc}}</strong>
+                        </div>
+                    </div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="form-group clearfix" ng-repeat="item in surveyData.questions track by $index">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <strong class="control-label" style="padding-bottom:.6em;display:inline-block;">问题{{($index+1)}}:{{item.name}}</strong>
+                                <p class="control-label" style="text-indent:1.5em;" ng-if="item.type==3">(问答题)</p>
+                                <p class="control-label" style="text-indent:1.5em;" ng-if="item.type==2">(填空题)</p>
+                            </div>
+                            <div>
+                                <img ng-repeat="img in item.picUrls" src="{{img}}" class="img-question" />
+                            </div>
+                            <div class="col-sm-12">
+                                <ul>
+                                    <li ng-repeat="part in item.options" style="list-style-type:upper-alpha;margin-left:2.8em;">
+                                        <img src="{{part.picUrls[0]}}" class="item-images" ng-show="part.picUrls" />
+                                        <span>{{part.name}}</span>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="text-left" ng-show="surveyData.groupId==groupDomId"><span class="glyphicon glyphicon-exclamation-sign"></span>需要编辑请到“调查表题库”页进行操作。</div>
+                    <div class="text-left" ng-show="surveyData.groupId!=groupDomId"><span class="glyphicon glyphicon-exclamation-sign"></span>本表属于平台，不可编辑。但您可以正常使用。</div>
+                    <div class="text-right">
+                        <a class="btn btn-default btn-md w-xs" ng-click="cancel()">关闭</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <style type="text/css">
+    .item-images {
+        width: 40px;
+        height: 40px;
+        display: inline;
+        padding: 5px;
+    }
+    
+    .img-question {
+        width: 80px;
+        height: 80px;
+        display: inline;
+        padding: 10px;
+    }
+    </style></script>

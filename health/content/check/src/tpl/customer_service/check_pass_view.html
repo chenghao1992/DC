@@ -1,0 +1,403 @@
+<div class="hbox-auto-xs hbox-auto-sm" ng-controller="CheckPassView">
+
+    <div class="panel-body" ng-model="viewData">
+        <div class="container">
+            <div class="row mysame">
+                <div class="h5 col-md-12 text-center mycenter"> 审核详情</div>
+                <div class="col-sm-offset-4 col-sm-4 text-center" ng-show="viewData.isDoctor">
+                    <img class="portrait" ng-src="{{viewData.doctorPortrait}}" />
+                </div>
+            </div>
+
+            <div class="row mysame">
+                <div class="h5 col-md-12">个人信息</div>
+                <hr>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">姓名:</label>
+                        <p class="col-sm-9 form-text" ng-bind="viewData.name"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">手机号码:</label>
+                        <p class="col-sm-9 form-text" ng-bind="viewData.telephone"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">个人简介:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.introduction"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">擅长:</label>
+                        <div class="col-sm-6">
+                            <span class="label-btn btn-info" style="padding-right: 10px;" ng-repeat="keyword in viewData.keywords track by $index">{{keyword.name}}</span>
+                        </div>
+                        <p class="col-sm-6 form-text" ng-show="viewData.keywords=='--'"  ng-bind="viewData.skill"></p>
+                    </div>
+
+
+                </div>
+
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">性别:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.sex"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">邀请人:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.inviter"></p>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 col-xs-11 control-label">医生编号:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.doctorNum"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">注册来源:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.origin"></p>
+                    </div>
+
+                </div>
+            </div>
+
+
+
+            <div class="row mysame">
+                <div class="h5 col-md-12">执业信息</div>
+                <hr>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">医疗机构:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.hospital"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 col-xs-11 control-label">医生编号:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.doctorNum"></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">科室:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.departments"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 control-label">证书到期时间:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.licenseExpire"></p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">职称:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.title"></p>
+                    </div>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">证书图片:</label>
+                        <div class="col-sm-6" ng-if="imgs">
+                            <div class="certificate-list" ng-if="imgs">
+                                <div id="gl_point">
+                                    <a ng-repeat="val in imgs track by $index" style="display: inline-block;margin-right: 20px"href>
+                                        <img ng-src="{{val}}" />
+                                    </a>
+                                </div>
+                                <div id="gl_preview" style="display: none" >
+                                    <img src="" ng-click="myImgHide"/>
+                                </div>
+                            </div>
+                        </div>
+                        <p class="col-sm-6 form-text" ng-if="!imgs">暂无证件图片！</p>
+                    </div>
+                </div>
+            </div>
+            <div class="row mysame">
+                <div class="h5 col-md-12">平台信息</div>
+                <hr>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">角色标签:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.role"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-4 control-label">医生二维码:</label>
+
+                        <p class="col-sm-4 form-text" > <img style="height: 100px;width: 100px" ng-src="{{viewData.Qurl}}"/></p>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">医生助手:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.assistantName"></p>
+                    </div>
+                    <div class="row">
+                        <p class="col-sm-6 form-text" > <a style="padding-right: 20px;color:#337ab7;" ng-href="{{viewData.Qurl}}" target="_blank">下载二维码</a></p>
+
+                    </div>
+                    <div class="row">
+                        <p class="col-sm-12 form-text" style=""> <sapn>提示:可以使用玄关健康医生端,患者端或者微信扫描二维码</sapn></p>
+
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">所在集团:</label>
+                        <div class="col-sm-9 form-text" ng-repeat="item in viewData.group track by $index">
+                            <span >{{item}}&nbsp</span>
+                        </div>
+                    </div>
+
+                </div>
+
+
+            </div>
+            <div class="row mysame">
+                <div class="h5 col-md-12">审核信息</div>
+                <hr>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">审核结果:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.status"></p>
+                    </div>
+
+                    <div class="row">
+                        <label class="col-sm-3 control-label">认证时间:</label>
+                        <p class="col-sm-6 form-text">{{viewData.certTime}}</p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">审核人员:</label>
+                        <p class="col-sm-6 form-text" ng-bind="viewData.checker"></p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">审核时间:</label>
+                        <p class="col-sm-6 form-text">{{viewData.checkTime}}</p>
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="row">
+                        <label class="col-sm-3 control-label">&nbsp;</label>
+                        <p class="col-sm-6 form-text">&nbsp;</p>
+                    </div>
+                    <div class="row">
+                        <label class="col-sm-3 control-label">修改时间:</label>
+                        <p class="col-sm-6 form-text">{{viewData.modifyTime}}</p>
+                    </div>
+
+                </div>
+
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="row mysame " style="margin:auto">
+                <div class="col-sm-offset-2 col-lg-2 col-md-2 col-sm-3 col-xs-3">
+                    <a type="button" class="w100 btn btn-info" ui-sref="app.check_edit">编辑</a>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">
+                    <button type="button" class="w100 btn btn-danger" ng-click="revCheck()">&nbsp;&nbsp;&nbsp;反审核&nbsp;&nbsp;&nbsp;</button>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3">
+                    <button type="button" class="w100 btn btn-info" ng-click="operatingRecord()">操作记录</button>
+                </div>
+                <div class="col-lg-2 col-md-2 col-sm-3">
+                    <button type="button" class="w100 btn btn-info" ng-click="return()">返 回</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+        <!--<form name="form" class="form-validation form-horizontal">-->
+            <!--<div class="form-group shxq" ng-show="viewData.isDoctor">-->
+                <!--<div class="panel-heading font-bold text-center">-->
+                    <!--审核详情-->
+                <!--</div>-->
+                <!--<div class="form-group" ng-show="viewData.isDoctor">-->
+
+                    <!--<div class="col-sm-offset-4 col-sm-4 text-center">-->
+                        <!--<img class="portrait" ng-src="{{viewData.doctorPortrait}}" />-->
+                    <!--</div>-->
+
+                <!--</div>-->
+
+            <!--</div>-->
+
+
+
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">注册来源</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.origin"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">邀请人</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.inviter"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">姓名</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.name"></p>-->
+            <!--</div>-->
+            <!--<div ng-if="viewData.isDoctor" class="form-group">-->
+                <!--<label class="col-sm-3 col-xs-11 control-label">医生编号</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.doctorNum"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">医疗机构</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.hospital"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">科室</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.departments"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">职称</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.title"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">性别</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.sex"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">个人简介</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.introduction"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">擅长</label>-->
+                <!--<div class="col-sm-6">-->
+                    <!--<span class="label-btn btn-info" style="padding-right: 10px;" ng-repeat="keyword in viewData.keywords track by $index">{{keyword.name}}</span>-->
+                <!--</div>-->
+                <!--<p class="col-sm-6 form-text" ng-show="viewData.keywords=='&#45;&#45;'"  ng-bind="viewData.skill"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group" ng-show="viewData.keywords !='&#45;&#45;'">-->
+                <!--<label class="col-sm-3 control-label"></label>-->
+                <!--<div class="col-sm-6">-->
+                   <!--<p class="label-btn form-text" ng-bind="viewData.skill">{{keyword}}</p>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">职称</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.title"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">手机号码</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.telephone"></p>-->
+            <!--</div>-->
+            <!--<div ng-if="viewData.isDoctor" class="form-group">-->
+                <!--<label class="col-sm-3 control-label">证书编号</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.licenseNum"></p>-->
+            <!--</div>-->
+            <!--<div ng-if="viewData.isDoctor" class="form-group">-->
+                <!--<label class="col-sm-3 control-label">证书到期时间</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.licenseExpire"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">角色标签</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.role"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">医生助手名称</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.assistantName"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">审核结果</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.status"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">审核人员</label>-->
+                <!--<p class="col-sm-6 form-text" ng-bind="viewData.checker"></p>-->
+            <!--</div>-->
+            <!--<div class="form-group" ng-model="imgs">-->
+                <!--<label class="col-sm-3 control-label">证书图片</label>-->
+                <!--<div class="col-sm-6" ng-if="imgs">-->
+                    <!--<div class="certificate-list" ng-if="imgs">-->
+                        <!--<div id="gl_point">-->
+                            <!--<a ng-repeat="val in imgs track by $index" ng-class="{{cur-img}}" href>-->
+                                <!--<img ng-src="{{val}}" />-->
+                            <!--</a>-->
+                        <!--</div>-->
+                        <!--<div id="gl_preview">-->
+                            <!--<img src="" />-->
+                        <!--</div>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<p class="col-sm-6 form-text" ng-if="!imgs">暂无证件图片！</p>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="col-sm-3 control-label">医生二维码</label>-->
+                <!--<p class="col-sm-6 form-text" > <a style="padding-right: 20px;color:#337ab7;" ng-href="{{viewData.Qurl}}" target="_blank">下载二维码</a></p>-->
+            <!--</div>-->
+            <!--<div class="form-group" >-->
+                <!--<label class="col-sm-3 control-label"></label>-->
+                <!--<p class="col-sm-6 form-text" style="margin-top: -1.5em;"> <sapn>提示:可以使用玄关健康医生端,患者端或者微信扫描二维码</sapn></p>-->
+            <!--</div>-->
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+            <!--<div class="form-group">-->
+                <!--<div class="col-sm-offset-3 col-lg-2 col-md-2 col-sm-3 col-xs-3">-->
+                    <!--<a type="button" class="w100 btn btn-info" ui-sref="app.check_edit">编辑</a>-->
+                <!--</div>-->
+                <!--<div class="col-lg-2 col-md-2 col-sm-3 col-xs-3">-->
+                    <!--<button type="button" class="w100 btn btn-danger" ng-click="revCheck()">&nbsp;&nbsp;&nbsp;反审核&nbsp;&nbsp;&nbsp;</button>-->
+                <!--</div>-->
+                <!--<div class="col-lg-2 col-md-2 col-sm-3">-->
+                    <!--<button type="button" class="w100 btn btn-info" ng-click="operatingRecord()">操作记录</button>-->
+                <!--</div>-->
+                <!--<div class="col-lg-2 col-md-2 col-sm-3">-->
+                    <!--<button type="button" class="w100 btn btn-info" ng-click="return()">返 回</button>-->
+                <!--</div>-->
+            <!--</div>-->
+        <!--</form>-->
+
+<script type="text/ng-template" id="operatingRecord.html">
+    <div class="modal-header">
+        <h3 class="modal-title text-center">操作记录</h3>
+    </div>
+    <div class="modal-body">
+        <div class="row" style="position: relative;">
+            <div class="col-md-12">
+                <div class="input-group" style="width: 400px;float:right;position: relative;">
+                    <input type="text" class="form-control" placeholder="搜索修改内容" ng-model="keyWord" ng-enter="InitTable(0,pageSize,keyWord)">
+                    <a ng-show="keyWord.length>0" style="position: absolute;top: 10px;right: 60px;z-index: 999;" ng-click="clearKW()" class="glyphicon glyphicon-remove"></a>
+                    <span class="input-group-btn">
+                       <button class="btn btn-info" type="button" ng-click="InitTable(0,pageSize,keyWord)">搜索</button>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="row m-t-sm">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0">
+                        <tr>
+                            <th class="text-center col-xs-3">
+                                修改时间
+                            </th>
+                            <th class="text-center col-xs-3">
+                                操作人
+                            </th>
+                            <th class="text-center">
+                                修改内容
+                            </th>
+                        </tr>
+                        <tr ng-repeat="item in data.pageData track by $index">
+                            <td align="center">{{item.createTime | date:'yyyy-MM-dd HH:mm'}}</td>
+                            <td align="center">{{item.creatorName}}</td>
+                            <!--<td align="center">{{item.content}}</td>-->
+                            <td align="center" ng-bind-html="item.content"></td>
+                        </tr>
+                    </table>
+                    <div class="text-center">
+                        <pagination ng-s="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()"  previous-text="上一页" next-text="下一页" max-size="10" boundary-links="true" rotate="false" first-text="首页" last-text="尾页"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" type="button" ng-click="recordCancel()">关闭</button>
+    </div>
+</script>

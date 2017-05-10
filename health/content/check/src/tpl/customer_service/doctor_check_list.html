@@ -1,0 +1,137 @@
+<style>
+    .dropdown-menu-dialog ul li{
+        margin-top: 2px;
+        cursor: pointer;
+    }
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="CheckList">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="org-title text-center">医生资格审核</h2>
+            </div>
+        </div>
+        <div class="row" style="margin: 0;">
+            <div class="col-md-12 tab-wrap" >
+                <div class="btn-group m-n b-none " uib-dropdown dropdown-append-to-body style="float:right">
+                    <button id="btn-append-to-body" type="button" class="btn btn-success create-doctor-btn" uib-dropdown-toggle>新建医生</button>
+                    <div class="dropdown-menu dropdown-menu-dialog p-none m-n b-none">
+                        <ul>
+                            <li class="text-center" ng-click="createDoctorAccount()">手动创建</li>
+                            <li class="text-center" ui-sref="app.updoctor_view" >批量导入</li>
+                        </ul>
+                    </div>
+                </div>
+                <tabset class="tab-container">
+                    <tab heading="待审核" select="tabs.unCheck()" active="tabs.active[0]">
+                        <div>
+                            <div ng-init="loading=true" ng-if="loading" class="loading">
+                                <i class="glyphicon glyphicon-repeat"></i>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="list_unCheck" class="table table-striped b-t b-b">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th width="80">姓名</th>
+                                            <th>医疗机构</th>
+                                            <th>科室</th>
+                                            <th>职称</th>
+                                            <th width="100">电话</th>
+                                            <th>邀请人</th>
+                                            <th>注册来源</th>
+                                            <th>认证时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="已通过" select="tabs.passed()" active="tabs.active[1]">
+                        <div>
+                            <div ng-init="loading=true" ng-if="loading" class="loading">
+                                <i class="glyphicon glyphicon-repeat"></i>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="list_passed" class="table table-striped b-t b-b">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th width="80">姓名</th>
+                                            <th>医疗机构</th>
+                                            <th>科室</th>
+                                            <th>职称</th>
+                                            <th width="100">电话</th>
+                                            <th>邀请人</th>
+                                            <th>注册来源</th>
+                                            <th>审核时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="未通过" select="tabs.noPass()" active="tabs.active[2]">
+                        <div>
+                            <div ng-init="loading=true" ng-if="loading" class="loading">
+                                <i class="glyphicon glyphicon-repeat"></i>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="list_noPass" class="table table-striped b-t b-b">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th width="80">姓名</th>
+                                            <th>医疗机构</th>
+                                            <th>科室</th>
+                                            <th>职称</th>
+                                            <th width="100">电话</th>
+                                            <th>邀请人</th>
+                                            <th>注册来源</th>
+                                            <th>审核时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </tab>
+                    <tab heading="未认证" select="tabs.unAuth()" active="tabs.active[3]">
+                        <div>
+                            <div ng-init="loading=true" ng-if="loading" class="loading">
+                                <i class="glyphicon glyphicon-repeat"></i>
+                            </div>
+                            <div class="table-responsive">
+                                <table id="list_unAuth" class="table table-striped b-t b-b">
+                                    <thead>
+                                        <tr>
+                                            <th></th>
+                                            <th width="80">姓名</th>
+                                            <th>医疗机构</th>
+                                            <th>科室</th>
+                                            <th>职称</th>
+                                            <th width="100">电话</th>
+                                            <th>邀请人</th>
+                                            <th>注册来源</th>
+                                            <th>注册时间</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+                <!--<button type="button" class="create-doctor-btn btn btn-success" ng-click="createDoctorAccount()">新建医生</button>-->
+            </div>
+        </div>
+    </div>
+</div>
+</div>
+

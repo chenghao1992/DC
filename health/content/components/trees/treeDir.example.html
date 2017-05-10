@@ -1,0 +1,41 @@
+<!-- 
+树绑定的数据，外部可以修改
+tree-data 
+
+树的配置
+tree-options = {
+	multiSelection, 是否多选
+	dirSelectable, 是否能选择父节点
+	nodeChildren,  子节点的key值,
+	showSelectedBg, 是否显示选中后的背景颜色默认true true:显示 false:不显示
+}
+
+multiSelection为false 单选时，已选中的node
+selected-node
+
+multiSelection为true 多选时，已选中的nodes
+selected-nodes
+
+不定义每个节点内容时，默认显示的key值
+tree-label-key 
+
+选择节点回调
+on-selection(node, selected, $parentNode, $index, $first, $middle, $last, $odd, $even, $path)
+
+设置节点展开
+expanded 1为全部展开  0或不传为全部不张开  也可为数组形式[0,1,0,1]
+
+获取由每个节点组成的数组，方便外部根据特定条件获取节点
+leaf-array
+
+-->
+<tree-dir tree-data="dataForTheTree" tree-options="{
+        multiSelection:true,
+        dirSelectable:true,
+        nodeChildren:'subList',
+        showSelectedBg:true
+    }" selected-node="selectedNode" selected-nodes="selectedNodes" tree-label-key="name" on-selection="onSelection" expanded="1" leaf-array="leafArray"></tree-dir>
+<!-- multiSelection为false 单选时，已选中的node -->
+<div>{{selectedNode.name}}</div>
+<!-- multiSelection为true 多选时，已选中的nodes -->
+<div ng-repeat="selectedNode in selectedNodes">{{$index+1}}.{{selectedNode.name}}</div>

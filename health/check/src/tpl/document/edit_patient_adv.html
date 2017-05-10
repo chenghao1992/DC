@@ -1,0 +1,227 @@
+<div class="frame-panel-a edit_a row" ng-controller="PatientADEditCtrl">
+    <toaster-container toaster-options="{'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
+    <div class="main col-sm-12 col-md-12 col-lg-10">
+        <form name="forma" class="form-horizontal form-validation ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-valid-url ng-valid-pattern ng-valid-validator ng-valid-blacklist">
+            <div class="form-group form-counter">
+                <label class="col-sm-2 control-label">标题<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-10">
+                    <input type="text" ng-model="formData.title" class="input_counter form-control" required="required" maxlength="50">
+                </div>
+                <em class="frm_input_append frm_counter">{{titleLength}}/50</em>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">题图<i class="fa fa-asterisk text-danger"></i></br>
+                    <span class="text-danger">( 建议尺寸：1080*345像素，不大于1M，请注意长宽比例，否则在用户端会出现变形 )</span>
+                </label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="bg-white text-center ng-File-UpLoad-Bt" ng-click="selectFile()" over-class="b-info" style="margin:0;width: 100%;height: 100%" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">
+                                <img ngf-src="fontImgUrl" width="100%" height="100%" ng-show="fontImgUrl">
+                                <i ng-show="!fontImgUrl" class="fa fa-file-picture-o" style="font-size:80px;line-height:100px;color:#dee5e7;"></i>
+                            </div>
+                            <div class="progress m-b-none" ng-show="uploadPercent>0">
+                                <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadPercent}}%;min-width: 2em;">
+                                    {{uploadPercent>0?uploadPercent:0}}%
+                                    <span class="sr-only">{{uploadPercent}}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="pull-left">
+                                <!--<div class="btn-group">-->
+                                <!--<button class="btn m-b-xs w-xs btn-default" ngf-select ng-model="fontImg" name="fontImg" ngf-max-size="2000000" ng-model-rejected="reGroupLogo" accept=".jpg,.jpeg,.png,.bmp" required>上传</button>-->
+                                <!--<button class="btn m-b-xs w-xs btn-default" ng-click="deleteImg()">删除</button>-->
+                                <!--</div>-->
+                                <div class="checkbox">
+                                    <label class="i-checks">
+                                        <input type="checkbox" checked="" ng-model="formData.isShowImg"><i></i>封面图片显示在正文
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+            <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">摘要<i class="fa fa-asterisk text-danger"></i></br><span class="text-muted">（选填，该摘要只在发送图文消息为单条时显示）</span></label>-->
+            <!--<div class="col-sm-10">-->
+            <!--<textarea maxlength="100" ng-model="formData.summary" class="form-control" rows="5"></textarea>-->
+            <!--<label class="pull-right">{{summaryLength}}/80</label>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 control-label">添加跳转按钮</label>
+                <div class="col-xs-1" style="width: 2%;">
+                    <div class="radio">
+                        <label class="i-checks">
+                            <input type="radio" ng-value=false name="radio" ng-model="radioState" ng-checked="true">
+                            <i></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-4 text-left">
+                    <label class="control-label">无</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-xs-12 col-sm-2 control-label">（预览时不会显示，请在患者APP中查看是否设置正确）</label>
+                <div class="col-xs-1" style="width: 2%;">
+                    <div class="radio">
+                        <label class="i-checks">
+                            <input type="radio" ng-value=true name="radio" ng-model="radioState">
+                            <i></i>
+                        </label>
+                    </div>
+                </div>
+                <div class="col-xs-10 col-sm-4" ng-show="homes">
+                    <div class="input-group m-b">
+                        <div class="input-group-btn dropdown" dropdown="">
+                            <button type="button" ng-disabled="!radioState" class="btn btn-default" dropdown-toggle="" aria-haspopup="true" aria-expanded="false">{{works}}<span class="caret"></span></button>
+                            <ul class="dropdown-menu">
+                                <li><a ng-click="works='集团主页';jituan_yisheng='1'">集团主页</a></li>
+                                <li><a ng-click="works='医生主页';jituan_yisheng='2';">医生主页</a></li>
+                            </ul>
+                        </div>
+                        <input style="position: relative;" placeholder="{{placeholder}}" type="text" ng-change="changes()" ng-disabled="!radioState" ng-model="homePage" class="form-control" required>
+                        <!--<span class="glyphicon glyphicon-remove form-control-feedback" ng-if="errorTips" ng-click="cleanInput()" style="pointer-events:auto;"></span>-->
+                        <div ng-show="states.length >0 && homePage !=undefined" class="homePup">
+                            <ul class="homePupUl">
+                                <li ng-repeat="item in states" class="homePupLi" ng-click="changeValue(item.name,item.id)" ng-mousemove="bgColor($index)">
+                                    {{item.name}}
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-1 col-sm-4">
+                    <button ng-disabled="!radioState" ng-show="!deletehome" class="btn btn-default" ng-click="homeSearch()">搜索</button>
+                    <button class="btn btn-info" ng-show="deletehome">{{homePage}}</button>
+                    <button class="btn btn-default" ng-click="deleteHome('sm')" ng-show="deletehome">删除</button>
+                </div>
+            </div>
+
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">正文<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-10" id="editorContent">
+                    <div id="myEditor"></div>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group text-center">
+                <button class="btn m-b-xs w-xs btn-success" ng-click="saveDoc()" ng-disabled="isSaved">保存</button>
+                <button class="btn m-b-xs w-xs btn-primary" ng-click="toPreview()" ng-disabled="isSaved">预览</button>
+            </div>
+        </form>
+    </div>
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+</div>
+<script type="text/ng-template" id="previewModalContent.html">
+    <style type="text/css">
+    ::-webkit-scrollbar {
+        width: 1px;
+        margin-right: 2px
+    }
+    
+    .btn-close {
+        position: absolute;
+        top: -11px;
+        right: -11px;
+    }
+    
+    .ipod-header {
+        width: 100%;
+    }
+    
+    .container {
+        font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+        width: 100%;
+        height: 600px;
+        overflow: auto;
+        padding: 0px 10px 10px 10px;
+        word-wrap: break-word;
+    }
+    
+    .container>.title {
+        color: #333333;
+        font-size: 22px;
+        font-weight: bold;
+    }
+    
+    .container>.disease>.tag {
+        display: inline-block;
+        background-color: #f8f8f8;
+        border: 1px solid #888888;
+        border-radius: 12px;
+        margin-right: 5px;
+        margin-bottom: 5px;
+        padding: 2px 6px;
+        color: #888888;
+        font-size: 12px;
+    }
+    
+    .container>.a-t {
+        font-size: 14px;
+        color: #888888;
+        margin-top: 10px;
+    }
+    
+    .container>.a-t>.author {
+        margin-left: 20px;
+    }
+    
+    .container>.summary {
+        border-left: 3px solid #CCCCCC;
+        padding-left: 10px;
+        margin-top: 10px;
+        font-size: 14px;
+        line-height: 150%;
+        color: #888888;
+    }
+    
+    .container >.font-img {
+        max-width: 100%;
+        margin: 10px 0 0;
+    }
+    
+    .container >.article {
+        color: #333333;
+        font-size: 14px;
+        margin-top: 10px;
+        line-height: 150%;
+    }
+    
+    .article img {
+        max-width: 100% !important;
+    }
+    </style>
+    <div style="position: relative;">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default b-dark btn-close" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <img class="ipod-header" ng-src="src/img/ipod_header_pat.png">
+        <div class="container">
+            <h1 class="title">{{article.title}}</h1>
+            <div class="a-t">
+                <span>{{article.date|date:'yyyy-MM-dd'}}</span>
+                <span class="author">{{article.authorName}}</span>
+            </div>
+            <img ng-src="{{article.copyPath}}" class="font-img" ng-show="article.isShow">
+            <div class="article" ng-bind-html="article.content">
+            </div>
+        </div>
+    </div>
+</script>
+<!--<script type="text/ng-template" id="homePageCtrl.html">-->
+    <!--<div class="modal-header">-->
+        <!--<h3 class="modal-title text-center">确定是否删除</h3>-->
+    <!--</div>-->
+    <!--<div class="modal-footer">-->
+        <!--<button class="btn btn-primary" type="button" ng-click="homeDeleteOk()">确定</button>-->
+        <!--<button class="btn btn-warning" type="button" ng-click="homeCancel()">取消</button>-->
+    <!--</div>-->
+<!--</script>-->

@@ -1,0 +1,161 @@
+<div class="dialog-heading font-bold text-center">
+    <div class="text-md">病情跟踪库</div>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="form-inline clearfix">
+                <div class="col-xs-12">
+                    <div class="row">
+                        <div class="form-group">
+                            请选择发送时间：
+                        </div>
+                        <time-set-cpn time="illnessTrackData.sendTime" hour-step="1" minute-step="30" class="form-inline"></time-set-cpn>
+                    </div>
+                </div>
+            </div>
+            <div class="m-t clearfix">
+                <div class="row">
+                    <div class="col-md-3 cnt-col-lt">
+                        <div id="lifeQualityLibraryTree" class="list-group" style="height: 300px;overflow: auto"></div>
+                    </div>
+                    <div class="col-md-9 cnt-col-rt">
+                        <div class="panel panel-default" style="height: 300px;overflow: auto">
+                            <div class="col-md-12">
+                                <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                    <div class="dataTables_length">
+                                        <label>
+                                            每页
+                                            <select class="form-control input-sm" ng-model="pageSize" ng-change="pageIndex=1;setTable(null, 1, pageSize)">
+                                                <option value="1">1</option>
+                                                <option value="5">5</option>
+                                                <option value="10">10</option>
+                                                <option value="15">15</option>
+                                                <option value="20">20</option>
+                                            </select>
+                                            条
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            <table class="table table-striped b-t dataTable no-footer">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>计划名称</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in illnessTrack track by $index">
+                                        <td class="text-center">
+                                            <input ng-click="selectItem(item)" type="checkbox" name="checkbox" ng-checked="isSelect(item)" class="a-link">
+                                        </td>
+                                        <td>{{item.qName}}</td>
+                                        <td>
+                                            <button class="btn btn-xs btn-primary text-xs" ng-click="modelCheckIlless(item.qId)">预览</button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-right">
+                            <pagination class="m-n" ng-show="page_count>0" total-items="page_count" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination>
+                            <!-- <uib-pagination class="m-n" ng-show="page_count>0" total-items="page_count" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></uib-pagination> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="col-md-offset-2 col-md-4">
+        <button type="button" class="btn-block btn btn-success" ng-click="ok()">确 定</button>
+    </div>
+    <div class="col-md-4">
+        <button type="button" class="btn-block btn btn-default" ng-click="cancel()">取 消</button>
+    </div>
+</div>
+<!-- 病情弹窗 -->
+<script type="text/ng-template" id="illnessTrackLibaryCheck.html">
+    <div class="row">
+        <div class="col-xs-10 col-xs-offset-1">
+            <div class="panel panel-default m-t">
+                <div class="panel-heading font-blod text-center">
+                    <h3>预览病情跟踪问题</h3>
+                </div>
+                <div class="panel-body">
+                    <div class="form-group clearfix">
+                        <div class="col-sm-12" style="padding-left:0">
+                            <strong class="control-label">问题: {{illnessTrack.name}}</strong>
+                        </div>
+                        <div>
+                            <img ng-repeat="img in illnessTrack.picUrls" src="{{img}}" class="img-question" />
+                        </div>
+                    </div>
+                    <div class="line line-dashed b-b line-lg pull-in"></div>
+                    <div class="form-group clearfix">
+                        <div class="row">
+                            <strong class="col-sm-1 control-label" style="padding-top:.5em;padding-right:0">选项：</strong>
+                            <div class="col-sm-11" style="padding-left:0">
+                                <div class="row" ng-repeat="option in illnessTrack.options | orderBy:'seq' ">
+                                    <div class="col-xs-8 form-inline">
+                                        <div class="form-group" style="margin-top:8px;">
+                                            <label>
+                                                <span ng-bind="option.seq=$index+1"></span> .
+                                                <img src="{{option.picUrls[0]}}" class="item-images" ng-show="option.picUrls[0]"/>
+                                                <label>{{option.name}}</label>
+                                                <p>自动回复：{{option.tips ||'未设置'}}</p>
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col-xs-3 form-inline text-right">
+                                        <label class="control-label" ng-if="option.level==1">正常</label>
+                                        <label class="control-label" ng-if="option.level==2">异常</label>
+                                        <label class="control-label" ng-if="option.level==3">危险</label>
+                                    </div>
+                                    <span class="col-xs-1"></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row" ng-repeat="option in illnessTrack.options | orderBy:'seq' " ng-if="option.appendQuestions&&option.appendQuestions.length>0">
+                            <span class="col-sm-3"></span>
+                            <strong class="col-sm-9" style="text-indent: 2em;padding-top: 1em;">选项 {{$index+1}} 追加问题</strong>
+                            <div class="row" ng-repeat="appendQuestion in option.appendQuestions track by $index | orderBy:'seq'">
+                                <span class="col-sm-4"></span>
+                                <span class="control-label col-sm-8">问题: {{appendQuestion.name}}</span>
+                                <div class="row">
+                                    <span class="col-sm-4"></span>
+                                    <span class="col-sm-1 text-right">选项: </span>
+                                    <ul class="col-sm-7">
+                                        <li ng-repeat="appendOption in appendQuestion.options | orderBy:'seq'" style="list-style-type:upper-alpha;">
+                                            <!-- <span ng-bind="appendOption.seq=$index+1"></span> -->
+                                            <label>{{appendOption.name}}</label>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="text-left" style="padding-top:2em;"><span class="glyphicon glyphicon-exclamation-sign"></span> 需要编辑操作，请在添加后在本计划内编辑此问题</div>
+                        <div class="text-right">
+                            <a class="btn btn-default btn-md w-xs" ng-click="cancel()">关 闭</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <style type="text/css">
+        .item-images {
+            width: 40px;
+            height: 40px;
+            display: inline;
+            padding:5px;
+        }.img-question{
+            width:80px;
+            height:80px;
+            display: inline;
+            padding:10px;
+        }
+        </style>
+</script>

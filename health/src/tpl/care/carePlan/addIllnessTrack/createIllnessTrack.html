@@ -1,0 +1,222 @@
+<div class="dialog-heading font-bold text-center">
+    <div class="text-md" ng-show="!editStatus">创建病情跟踪</div>
+    <div class="text-md" ng-show="editStatus">编辑病情跟踪</div>
+</div>
+<div class="modal-body">
+    <div class="row">
+        <div class="col-xs-12">
+            <div class="m-t row">
+                <div class="col-xs-2 text-right">
+                    <div class="m-t-sm">
+                        发送时间：
+                    </div>
+                </div>
+                <div class="col-xs-10 form-inline">
+                    <time-set-cpn time="illnessTrackData.sendTime" hour-step="1" minute-step="30" class="form-inline"></time-set-cpn>
+                    <div class="form-group">
+                        多个病情跟踪问题将发送时间设为相同，系统会自动为题组发送给患者
+                    </div>
+                </div>
+            </div>
+            <div class="m-t row">
+                <div class="col-xs-2 text-right">
+                    <div class="m-t-sm">
+                        问题标题：
+                    </div>
+                </div>
+                <div class="col-xs-10">
+                    <input type="text" class="form-control" ng-model="illnessTrack.name" placeholder="请填写问题标题" style="width:82.3%;display:inline-block;">
+                    <span class="btn btn-primary btn-upLoadingTitlePics" ng-disabled="titleImgs.length>7" ng-click="selectFile('isHeadTitlePic')" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp" style="margin-top: -3px;">
+                        上传题目图片
+                    </span>
+
+                    <div class="input-group-btn optionImg m-t-xs" style="height:100px;" ng-hide="titleImgs.length<1||!titleImgs">
+                        <lable ng-repeat="itemImg in titleImgs track by $index" style="display:inline-block;position:relative;">
+                            <img src="{{itemImg}}" ng-click="openLightboxModal($index)" style="margin:10px" ng-show="titleImgs" width="80px" height="80px" ng-click="scaleImage(titleImgs,$index)" />
+                            <i class="icon-close optionImg" style="font-size:25px;line-height:25px;color:#909090;position:absolute;left: 75px;top: 0px;" ng-click="removeItemImg($index)"></i>
+                        </lable>
+                        <div class="progress m-b-none " ng-show="titlePicUrlUlPenct>0" ng-hide="titlePicUrlUlPenct==100||titleImgs.length>7||!titleImgs|| !titlePicUrlUlPenct">
+                            <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{titlePicUrlUlPenct}}" aria-valuemin="0" aria-valuemax="100" style="width: {{titlePicUrlUlPenct}}%;min-width: 2em;">
+                                {{titlePicUrlUlPenct>0?titlePicUrlUlPenct:0}}%
+                                <span class="sr-only">{{titlePicUrlUlPenct}}%</span>
+                            </div>
+                        </div>
+                     
+                    </div>
+                </div>
+            </div>
+            <div class="row m-t-lg m-b-lg">
+                <div class="col-xs-2 text-right">
+                    <div class="m-t-sm">
+                        问题选项：
+                    </div>
+                </div>
+                <div ng-repeat="option in illnessTrack.options | orderBy:'seq' " ng-class="$first?'':'col-xs-offset-2'" class="col-xs-10">
+                    <div class="row" style="height:60px;">
+                        <label class="col-xs-7 control-label">
+                            <input type="radio" ng-show="illnessTrackData.type == 1" name="radio" disabled>
+                            <input type="checkbox" ng-show="illnessTrackData.type == 4" name="radio" disabled>
+                            <span ng-bind="option.seq=$index+1"></span> .
+                            <a editable-text="option.name" blur="submit" ng-class="option.name?'':'text-danger'">{{option.name||'不能为空'}}</a>
+                        </label>
+                        <div class="col-xs-4 form-inline text-right">
+
+                            <div class="input-group-btn optionImg" ng-hide="!option.picUrls[0]" style="display: inline-block; margin-right: 20px; margin-top: -1px; height: auto;">
+                                <i class="icon-close optionImg" style="font-size:20px;line-height:20px;width:20px;height:20px;color:#909090;position:absolute;top: -10px; right: -22px;" ng-click="removeOptionImg(option)" ng-show="option.picUrls[0]"></i>
+                                <div class="bg-white text-center " over-class="b-info" style="margin:0;width: 40px;height: 40px" accept="image/*" type="file" ng-click="option.picUrls[0]?openSingleLightboxModal($index,option.picUrls):selectFile(option)" ng-class="{'ng-File-UpLoad-Bt':!option.picUrls[0]}" ng-model="fontImg">
+                                    <img src="{{option.picUrls[0]}}" ng-show="option.picUrls[0]" width="40px" height="40px" />
+                                    <img ngf-src="fontImgUrl1" width="40px" height="40px" ng-show="isshow">
+                                    <i class="fa fa-file-picture-o optionImg" ng-show="!option.picUrls[0]" style="font-size:23px;line-height:35px;color:#dee5e7;width:35px;height:35px;"></i>
+                                </div>
+                                <div class="progress m-b-none progress-reset" ng-show="option.uploadPercent>0" ng-hide="option.uploadPercent==100 || !option.uploadPercent" style="margin-left: -52px; margin-top: -3px;">
+                                    <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{option.uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{option.uploadPercent}}%;min-width: 2em;">
+                                        {{option.uploadPercent>0?option.uploadPercent:0}}%
+                                        <span class="sr-only">{{option.uploadPercent}}%</span>
+                                    </div>
+                                </div>
+                                {{option.uploadPercent}}1
+                            </div>
+
+                            <span class="btn btn-default btn-upLoadingTitlePics" style="box-shadow: none;" ng-disabled="part.picUrls[0]==1" ng-click="selectFile(option)" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">添加图片</span>
+                            <select class="form-control" ng-model="option.levelName" ng-change="optionChange(option,['正常','异常','危险'])">
+                                <option ng-repeat="item in ['正常','异常','危险']" ng-selected="option.level==$index+1?true:false">{{item}}</option>
+                            </select>
+                            <button ng-show="illnessTrackData.type == 1" ng-click="addAppendQuestion(option)" class="btn btn-default" style="box-shadow: none;">追加问题</button>
+                            <button class="btn btn-danger" ng-click="removeItem(option,illnessTrack.options)" ng-hide="illnessTrack.options.length<3">删除</button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xs-10 col-xs-offset-2 m-t-sm">
+                    <button class="btn btn-info btn-sm" ng-click="addOption()">添加选项</button>
+                    <span class="btn btn-primary btn-sm" accept="image/*" type="file" ng-click="selectFile('uploadTotalPics')" ng-model="fontImg">批量上传选项图片</span>
+                </div>
+            </div>
+            <div class="m-b-sm row" ng-repeat="option in illnessTrack.options | orderBy:'seq' " ng-if="option.appendQuestions&&option.appendQuestions.length>0">
+                <div class="col-xs-2 col-xs-offset-2">
+                    <div class="m-t-sm">
+                        选项{{$index+1}}追加：
+                    </div>
+                </div>
+                <div ng-repeat="appendQuestion in option.appendQuestions track by $index | orderBy:'seq'" ng-class="$first?'':'col-xs-offset-4'" class="col-xs-8 m-b-sm">
+                    <div class=" b b-grey clearfix">
+                        <div class="col-sm-2 text-center clearfix">
+                            <h4 class="m-t-md">Q<span ng-bind="appendQuestion.seq=$index+1"></span>:</h4>
+                            <div class="m-t-sm">
+                                <a ng-click="exchangeItem(appendQuestion,option.appendQuestions[$index-1],option.appendQuestions)" ng-if="!$first" title="向上移动"><i class="fa fa-arrow-up"></i></a>
+                            </div>
+                            <div>
+                                <a ng-click="exchangeItem(appendQuestion,option.appendQuestions[$index+1],option.appendQuestions)" ng-if="!$last" title="向下移动"><i class="fa fa-arrow-down"></i></a>
+                            </div>
+                            <div class="m-t-sm">
+                                <button ng-click="copyAppendQuestion(appendQuestion,option.appendQuestions)" class="btn btn-default btn-xs">复制</button>
+                            </div>
+                            <div class="m-t-xs">
+                                <button class="btn btn-default btn-xs" ng-click="removeItem(appendQuestion,option.appendQuestions)">删除</button>
+                            </div>
+                        </div>
+                        <div class="col-sm-10">
+                            <div class="b-l b-grey clearfix" style="min-height:160px">
+                                <div class="m-l-md m-t-sm">
+                                    <div>
+                                        <input type="text" class="form-control" placeholder="题目" ng-model="appendQuestion.name">
+                                    </div>
+                                    <ul class="m-b-sm">
+                                        <li class="clearfix m-t-sm" ng-repeat="appendOption in appendQuestion.options | orderBy:'seq'">
+                                            <div class="pull-left">
+                                                <label class="m-t-xs">
+                                                    <input type="radio" disabled> &nbsp;&nbsp;
+                                                    <span ng-bind="appendOption.seq=$index+1"></span>.
+                                                    <a editable-text="appendOption.name" blur="submit" ng-class="appendOption.name?'':'text-danger'">{{appendOption.name||'不能为空'}}</a>
+                                                </label>
+                                            </div>
+                                            <div class="pull-right clearfix m-l-xs">
+                                                <button class="btn btn-default btn-sm" ng-click="removeItem(appendOption,appendQuestion.options)" ng-hide="appendQuestion.options.length<3">删除</button>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                    <div class="m-t-sm m-b-sm">
+                                        <button ng-click="addAppendOption(appendQuestion)" class="btn btn-info btn-sm">添加选项</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <div class="col-md-2">
+        <button type="button" class="btn-block btn btn-primary" ng-click="collect()">保存并收藏</button>
+    </div>
+    <div class="col-md-offset-6 col-md-2">
+        <button type="button" class="btn-block btn btn-success" ng-click="ok()">确 定</button>
+    </div>
+    <div class="col-md-2">
+        <button type="button" class="btn-block btn btn-default" ng-click="closeModal()">取 消</button>
+    </div>
+</div>
+<!-- 七牛上传组件 -->
+<qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+<!-- 七牛上传组件 end -->
+<style type="text/css">
+.editable-controls {
+    margin-top: 0px !important;
+    border: 0px !important;
+}
+
+.input-xs {
+    height: 22px;
+    padding: 3px 12px;
+}
+
+.editable-click,
+a.editable-click {
+    border: 0px;
+    color: #666;
+}
+
+.editable-click,
+a.editable-click.text-danger {
+    color: #D14;
+}
+
+.questionImg {
+    float: left;
+    width: 99px;
+    top: -52px;
+    height: 99px;
+    position: absolute;
+    right: 101px;
+}
+
+.optionImg {
+    width: 50px;
+    display: inherit;
+    height: 65px;
+    margin-right: 23px;
+}
+
+.uploadInput {
+    width: 94px;
+    height: 99px;
+    position: absolute;
+    opacity: 0;
+}
+
+.progress {
+    position: absolute;
+    display: inline-block;
+    height: 16px;
+    width: 80px;
+    /* left: 54px; */
+    top: 88px;
+}
+
+.progress-reset {
+    width: 45px;
+    top: 45px;
+}
+</style>

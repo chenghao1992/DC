@@ -1,0 +1,245 @@
+<style>
+    .pagination{
+        margin:0 !important;
+    }
+    .table{
+        margin-bottom: 0 !important;
+    }
+    .borderleif-right{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+    .borderleif-right-bootm{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+    /*.checkTypeName{*/
+        /*word-break:break-all;*/
+        /*display:-webkit-box;*/
+        /*-webkit-line-clamp:2;*/
+        /*-webkit-box-orient:vertical;*/
+        /*overflow:hidden;*/
+    /*}*/
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="checkreportlist">
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<h2 class="org-title text-center">举报审核列表</h2>-->
+        <!--</div>-->
+    <!--</div>-->
+    <uib-tabset >
+        <!--<div class="input-group pull-right m-r-xxs" style="width: 300px; position: relative;">-->
+        <!--<input type="text" class="form-control pull-right m-r-xxs" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword">-->
+        <!--</div>-->
+        <uib-tab heading="待审核" select="checkReport(0)" >
+            <div>
+                <div class="col-md-12 form-inline  borderleif-right-bootm" style="padding:8px;">
+                    <button class="btn btn-info  pull-right" ng-click="queryReportList(0,search.keyword)" style="width:80px;margin-left: 1em;">查询</button>
+                    <div class="input-group pull-right " style="width: 300px; position: relative;">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword" ng-enter="queryReportList(0,search.keyword)">
+                    </div>
+                </div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th style="width: 2%"></th>
+                        <th style="width: 30%">标题</th>
+                        <th style="width: 13% ">作者</th>
+                        <th style="width: 13%">举报人</th>
+                        <th style="width: 13%">举报时间</th>
+                        <th style="width: 16%">举报理由</th>
+                        <th style="width: 13%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in reportList">
+                        <td><input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/></td>
+                        <td style="color: #2A9CDB;" ng-click="funGoDetail(i.topicId,0,page.index,i.state,i.id)">{{i.title}}</td>
+                        <td>
+                            {{i.author}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.userType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.userType==4">官方账号</span>
+                        </td>
+                        <td >
+                            {{i.informer}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.informerType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.informerType==4">官方账号</span>
+                        </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="checkTypeName">{{i.checkTypeName}}</td>
+                        <td>
+                            <button class="btn btn-link btn-link-2" ng-click="byReportPass(i.id)">已审核</button>
+                            <button class="btn btn-link btn-link-2" ng-click="byReportDel(i.id)">删除</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="reportList.length<1">
+                        <td colspan="7" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label><input type="checkbox" ng-model="check.isOne"  ng-click="allSelected(check.isOne)" />全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="byReportPass()">已审核</button> <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="byReportDel()">删除</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size" ng-change="funPageSizeChange(0)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info0" role="status" aria-live="polite">
+                        当前第 {{(page.index-1)*page.size+1}} - {{page.index*page.size > search.postTotal0 ? search.postTotal0:  page.index*page.size}} 条，共 {{search.postTotal0}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination ng-change="funPageindex(0)"  max-size="7" items-per-page="page.size" boundary-links="true" total-items="search.postTotal0" ng-model="page.index" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="已审核" select="checkReport(1)">
+            <div>
+                <div class="col-md-12 form-inline  borderleif-right-bootm" style="padding:8px;">
+                    <button class="btn btn-info  pull-right" ng-click="queryReportList(1,search.keyword1)" style="width:80px;margin-left: 1em;">查询</button>
+                    <div class="input-group pull-right " style="width: 300px; position: relative;">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" ng-enter="queryReportList(1,search.keyword1)" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword1" >
+                    </div>
+                </div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th style="width: 2%"></th>
+                        <th style="width: 30%">标题</th>
+                        <th style="width: 13% ">作者</th>
+                        <th style="width: 13%">举报人</th>
+                        <th style="width: 13%">审核时间</th>
+                        <th style="width: 16%">举报理由</th>
+                        <th style="width: 13%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in reportList">
+                        <td><input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/></td>
+                        <td style="color: #2A9CDB;" ng-click="funGoDetail(i.topicId,1,page.index,i.state,i.id)">{{i.title}}</td>
+                        <td>
+                            {{i.author}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.userType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.userType==4">官方账号</span>
+                        </td>
+                        <td>
+                            {{i.informer}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.informerType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.informerType==4">官方账号</span>
+                        </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="checkTypeName">{{i.checkTypeName}}</td>
+                        <td>
+                            <button class="btn btn-link btn-link-2" ng-click="checkReportNopass(i.id,1)">撤销</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="reportList.length<1">
+                        <td colspan="7" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label><input type="checkbox" ng-model="check.isTwo" ng-click="allSelected(check.isTwo)" />全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="checkReportNopass(0,1)">撤销</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size1" ng-change="funPageSizeChange(1)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info" role="status" aria-live="polite">
+                        当前第 {{(page.index1-1)*page.size1+1}} - {{page.index1*page.size1 > search.postTotal1 ? search.postTotal1:  page.index1*page.size1}} 条，共 {{search.postTotal1}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination ng-change="funPageindex(1)" max-size="7" items-per-page="page.size1" boundary-links="true" total-items="search.postTotal1" ng-model="page.index1" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+        <uib-tab heading="已删除"  select="checkReport(2)">
+            <div>
+                <div class="col-md-12 form-inline  borderleif-right-bootm" style="padding:8px;">
+                    <button class="btn btn-info  pull-right" ng-click="queryReportList(2,search.keyword2)" style="width:80px;margin-left: 1em;">查询</button>
+                    <div class="input-group pull-right " style="width: 300px; position: relative;">
+                        <input type="text" class="form-control ng-pristine ng-valid ng-touched" ng-enter="queryReportList(2,search.keyword2)" placeholder="&#128269;&nbsp;标题" ng-model="search.keyword2" >
+                    </div>
+                </div>
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th style="width: 2%"></th>
+                        <th style="width: 30%">标题</th>
+                        <th style="width: 13% ">作者</th>
+                        <th style="width: 13%">举报人</th>
+                        <th style="width: 13%">删除时间</th>
+                        <th style="width: 16%">举报理由</th>
+                        <th style="width: 13%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in reportList">
+                        <td><input type="checkbox" ng-click="singleSelected(i)" ng-model="i.isCheck"/></td>
+                        <td style="color: #2A9CDB;" ng-click="funGoDetail(i.topicId,2,page.index,i.state,i.id)">{{i.title}}</td>
+                        <td>
+                            {{i.author}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.userType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.userType==4">官方账号</span>
+                        </td>
+                        <td>
+                            {{i.informer}}
+                            <span class="mark-info mark-info-success mark-l-xxs" ng-show="i.informerType==3">医生</span>
+                            <span class="mark-info mark-info-attention mark-l-xxs" ng-show="i.informerType==4">官方账号</span>
+                        </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td class="checkTypeName">{{i.checkTypeName}}</td>
+                        <td>
+                            <button class="btn btn-link btn-link-2" ng-click="checkReportNopass(i.id,2)">撤销</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="reportList.length<1">
+                        <td colspan="7" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label><input type="checkbox" ng-model="check.isThere" ng-click="allSelected(check.isThere)" />全选({{numberlsit}})</label>
+                        <button class="btn btn-link btn-link-2 checkbtn-1" ng-click="checkReportNopass(0,2)">撤销</button>
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size2" ng-change="funPageSizeChange(2)">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info1" role="status" aria-live="polite">
+                        当前第 {{(page.index2-1)*page.size2+1}} - {{page.index2*page.size2 > search.postTotal2 ? search.postTotal2:  page.index2*page.size2}} 条，共 {{search.postTotal2}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination ng-change="funPageindex(2)"  max-size="7" items-per-page="page.size2" boundary-links="true" total-items="search.postTotal2" ng-model="page.index2" class="pagination-sm" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+<script type="text/ng-template" id="deleteReport.html">
+    <div class="modal-header text-center">
+        <h3 class="modal-title">确认是否删除</h3>
+    </div>
+    <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-primary " ng-click="modalOk()" style="margin: 0 2em;">确定</button>
+        <button class="btn btn-warning " ng-click="modalCancel()" style="margin: 0 2em;">取消</button>
+    </div>
+</script>
+

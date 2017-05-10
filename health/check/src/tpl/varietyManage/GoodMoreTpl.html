@@ -1,0 +1,36 @@
+<table class="table table-striped b-t dataTable no-footer m-t-sm">
+    <thead>
+    <tr>
+        <th></th>
+        <th>编码</th>
+        <th>规格</th>
+        <th>包装规格</th>
+        <th>剂型</th>
+        <th>批准文号</th>
+        <th>管理类别</th>
+        <th>产品类别</th>
+        <th>创建时间</th>
+        <th>状态</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody >
+    <tr ng-repeat="cItem in GoodData.data track by $index">
+        <td><img src="{{cItem.imageUrl}}"/></td>
+        <td>{{cItem.drugFormCode}}</td>
+        <td>{{cItem.specification}}</td>
+        <td>{{cItem.packSpecification}}</td>
+        <td>{{cItem.form}}</td>
+        <td>{{cItem.number}}</td>
+        <td>{{cItem.manageType}}</td>
+        <td>{{cItem.productType}} </td>
+        <td>{{cItem.createdDate | date:'yyyy/MM/dd'}}</td>
+        <td>{{cItem.stateAudit }}</td>
+
+        <td>
+            <button  class="btn btn-xs btn-primary text-xs" ui-sref="app.VarietyManage.add({ companyId: item.id})">编辑</button>
+            <button  class="btn btn-xs btn-info text-xs" >查看</button>
+        </td>
+    </tr>
+    </tbody>
+</table>

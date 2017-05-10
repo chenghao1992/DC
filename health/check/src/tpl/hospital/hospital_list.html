@@ -1,0 +1,86 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="HospitalListCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">医院列表</h2>
+            </div>
+            <div class="col-md-9 mrb-10">
+                <div class="pull-right">
+                    <a class="btn btn-success" ui-sref="app.hospital.edit">新建医院</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="panel panel-default">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="dataTables_length">
+                                    <label>
+                                        每页
+                                        <select class="form-control input-sm" ng-model="pageSize" ng-change="setTable(1, pageSize,_keyWord)">
+                                            <option value="1">1</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                            <option value="100">100</option>
+                                        </select>
+                                        条
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <div class="dataTables_filter">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control input-sm" placeholder="请输入医院名称" ng-model="_keyWord" ng-enter="setTable(1,null,_keyWord)">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="setTable(1,null,_keyWord)">搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped b-t dataTable no-footer m-t-sm">
+                        <thead>
+                            <tr>
+                                <th>医院名称</th>
+                                <th>省份</th>
+                                <th>城市</th>
+                                <th>区域</th>
+                                <th>管理员</th>
+                                <th>联系电话</th>
+                                <th>创建日期</th>
+                                <th>操作</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in hospitalList track by $index"  ui-sref="app.hospital.Info({ hospitalId: item.id})" >
+
+                                <td>{{item.hospitalName}}</td>
+                                <td>{{item.province}}</td>
+                                <td>{{item.city}}</td>
+                                <td>{{item.country}}</td>
+                                <td>{{item.adminName}}</td>
+                                <td>{{item.telephone}}</td>
+                                <td>{{item.creatorDate | date:'yyyy-MM-dd HH:mm:ss'}}</td>
+                                <td>
+                                    <button  class="btn btn-xs btn-primary text-xs">查看</button>
+                                    <!--     <button ui-sref="app.hospital.edit({ hospitalId: item.id})" class="btn btn-xs btn-primary text-xs">查看</button>-->
+                                    </td>
+                                </tr>
+                                <tr ng-if="!hospitalList||hospitalList.length<1">
+                                    <td colspan="7" class="text-center">无数据</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="text-center">
+                        <pagination ng-show="page_count>0" total-items="page_count" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+

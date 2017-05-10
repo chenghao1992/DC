@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html data-ng-app="app">
+<head>
+    <meta charset="utf-8" />
+    <title>玄关健康平台</title>
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!-- 清除缓存 -->
+    <meta http-equiv="cache-control" content="max-age=0" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <!--[if lt IE 9]>
+    <script>
+        window.location.href = 'src/tpl/Navigator_Not_Surpport.html';
+        var comp_path = window.location.protocol + '//' + window.location.host;
+    </script>
+    <![endif]-->
+    <script src="assets/config.js?rev=5fb32a10109d721e25a62d425b50fb59"></script>
+</head>
+
+<body ng-controller="AppCtrl">
+    <div class="app" id="app" ng-init="app.settings.asideFixed=false" ng-class="{'app-header-fixed':app.settings.headerFixed, 'app-aside-fixed':app.settings.asideFixed, 'app-aside-folded':app.settings.asideFolded, 'app-aside-dock':app.settings.asideDock, 'container':app.settings.container}" ui-view></div>
+    <script type="text/javascript">
+    (function() {
+
+        var protocol = window.protocol || 'http://';
+
+        // 加载 css
+        var headDom = document.getElementsByTagName('head')[0];
+        var links = [
+            protocol + 'static.mediportal.com.cn/static/health/bootstrap/dist/css/bootstrap.css',
+            protocol + 'static.mediportal.com.cn/static/health/animate.css/animate.css',
+            protocol + 'static.mediportal.com.cn/static/health/font-awesome/css/font-awesome.min.css',
+            protocol + 'static.mediportal.com.cn/static/health/simple-line-icons/css/simple-line-icons.css',
+            'src/css/app.css?rev=472c3ca80f12f2ebbbcd65137449f2d6" type="text/css',
+            'src/css/main.css?rev=83b315a5507e9679c310d6c56f5cef7a" type="text/css',
+            'components/ngUmeditor/umeditor/themes/default/css/umeditor.min.css',
+            protocol + 'static.mediportal.com.cn/static/guider/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css'
+        ];
+
+        function setCssLink(url) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url;
+            headDom.appendChild(link);
+        };
+
+        for (var i = 0; i < links.length; i++) {
+            setCssLink(links[i])
+        };
+
+        // 加载 js
+        var jss = [
+            protocol + 'static.mediportal.com.cn/static/health/jquery/dist/jquery.min.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular/angular.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-animate/angular-animate.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-cookies/angular-cookies.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-resource/angular-resource.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-sanitize/angular-sanitize.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-touch/angular-touch.js',
+            protocol + 'static.mediportal.com.cn/static/common/angularUiCN/angularUiCN.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-ui-router/release/angular-ui-router.js',
+            protocol + 'static.mediportal.com.cn/static/health/ngstorage/ngStorage.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-ui-utils/ui-utils.js',
+            protocol + 'static.mediportal.com.cn/static/guider/angular-ui-bootstrap/ui-bootstrap-tpls.min.js',
+            protocol + 'static.mediportal.com.cn/static/health/oclazyload/dist/ocLazyLoad.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-translate/angular-translate.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-translate-loader-static-files/angular-translate-loader-static-files.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-translate-storage-cookie/angular-translate-storage-cookie.js',
+            protocol + 'static.mediportal.com.cn/static/health/angular-translate-storage-local/angular-translate-storage-local.js',
+            'components/ngUmeditor/umeditor/third-party/jquery.min.js',
+            'components/ngUmeditor/umeditor/umeditor.min.js',
+            'components/ngUmeditor/umeditor/umeditor.config.js',
+            protocol + 'static.mediportal.com.cn/static/guider/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js',
+            'src/app.js?rev=21ba3a386e6348ad8fe0a53aa72cebd6',
+            'src/config.js?rev=9dd3bcd7ca349bc7fbbb6cab92313fbc',
+            'src/config.lazyload.js?rev=460e6ca7a40ed3cc1a8e6cc7c0299c22',
+            'src/config.router.js?rev=f33a3fef9a9bfdf682783d64ea8a53e2',
+            'src/js/utils.js?rev=c16a50755ae2d89ae30e837c9525711e',
+            'src/js/main.js?rev=20ad07b3eb292be5284d4da80c67b57c',
+            'src/js/modal.js?rev=96dc930f5fb01941ecb5e4c84b06670a',
+            'src/js/services/ui-load.js?rev=43d5d9b76888733fe680c434748f4f78',
+            'src/js/filters/fromNow.js?rev=df26f651891370ab0c0afc3827fcdcdb',
+            'src/js/directives/setnganimate.js?rev=5433790303faaefada2f1427fb94b70a',
+            'src/js/directives/ui-butterbar.js?rev=6de9ad839318beba12b9fe1d6eef8412',
+            'src/js/directives/ui-focus.js?rev=0139c2bb0b9cd0ab26dcf9c459d14b7f',
+            'src/js/directives/ui-fullscreen.js?rev=64dd6669e17b1337506251a729bf25a3',
+            'src/js/directives/ui-jq.js?rev=0ca91a7fc6545188da9dcd0e15fdad11',
+            'src/js/directives/ui-module.js?rev=3c5e250de102d99b7515e66629e6a589',
+            'src/js/directives/ui-nav.js?rev=dd749f317c031c38bd54e10350ff7a2c',
+            'src/js/directives/ui-scroll.js?rev=77a40523e7bfd609ba53c3baa2c26a6b',
+            'src/js/directives/ui-shift.js?rev=33fbedc4e86da93a09edc600e0705c07',
+            'src/js/directives/ui-toggleclass.js?rev=1b63380321e9a77546fabd7ab8bbc1b0',
+            'src/js/services/data-group.js?rev=86d1154435f9773e1582f49e02236281',
+            'src/js/directives/ui-ofdoctor.js?rev=b5e8c2dcdb795ecd073c0bb8d6cfff70',
+            'src/js/services/ui-ofdoctor.js?rev=316abea924297bd635ae1642006f0d7b',
+            protocol +  "api.map.baidu.com/api?v=2.0&ak=6uWsWUrNR6xqQref0wIwMgGw&s=1&callback=BMap",
+            './components/QFileUpload/QFileUpload.js'
+        ];
+        var body = document.body;
+        function setJsLink(url) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+            script.async = false; //是否异步
+            body.appendChild(script);
+        };
+        for (var i = 0; i < jss.length; i++) {
+            setJsLink(jss[i])
+        };
+    })();
+    </script>
+</body>
+
+</html>

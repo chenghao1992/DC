@@ -1,0 +1,72 @@
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="appointmentEdit">
+    <div class="frame-panel">
+        <div class="panel-body">
+            <div class="row m-b-lg">
+                <h3 class="h3 col-md-12 text-center">预约名医</h3>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-horizontal">
+                <div class="row">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">预约名医功能</label>
+                    </div>
+                    <div class="col-sm-9">
+                        <label class="i-checks control-label">
+                            <input type="radio" name="openAppointment" ng-model="appointment.openAppointment" ng-value="true">
+                            <i></i> 是
+                        </label>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                        <label class="i-checks control-label">
+                            <input type="radio" name="openAppointment" ng-model="appointment.openAppointment" ng-value="false">
+                            <i></i> 否
+                        </label>
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">集团预约收费价格</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group col-xs-12">
+                            <input type="number" placeholder="集团预约收费价格" class="form-control" ng-model="appointment.appointmentMin" ng-disabled="!appointment.openAppointment">
+                            <span class="input-group-addon">&nbsp;元&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">集团分成比例</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group col-xs-12">
+                            <input type="number" placeholder="集团分成比例" class="form-control" ng-model="appointment.appointmentGroupProfit" ng-disabled="!appointment.openAppointment">
+                            <span class="input-group-addon">&nbsp;%&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="row m-t-sm">
+                    <div class="col-sm-2 text-right">
+                        <label class="control-label">上级分成比例</label>
+                    </div>
+                    <div class="col-sm-3">
+                        <div class="input-group col-xs-12">
+                            <input type="number" placeholder="上级分成比例" class="form-control" ng-model="appointment.appointmentParentProfit" ng-disabled="!appointment.openAppointment">
+                            <span class="input-group-addon">&nbsp;%&nbsp;</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="row m-t-sm m-b-lg">
+                    <div class="col-sm-2 col-sm-offset-2">
+                        <button class="btn btn-primary btn-block" ng-disabled='settingsForm.$invalid' ng-click="funSetAppointment(appointment)">保&nbsp;&nbsp;存
+                        </button>
+                    </div>
+                </div>
+                <div class="form-group m-t-lg" ng-show="authError">
+                    <div class="col-sm-10 col-sm-offset-3 text-danger">
+                        {{authError}}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

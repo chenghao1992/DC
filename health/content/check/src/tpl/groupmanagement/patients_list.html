@@ -1,0 +1,509 @@
+<style type="text/css" media="screen">
+.table-striped tbody tr:hover td {
+    cursor: default;
+    background-color: none;
+}
+
+.radio {
+    display: inline-block;
+}
+
+.span {
+    margin-top: 2px;
+    display: inline-block;
+    font-size: 17px;
+}
+
+.about {
+    display: inline-block;
+    padding: 1em;
+}
+
+.label {
+    text-indent: 2em;
+    text-align: left;
+    font-size: 16px;
+    color: #58666e;
+}
+
+.table > tbody > tr > td {
+    text-align: left;
+    cursor: default;
+}
+
+.hbox .panel {
+    box-shadow: 0 0 0 0;
+}
+
+.m-t-sm {
+    margin-top: 5px;
+}
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="patientsCtlr">
+    <!-- {{abc}}
+<uib-tabset active="active">
+    <uib-tab index="0" heading="Static title">
+        <input type="text" ng-model="$parent.$parent.abc"/>
+        <a ng-click="alert($parent)">12331</a>
+    </uib-tab>
+    <uib-tab index="3">
+      <uib-tab-heading>panel-default
+        <i class="glyphicon glyphicon-bell"></i> Alert!
+      </uib-tab-heading>
+      I've got an HTML heading, and a select callback. Pretty cool!
+    </uib-tab>
+  </uib-tabset> -->
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-12">
+                <h2 class="org-title text-center">患者端推荐管理</h2>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 pb-10">
+                <div class="panel" style="">
+                    <div class="panel-body">
+                        <tabset justified="true">
+                            <tab index="0" heading="常见疾病设置" style="width:130px;">
+                                <div class="row m-t-sm">
+                                    <!-- id='diseasesText' -->
+                                    <div class="col-md-12" style="margin-top:-10px;">
+                                        <div class="panel panel-default">
+                                            <div class="col-md-12">
+                                                <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                    <div class="dataTables_length col-md-12">
+                                                        <button ng-click="Commondiseases()" class="btn btn-success btn-sm " style="float:right;margin-bottom:10px;">新增常见疾病</button>
+                                                        <!-- <span Commondiseases()/> -->
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped b-t dataTable no-footer">
+                                                <thead>
+                                                    <tr>
+                                                        <th>疾病标签</th>
+                                                        <th style="width:20%">操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat=" dis in diseaData.pageData track by $index">
+                                                        <td>{{dis.name}}</td>
+                                                        <td>
+                                                            <button class="btn btn-sm btn-primary" ng-click="updisea(dis.diseaseId)" ng-show="$index!=0">上移</button>
+                                                            <button class="btn btn-sm btn-danger" ng-click="diseasesview(dis.diseaseId)">疾病介绍</button>
+                                                            <button class="btn btn-sm btn-default" ng-click="deletedisea(dis.diseaseId)">移除</button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-left">
+                                            <label class="about">注：最多可以设置20个常见疾病</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab index="1" heading="推荐医生集团" style="width:130px;">
+                                <div class="row m-t-sm">
+                                    <!-- id="dortorText" style="display:none" -->
+                                    <div class="col-md-12" style="margin-top:-10px;">
+                                        <div class="panel panel-default">
+                                            <div class="col-md-12">
+                                                <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                    <div class="dataTables_length">
+                                                        <!--  <label>
+                                                            每页
+                                                            <select class="form-control input-sm" ng-model="pageSize" ng-change="pageChanged(0,pageSize)">
+                                                                <option value="10">10</option>
+                                                                <option value="15">15</option>
+                                                                <option value="20">20</option>
+                                                            </select>
+                                                            条
+                                                        </label> -->
+                                                        <button class="btn btn-success btn-sm " ng-click="ChooseCompany()" style="float:right;margin-bottom:10px">添加推荐医生集团</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped b-t dataTable no-footer">
+                                                <thead>
+                                                    <tr>
+                                                        <th style="height:10%">集团Logo</th>
+                                                        <th style="height:25%">医生集团名称</th>
+                                                        <th style="height:25%">管理者姓名及职称</th>
+                                                        <th style="height:10%">集团成员数</th>
+                                                        <th style="height:30%">操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="x in companyGroup track by $index">
+                                                        <td>
+                                                            <img ng-src="{{x.logoUrl||'src/img/logoDefault.jpg'}}" />
+                                                        </td>
+                                                        <td>{{x.name}}</td>
+                                                        <td>
+                                                            <p>{{x.manager}}</p>
+                                                            <p>{{x.managerTitle}}</p>
+                                                        </td>
+                                                        <td>{{x.memberNumber}}</td>
+                                                        <td>
+                                                            <a class="btn btn-sm btn-primary" ng-click="riseRegruop(x.id)" ng-show="$index!=0">上移</a>
+                                                            <a class="btn btn-sm btn-default" ng-click="deletegruop(x.id)">移除</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-left">
+                                            <label class="about">注：最多可以设置5个推荐的医生集团</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                            <tab index="2" heading="推荐医生" active="isActive" style="width:130px;">
+                                <div class="row m-t-sm">
+                                    <!-- id="dortorText" style="display:none" -->
+                                    <div class="col-md-12" style="margin-top:-10px;">
+                                        <div class="panel panel-default">
+                                            <div class="col-md-12">
+                                                <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                                                    <div class="dataTables_length">
+                                                        <label>
+                                                            每页
+                                                            <select class="form-control input-sm" ng-model="pageSize" ng-change="patientsData(0,pageSize)">
+                                                                <option value="10">10</option>
+                                                                <option value="15">15</option>
+                                                                <option value="20">20</option>
+                                                            </select>
+                                                            条
+                                                        </label>
+                                                        <button class="btn btn-success btn-sm " ng-click="hotdocter(pageIndex-1,pageSize)" style="float:right;margin-bottom:10px">添加推荐医生</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <table class="table table-striped b-t dataTable no-footer">
+                                                <thead>
+                                                    <tr>
+                                                        <th></th>
+                                                        <th>医生姓名</th>
+                                                        <th>科室</th>
+                                                        <th>职称</th>
+                                                        <th>所属集团</th>
+                                                        <th>操作</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat=" dor in dortorData track by $index">
+                                                        <td>
+                                                            <img ng-src="{{dor.headPicFileName||'src/img/logoDefault.jpg'}}" />
+                                                        </td>
+                                                        <td>{{dor.name}}</td>
+                                                        <td>{{dor.departments}}</td>
+                                                        <td>{{dor.title}}</td>
+                                                        <td>
+                                                            <p ng-repeat="key in dor.groups">{{key}}</p>
+                                                        </td>
+                                                        <td>
+                                                            <a class="btn btn-sm btn-primary" ng-click="riseReDoctor(dor.id,pageIndex,pageSize)" ng-show="$index>0 && dor.isRecommend==1">上移</a>
+                                                            <a class="btn btn-sm btn-danger" ng-show="dor.isRecommend==1" ng-click="setdroder(dor.id,2,pageIndex-1,pageSize)">取消推荐</a>
+                                                            <a class="btn btn-sm btn-success" ng-show="dor.isRecommend==2" ng-click="setdroder(dor.id,1,pageIndex-1,pageSize)">推荐</a>
+                                                            <a class="btn btn-sm btn-info" ui-sref="app.document.personal({id:dor.id,name:dor.name})">个性化页面设置</a>
+                                                            <a class="btn btn-sm btn-default" ng-click="deletedroder(dor.id,pageIndex-1,pageSize)">移除</a>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                        <div class="text-center">
+                                            <pagination ng-show="totia.total>1" total-items="totia.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged(pageIndex,pageSize)" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页"></pagination>
+                                        </div>
+                                        <div class="text-left">
+                                            <label class="about">注：最多可以设置20位推荐的医生</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script type="text/ng-template" id="myModalPatients.html">
+            <div class="modal-header text-center">
+                <h3 class="modal-title">选择医生集团</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <!-- <span class="span">请搜索查找集团:</span> -->
+                    <input type="search" class="form-control" placeholder="医生集团名称" ng-model='searchName' ng-enter='searchgroup(pageIndex-1,6,searchName)'><span class="input-group-btn"><button  class="btn btn-default" type="button" ng-click="searchgroup(pageIndex-1,6,searchName)"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+                <table class="table no-footer wrapTableTd ">
+                    <thead>
+                        <tr class="text-center">
+                            <th>集团Logo</th>
+                            <th>医生集团名称</th>
+                            <th>管理者姓名及职称</th>
+                            <th>集团成员数</th>
+                        </tr>
+                        <tr ng-if="!data.pageData||data.pageData.length<1">
+                            <td colspan="11" class="text-center" style="font-size:16px;">未找到相关数据！</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" ng-repeat="item in data.pageData">
+                            <td>
+                                <label>
+                                    <span class=" m-t-md"><input type="checkbox" ng-click="singleSelected(item.id)" ng-checked="item.isSelect==1"/></span>
+                                    <img ng-src="{{item.logoUrl||'src/img/logoDefault.jpg'}}">
+                                </label>
+                            </td>
+                            <td>{{item.name}}</td>
+                            <td>
+                                <p>{{item.manager}}</p>
+                                <p>{{item.managerTitle}}</p>
+                            </td>
+                            <td>{{item.memberNumber}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="text-left col-md-6">
+                        <label class="control-label" ng-show="data.total>0" style='float: left; margin-top: 2em;' ng-show="data.total>0">当前第{{((pageIndex-1)*pageSize)==0?1:((pageIndex-1)*pageSize)}}-{{data.pageData.length*pageIndex}}条,共{{data.total}}条</label>
+                    </div>
+                    <div class="text-right col-md-6">
+                        <uib-pagination ng-show="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页" max-size="5" rotate="false"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer clear">
+                <button class="btn btn-primary" ng-click="modalOk()">确定</button>
+                <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+            </div>
+        </script>
+        <script type="text/ng-template" id="myModalhotdocter.html">
+            <div class="modal-header text-center">
+                <h3 class="modal-title">选择医生</h3>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <input type="search" class="form-control" placeholder="医生姓名/集团名称" ng-model='keyword' ng-enter='searchdor(pageIndex-1,10,keyword)'><span class="input-group-btn"><button  class="btn btn-default" type="button" ng-click="searchdor(pageIndex-1,10,keyword)"><span class="glyphicon glyphicon-search"></span></button>
+                    </span>
+                </div>
+                <table class="table no-footer wrapTableTd">
+                    <thead>
+                        <tr class="text-center">
+                            <th></th>
+                            <th>医生姓名</th>
+                            <th>科室</th>
+                            <th>职称</th>
+                            <th>所属集团</th>
+                        </tr>
+                        <tr ng-show="ishide">
+                            <td colspan="11" class="text-center" style="font-size:16px;">未找到相关数据！</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="text-center" ng-repeat="key in dorData.pageData">
+                            <td>
+                                <label>
+                                    <span class=" m-t-md"><input type="checkbox" ng-click="singleSelected(key.doctorId)" ng-checked="key.select==true"/></span>
+                                    <img ng-src="{{key.headPicFileName||'src/img/logoDefault.jpg'}}" />
+                                </label>
+                            </td>
+                            <td>{{key.name}}</td>
+                            <td>{{key.departments}}</td>
+                            <td>{{key.title}}</td>
+                            <td>
+                                <p ng-repeat="k in key.groups">{{k}}</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="row">
+                    <div class="text-left col-md-6">
+                        <label class="control-label" ng-show="dorData.total>0" style='float: left;margin-top: 2em;' ng-show="dorData.total>0">当前第{{((pageIndex-1)*pageSize)==0?1:((pageIndex-1)*pageSize)}}-{{dorData.pageData.length*pageIndex}}条,共{{dorData.total}}条</label>
+                    </div>
+                    <div class="text-right col-md-6">
+                        <uib-pagination ng-show="dorData.total>0" total-items="dorData.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" direction-links="false" boundary-links="true" first-text="首页" last-text="尾页" max-size="5" rotate="false"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer clear">
+                <button class="btn btn-primary" ng-click="modalOk()" ng-disabled="isSaved">确定</button>
+                <button class="btn btn-warning" ng-click="modalCancel()" ng-disabled="isSaved">取消</button>
+            </div>
+        </script>
+        <script type="text/ng-template" id="hotyiyao.html">
+            <div class="modal-header text-center">
+                <h3 class="modal-title">疾病介绍</h3>
+            </div>
+            <div class="modal-body clearfix">
+                <div class="col-md-12">
+                    <div class="diseaseview" ng-show="!isshow">
+                        <form class="form-horizontal" style="margin-top:25px">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label">简介：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea name="" class="form-control" ng-model="introduction">{{introduction}}</textarea>
+                                </div>
+                            </div>
+                            <hr style="border:none;border-bottom:1px dashed #CCC;" />
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label">常用名：</label>
+                                    <p style="color:#ccc;text-indent: 1em;">(患者端的病种介绍不显示)</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <button style="margin:2px 0 0 2px;" class="btn btn-success" ng-repeat=" a in alias track by $index">{{a}}<span class="glyphicon glyphicon-remove" ng-click="romveralias($index)"></span></button>
+                                    <input type="text" class="form-control" style="margin-top:10px;" ng-model="addAliasStr" ng-enter="addAliasEnt()" placeholder="输入后按回车" maxlength="20" />
+                                </div>
+                            </div>
+                            <hr style="border:none;border-bottom:1px dashed #CCC;" />
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label">常见症状：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <button style="margin:2px 0 0 2px;" class="btn btn-success" ng-repeat=" x in remark track by $index">{{x}}<span class="glyphicon glyphicon-remove" ng-click="romveremark($index)"></span></button>
+                                    <input type="text" class="form-control" style="margin-top:10px;" ng-model="addRemarkStr" ng-enter="addRemarkEnt()" placeholder="输入后按回车" maxlength="20" />
+                                </div>
+                            </div>
+                            <hr style="border:none;border-bottom:1px dashed #ccc;" />
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label"><span>注意事项及</span>
+                                        <br>
+                                        <sapn style="margin-left:.8em;">预防措施：</sapn>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <textarea name="" class="form-control" ng-model='attention'>{{attention}}</textarea>
+                                </div>
+                            </div>
+                        </form>
+                        <div class="text-center col-md-12" style="margin-bottom:25px">
+                            <input type="button" class="btn btn-primary " value="提交" ng-click="diseaseOk()">
+                            <input type="button" class="btn btn-warning" ng-click="cancelColse()" value="取消">
+                        </div>
+                    </div>
+                    <div class='diseasecheck' ng-show="isshow">
+                        <div class="text-right">
+                            <input type="button" value='编辑' ng-click="editDiseaseCheck()" class='btn btn-success'>
+                            <input type="button" value='关闭' ng-click="modalCancel()" class='btn btn-default'>
+                        </div>
+                        <form class="form-horizontal" style="margin-top:25px">
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label">简介：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <span class="" readonly="readonly" ng-model="introduction1">{{introduction1}}</span>
+                                </div>
+                            </div>
+                            <hr style="border:none;border-bottom:1px dashed #CCC;" />
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label">常用名：</label>
+                                    <p style="color:#ccc;text-indent: 1em;">(患者端的病种介绍不显示)</p>
+                                </div>
+                                <div class="col-sm-9">
+                                    <a class="btn btn-success disabled" style="margin:2px 0 0 2px;" ng-repeat=" a in alias1 track by $index " ng-model="alias1">{{a}}</a>
+                                </div>
+                            </div>
+                            <hr style="border:none;border-bottom:1px dashed #CCC;" />
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label">常见症状：</label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <a class="btn btn-success disabled" style="margin:2px 0 0 2px;" ng-repeat=" x in remark1 track by $index " ng-model='remark1'>{{x}}</a>
+                                </div>
+                            </div>
+                            <hr style="border:none;border-bottom:1px dashed #ccc;" />
+                            <div class="form-group">
+                                <div class="col-sm-3">
+                                    <label class="label"><span>注意事项及</span>
+                                        <br>
+                                        <sapn style="margin-left:.5em;">预防措施：</sapn>
+                                    </label>
+                                </div>
+                                <div class="col-sm-9">
+                                    <span class="" readonly="readonly" ng-model='attention1'>{{attention1}}</span>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </script>
+        <script type="text/ng-template" id="mypatlst.html" style="margin-top:3em;">
+            <div class="modal-header text-center">
+                <h3 class="modal-title">选择标签</h3>
+            </div>
+            <div class="modal-body">
+                <div class="col-md-5" style="min-height:300px;max-height:500px;">
+                    <div class="b-a r r-2x">
+                        <div class="about">选择疾病</div>
+                        <div class="form-group has-feedback">
+                            <span class="glyphicon glyphicon-search form-control-feedback"></span>
+                            <input type="text" ng-model="diseaseText" class="form-control  " placeholder="搜索病种..." ng-change='diseaceClick()'>
+                        </div>
+                        <!-- <input type="text" ng-model="diseaseText" class="form-control" placeholder="搜索..." ng-change='diseaceClick()'> -->
+                        <div id="CarePlanLibraryTree" class="list-group" style="min-height:300px;max-height:350px;overflow-y:auto;"></div>
+                    </div>
+                </div>
+                <div class="col-md-7" style="min-height:300px;">
+                    <div class="panel panel-default" style="max-height:500px;">
+                        <div><span class="about">学术名:</span></div>
+                        <div>
+                            <label ng-show="diseaseid" class="about">
+                                <input type="radio" name="name" ng-model="thisRadio" ng-checked="diseaseid.name==diseaseData.recommendName" value="{{diseaseid.name}}" class="radio" />{{diseaseid.name}}
+                            </label>
+                        </div>
+                        <hr>
+                        <div><span class="about">常用名:</span></div>
+                        <div ng-repeat="x in diseaseData.alias track by $index">
+                            <label style="padding-left:1em" ng-show="x" ng-click="saveThisRadioValue(x)">
+                                <input type="radio" value="{{x}}" name="name" ng-checked="x==diseaseData.recommendName" class="radio" ng-model='thisRadio' />{{x}}
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer clear">
+                <button class="btn btn-primary" ng-click="modalOk()">确定</button>
+                <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+            </div>
+        </script>
+        <script type="text/ng-template" id="deletediseadome.html">
+            <div class="modal-header">
+                <div class=" text-center">
+                    <h3 class="modal-title">确认是否删除</h3>
+                </div>
+            </div>
+            <div class="modal-footer clear text-center">
+                <button class="btn btn-primary " ng-click="modalOk()">确定</button>
+                <button class="btn btn-warning " ng-click="modalCancel()">取消</button>
+            </div>
+        </script>
+        <script type="text/ng-template" id="deletegruopdome.html">
+            <div class="modal-header">
+                <h3 class="modal-title">确认是否删除</h3>
+            </div>
+            <div class="modal-footer clear text-center">
+                <button class="btn btn-primary" ng-click="modalOk()">确定</button>
+                <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+            </div>
+        </script>
+        <script type="text/ng-template" id="deletedorterdome.html">
+            <div class="modal-header">
+                <h3 class="modal-title">确认是否删除</h3></div>
+    </div>
+    <div class="modal-footer clear text-center">
+        <button class="btn btn-primary" ng-click="modalOk()">确定</button>
+        <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+    </div>
+    </script>
+</div>
+</div>

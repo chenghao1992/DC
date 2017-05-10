@@ -1,0 +1,144 @@
+<style>
+    .borderdocument{
+        margin-top: 10px;
+        border-top: 2px solid #ddd;
+    }
+    .ondanload{
+        margin-top: 20px;padding-left: 20px;
+    }
+    .ondoload li{
+        font-size: 16px;
+        margin-left: 2em;
+    }
+    .modal-open .modal{
+        background:rgba(0,0,0,.7);
+    }
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="upDoctorViewCtlr">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="col-md-5 text-left"> <button ng-click="goToDocter()" type="button" class="btn btn-success" ng-disabled="document.goTO==false">返 回</button></div>
+                <h2 class="org-title text-left col-md-7">批量导入医生账号</h2>
+              </div>
+        </div>
+       <div class="row">
+            <div class="col-md-12 tab-wrap borderdocument" >
+                <div class="ondanload"><strong style="font-size: 16px;">医生信息文件:</strong><span style="padding: 0 5px;display: inline-block;color:red;font-size: 16px;">{{docItemName}}</span><button style="margin-left: 10px;" ng-disabled="document.excleFile==false" class="btn btn-default" ng-model="excleFile" ngf-select="goUpload($file)" ngf-accept="'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'">{{document.documentBtn}}</button></div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 tab-wrap">
+                <a href="file/医生导入模板.xls" download="医生导入模板" class="ondanload" style="color: #169BD5;">下载模板文件</a>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 tab-wrap">
+                <div class="ondoload">
+                    <ul class="ondoload" style="padding: 20px;list-style:decimal;"><strong style="font-size: 18px;">注意：</strong>
+                        <li>请按照模板文件填写医生信息，必填信息包括：“医生姓名”“电话”“医疗机构”“科室”“职称”“医生助手”“医生来源”，如内容填写不完整，则会导致导入失败。</li>
+                        <li>成功导入的医生账号后，系统会自动将该账号通过审核。</li>
+                        <li>成功导入的医生账号不可撤销，若导入出错，需要手动屏蔽医生账号。</li>
+                        <li>每次最多导入500条数据，超过500条时无法导入成功。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row" style="margin-top: 4em" >
+            <span class="col-md-5"></span>
+            <div class="col-md-2 tab-wrap">
+                <uib-progressbar class="progress-striped active" ng-show="document.isShow==true" value="document.documentDoc.progress ||document.nubmer" type="success">{{document.documentDoc.progress ||document.nubmer}}% </uib-progressbar>
+            </div>
+            <span class="col-md-5"></span>
+        </div>
+        <div class="row" style="margin-top:1em">
+            <div class="col-md-12 tab-wrap text-left">
+                <button class="btn btn-info btn-lg " style="width: 150px;margin-left: 42%;" ng-disabled="document.isSaved==false" ng-click="upload($file)">开始导入<i ng-show="document.search" class="fa fa-spinner fa-spin"></i></button>
+            </div>
+        </div>
+    </div>
+</div>
+<!--检查文件-->
+<script type="text/ng-template" id="checkModelDocter.html">
+    <style type="text/css">
+        .btn-close {
+            position: absolute;
+            right:5px;
+            font-size: 18px;
+            top:-2px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="panel panel-default" style="position: relative;">
+        <span class="btn-close" ng-click="cancel()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center">是否确定开始导入医生？</div>
+        <div class="panel-body">
+            <button class="btn btn-info btn-sm" ng-click="ok()">是，确定</button>
+            <button class="btn btn-info btn-sm" ng-click="cancel()" style="width: 70px;float: right;">否</button>
+        </div>
+    </div>
+</script>
+<!--错误提示-->
+<script type="text/ng-template" id="errorModelDocter.html">
+    <style type="text/css">
+        .table > thead > tr > th{
+            border:1px solid #ddd;
+            cursor: default;
+        }
+        .table > tbody > tr > td{
+            border:1px solid #ddd;
+            cursor: default;
+        }
+        .btn-close {
+            position: absolute;
+            right:5px;
+            font-size: 18px;
+            top:-2px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="panel panel-default" style="margin-top: 20%;position: relative;min-height:480px;">
+        <span class="btn-close" ng-click="cancel()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center">文件内容错误，请重新选择导入文件</div>
+        <div class="panel-body text-center" style=" max-height: 400px;overflow: auto;min-height: 380px;">
+            <table class="table" style="border:1px solid #ddd;">
+                <thead>
+                    <tr class="text-center">
+                        <th style="width: 20%" class="text-center">行数</th>
+                        <th style="width: 80%" class="text-center">错误原因</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="i in errorListData track by $index">
+                        <td>{{i.row}}</td>
+                        <td ng-if="i.msg.length>1"><span ng-repeat="x in i.msg track by $index"><span>{{x + '，'}}</span></span></td>
+                        <td ng-if="i.msg.length==1"><span ng-repeat="x in i.msg track by $index"><span>{{x}}</span></span></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+        <div class="panel-footer text-center">
+            <button class="btn btn-info btn-sm" ng-click="ok()">确 定</button>
+        </div>
+    </div>
+</script>
+<!--导入成功-->
+<script type="text/ng-template" id="passModelDocter.html">
+    <style type="text/css">
+        .btn-close {
+            position: absolute;
+            right:5px;
+            font-size: 18px;
+            top:-2px;
+            cursor: pointer;
+        }
+    </style>
+    <div class="panel panel-default " style="position: relative;">
+        <span class="btn-close" ng-click="ok()"><i class="fa fa-close"></i></span>
+        <div class="panel-heading text-center" ng-show="listData.hasRegisteredCount==0">导入成功！本次导入<span style="color:red">{{listData.registerCount}}位</span>医生。</div>
+        <div class="panel-heading text-center" ng-show="listData.hasRegisteredCount!=0">导入成功！本次导入<span style="color:red">{{listData.registerCount}}位</span>医生，有<span style="color:red">{{listData.hasRegisteredCount}}位</span>医生账号已存在</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-info btn-sm" ng-click="ok()">确 定</button>
+        </div>
+    </div>
+</script>

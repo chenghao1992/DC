@@ -1,0 +1,263 @@
+<style>
+    .pagination{
+        margin:0 !important;
+    }
+    .table{
+        margin-bottom: 0 !important;
+    }
+    .borderleif-right{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+    }
+    .borderleif-right-bootm{
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+    }
+    .setCont{
+        width: 100%;
+        max-width: 100%;
+        min-height: 300px;
+        max-height:600px;
+        border:1px solid #DDDDDD;
+        box-shadow: 4px 4px 5px 0 #ccc;
+        overflow-y: auto;
+    }
+    .setCont img{
+        max-width: 100%;
+    }
+</style>
+<div class="org hbox hbox-auto-xs hbox-auto-sm" ng-controller="checkbanderlist">
+    <!--<div class="row">-->
+        <!--<div class="col-md-12">-->
+            <!--<h2 class="org-title text-center">Banner管理列表</h2>-->
+        <!--</div>-->
+    <!--</div>-->
+    <uib-tabset >
+        <button class="btn btn-info pull-right m-r-xxs" ng-click="updataBanner()">上传Banner</button>
+        <uib-tab heading="已启用Banner" select="byBannerCheck(0)" active="activeTab[0]">
+            <div >
+                <!--<div class="dataTables_length col-md-12 borderleif-right-bootm" >-->
+                    <!--<button  class="btn btn-success btn-sm " style="float:right;margin:5px;">新增</button>-->
+                <!--</div>-->
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th width="30%">缩略图</th>
+                        <th width="50%">上传时间</th>
+                        <th width="20%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in datalist track by $index">
+                        <td><img class="img-thumbnail" ng-src="{{i.imgUrl}}" style="width: 159px;height: 69px;border-radius: 0;"></td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>
+                            <button  class="btn btn-link btn-link-2" ng-click="checkdataBanner(i.id)">预览</button>
+                            <button  class="btn btn-link btn-link-2" ng-hide="$index==0" ng-click="upbanner(i.id)">上移</button>
+                            <button  class="btn btn-link btn-link-2" ng-click="updataBanner(i.id,i.createTime)">编辑</button>
+                            <button  class="btn btn-link btn-link-2" ng-click="stopBanner(i.id,0,datalist.length)">停用</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="3" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </uib-tab>
+        <uib-tab heading="已停用Banner" select="byBannerCheck(1)" active="activeTab[1]">
+            <div>
+                <!--<div class="dataTables_length col-md-12 borderleif-right-bootm">-->
+                    <!--<button class="btn btn-success btn-sm " style="float:right;margin:5px;opacity: 0;cursor: default;">上传Banner</button>-->
+                <!--</div>-->
+                <table class="table table-striped b-b borderleif-right" >
+                    <thead>
+                    <tr>
+                        <th width="30%">缩略图</th>
+                        <th width="50%">上传时间</th>
+                        <th width="20%">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="i in datalist">
+                        <td><img class="img-thumbnail" ng-src="{{i.imgUrl}}" style="width: 159px;height: 69px;border-radius: 0;"> </td>
+                        <td>{{i.createTime|date:'yyyy-MM-dd HH:mm'}}</td>
+                        <td>
+                            <button  class="btn btn-link btn-link-2" ng-click="checkdataBanner(i.id)">预览</button>
+                            <button  class="btn btn-link btn-link-2" ng-click="updataBanner(i.id,i.createTime)">编辑</button>
+                            <button  class="btn btn-link btn-link-2" ng-click="stopBanner(i.id,1)">启用</button>
+                            <button  class="btn btn-link btn-link-2" ng-click="deletedisea(i.id)">删除</button>
+                        </td>
+                    </tr>
+                    <tr ng-show="datalist.length<1">
+                        <td colspan="3" class="text-center">无数据</td>
+                    </tr>
+                    </tbody>
+                </table>
+                <div class="row" style="margin-top: 10px">
+                    <div class="col-sm-6 text-left">
+                        <label>
+                            每页
+                            <select class=" input-sm" ng-model="page.size" ng-change="funPageSizeChange()">
+                                <option value="10">10</option>
+                                <option value="20">20</option>
+                                <option value="50">50</option>
+                            </select>
+                            条
+                        </label> <label class="dataTables_info ng-binding m-l-sm" id="contactsList_info" role="status" aria-live="polite">
+                        当前第 {{(page.index-1)*page.size+1}} - {{page.index*page.size > bannerTotal ? bannerTotal:  page.index*page.size}} 条，共 {{bannerTotal}} 条
+                    </label></div>
+                    <div class="col-sm-6 text-right">
+                        <uib-pagination class="pagination-sm" total-items="bannerTotal" ng-change="funPageindex()" ng-model="page.index" items-per-page="page.size" boundary-links="true" previous-text="&lsaquo;" next-text="&rsaquo;" first-text="首页" last-text="尾页"></uib-pagination>
+                    </div>
+                </div>
+            </div>
+        </uib-tab>
+    </uib-tabset>
+</div>
+<script type="text/ng-template" id="deletebanner.html">
+    <div class="modal-header text-center">
+        <h3 class="modal-title">确认是否删除</h3>
+    </div>
+    <div class="modal-footer" style="text-align: center;">
+        <button class="btn btn-primary " ng-click="modalOk()" style="margin: 0 2em;">确定</button>
+        <button class="btn btn-warning " ng-click="modalCancel()" style="margin: 0 2em;">取消</button>
+    </div>
+</script>
+<!--编辑-->
+<script type="text/ng-template" id="updatabannerlContent.html">
+    <div class="frame-panel-a edit_a row" style="border: 0;">
+        <div class="main col-sm-12 col-md-12 col-lg-10">
+            <form name="forma" class="form-horizontal form-validation ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-valid-url ng-valid-pattern ng-valid-validator ng-valid-blacklist">
+                <div class="form-group form-counter" style="height: 0;">
+                    <label class="col-sm-2 control-label">标题<i class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-sm-10">
+                        <input type="text" ng-trim="true" ng-model="formData.title" class="input_counter form-control" maxlength="80">
+                    </div>
+                    <em class="frm_input_append frm_counter">{{titleLength}}/80</em>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group" style="height: 0;">
+                    <label class="col-sm-2 control-label">上传banner<i class="fa fa-asterisk text-danger"></i></br>
+                    </label>
+                    <div class="col-sm-10">
+                        <div class="row">
+                            <div class="col-sm-6">
+                                <div class="bg-white text-center ng-File-UpLoad-Bt" ng-click="selectFile()" over-class="b-info" style="margin:0;width: 100%;height: 100%" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">
+                                    <img ngf-src="fontImgUrl" width="100%" height="100%" ng-show="fontImgUrl">
+                                    <i ng-show="!fontImgUrl" class="fa fa-file-picture-o" style="font-size:80px;line-height:100px;color:#dee5e7;"></i>
+                                </div>
+                                <div class="progress m-b-none" ng-show="uploadPercent>0">
+                                    <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadPercent}}%;min-width: 2em;">
+                                        {{uploadPercent>0?uploadPercent:0}}%
+                                        <span class="sr-only">{{uploadPercent}}%</span>
+                                    </div>
+                                </div>
+                                <span class="text-danger">( 建议：尺寸：750*240；大小在200k以内 )</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group" style="height: 0;">
+                    <label class="col-sm-2 control-label">正文<i class="fa fa-asterisk text-danger"></i></label>
+                    <div class="col-sm-10" id="editorContent">
+                        <div id="myEditor"></div>
+                    </div>
+                </div>
+                <div class="line line-dashed b-b line-lg pull-in"></div>
+                <div class="form-group text-center">
+                    <button class="btn m-b-xs w-xs btn-success" ng-click="saveDoc()" ng-disabled="isSaved">保存</button>
+                    <button class="btn m-b-xs w-xs btn-primary" ng-click="toPreview()" ng-disabled="isSaved">预览</button>
+                    <button class="btn m-b-xs w-xs btn-default" ng-click="bannerCancel()" >取消</button>
+                </div>
+            </form>
+        </div>
+        <!-- 七牛上传组件 -->
+        <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+        <!-- 七牛上传组件 end -->
+    </div>
+</script>
+<script type="text/ng-template" id="bannerModalContent.html">
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            width: 1px;
+            margin-right: 2px
+        }
+        .btn-close {
+            position: absolute;
+            top: -11px;
+            right: -11px;
+        }
+        .ipod-header {
+            width: 100%;
+        }
+        .container {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 100%;
+            height: 600px;
+            overflow: auto;
+            padding: 0px 10px 10px 10px;
+            word-wrap: break-word;
+        }
+        .container>.title {
+            color: #333333;
+            font-size: 22px;
+            font-weight: bold;
+        }
+        .container>.disease>.tag {
+            display: inline-block;
+            background-color: #f8f8f8;
+            border: 1px solid #888888;
+            border-radius: 12px;
+            margin-right: 5px;
+            margin-bottom: 5px;
+            padding: 2px 6px;
+            color: #888888;
+            font-size: 12px;
+        }
+        .container>.a-t {
+            font-size: 14px;
+            color: #888888;
+            margin-top: 10px;
+        }
+        .container>.a-t>.author {
+            margin-left: 20px;
+        }
+        .container>.summary {
+            border-left: 3px solid #CCCCCC;
+            padding-left: 10px;
+            margin-top: 10px;
+            font-size: 14px;
+            line-height: 150%;
+            color: #888888;
+        }
+        .container >.font-img {
+            max-width: 100%;
+            margin: 10px 0 0;
+        }
+        .container >.article {
+            color: #333333;
+            font-size: 14px;
+            margin-top: 10px;
+            line-height: 150%;
+        }
+        .article img {
+            max-width: 100% !important;
+        }
+    </style>
+    <div style="position: relative;">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default b-dark btn-close" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <img class="ipod-header" ng-src="src/img/banner_header_pat.png">
+        <div class="container">
+            <h1 class="title">{{article.title}}</h1>
+            <div class="a-t">
+                <span>{{article.date|date:'yyyy-MM-dd HH:mm'}}</span>
+            </div>
+            <div class="article" ng-bind-html="article.content">
+            </div>
+        </div>
+    </div>
+</script>
+

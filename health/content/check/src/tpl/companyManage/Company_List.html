@@ -1,0 +1,121 @@
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="CompanyListCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="tab-wrapper">
+                    <a class="group-mark mark-focus" ng-click="funPageType(0, $event)" href>
+                        <div>
+                            <span class="title-3">药企管理</span>
+                        </div>
+                    </a>
+                    <a class="group-mark" ng-click="funPageType(1, $event)" href>
+                        <div>
+                            <span class="title-3">药店管理</span>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            <div class="col-md-6 mrb-10">
+                <div class="pull-right">
+                    <a class="btn btn-success" ui-sref="app.ComMan.create">新建企业</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="panel panel-default">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-6">
+                                <div class="dataTables_length">
+                                    <label>
+                                        每页
+                                        <select class="form-control input-sm" ng-model="pageSize" ng-change="InitTable(0, pageSize,keyWord)">
+                                            <option value="10" selected="selected">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                        条
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-6 text-right">
+                                <div class="dataTables_filter">
+                                    <div class="input-group">
+                                        <input type="search" class="form-control input-sm" placeholder="请输入企业名称" ng-model="keyWord" ng-enter="InitTable(0,pageSize,keyWord)">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="InitTable(0,pageSize,keyWord)">搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table table-striped b-t dataTable no-footer m-t-sm">
+                        <thead>
+                        <tr>
+                            <th width="8%">企业名称</th>
+                            <th width="8%">企业类型</th>
+                            <th width="8%">城市</th>
+                            <th width="17%">地址</th>
+                            <th width="8%">企业负责人</th>
+                            <th width="8%">管理员</th>
+                            <th width="8%">管理帐号</th>
+                            <th width="8%">创建时间</th>
+                            <th width="8%">状态</th>
+                            <th width="8%">操作</th>
+                        </tr>
+                        <tr ng-if="!data.pageData||data.pageData.length<1">
+                            <td colspan="11" class="text-center" style="font-size:16px;">无数据</td>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <!--<tr ng-repeat="item in data.pageData track by $index" >-->
+                        <tr ng-repeat="item in data.pageData " >
+                            <td>{{item.name}}</td>
+                            <td>
+                                <span ng-switch="item.type">
+                                    <span ng-switch-when="1">经营企业</span>
+                                    <span ng-switch-when="2">生产药企</span>
+                                    <span ng-switch-when="3">连锁药店总部</span>
+                                    <span ng-switch-when="4">连锁药店分店</span>
+                                    <span ng-switch-when="5">单体药店</span>
+                                    <!--<span ng-switch-default>22</span>-->
+                                </span>
+                            </td>
+                            <!--<td>{{item.areaProvince}}</td>-->
+                            <td>{{item.areaCityName}}</td>
+                            <!--<td>{{item.areaCounty}}</td>-->
+                            <td>{{item.address | nospace}}
+                            </td>
+                            <td>{{item.headUserName}}</td>
+                            <td>{{item.manageUserName}}</td>
+                            <td>{{item.manageUserPhone}}</td>
+                            <td>{{item.creatorDate | date:'yyyy/MM/dd'}}</td>
+                            <td>
+                                  <span ng-switch="item.status">
+                                    <span ng-switch-when="1">生效</span>
+                                    <span ng-switch-when="2">失效</span>
+                                </span>
+                            </td>
+                            <td>
+                                <button  class="btn btn-xs btn-primary text-xs" ui-sref="app.ComMan.edit({companyId: item.id, type:pageType||0})">编辑</button>
+                                <button  class="btn btn-xs btn-info text-xs" ui-sref="app.ComMan.info({companyId: item.id, type:pageType||0})">查看</button>
+                            </td>
+                        </tr>
+
+                        <tr ng-if="!data||data.length<1">
+                            <td colspan="11" class="text-center">无数据</td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <pagination ng-s="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()"  previous-text="上一页" next-text="下一页" max-size="10" boundary-links="true" rotate="false" first-text="首页" last-text="尾页"></pagination>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,360 @@
+<style>
+.table > tbody + tbody {
+    border-top: 0px solid #ddd;
+}
+
+.table-striped > tbody > tr:nth-child(odd) > td,
+.table-striped > tbody > tr:nth-child(odd) > th {
+    background-color: #fff;
+}
+
+.table-striped tbody tr:hover td {
+    background-color: #EFF5FA;
+}
+
+.table .inner-table {
+    background-color: #fafbfc;
+    margin: 0px;
+    border-top: 1px solid #dee5e7;
+}
+
+.error-list {
+    max-height: 163px;
+    overflow-y: auto;
+    margin-top: 20px;
+}
+
+.upload-btns>li {
+    margin-bottom: 10px;
+}
+
+.upload-image-box {
+    min-height: 320px;
+    text-align: center;
+}
+
+.upload-images-lists>ul>li {
+    float: left;
+    width: 196px;
+    height: 191px;
+    display: block;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    margin-right: 18px;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+}
+
+.upload-images-lists>ul>li>div>img {
+    width: 196px;
+    height: 122px;
+    margin-bottom: 10px;
+}
+
+.upload-images-lists>ul>.add-more {
+    background-color: #ccc;
+}
+
+.upload-images-lists>ul>.add-more>div>h4 {
+    position: absolute;
+    bottom: -5px;
+    text-align: center;
+    color: #fff;
+    width: 100%;
+}
+
+.upload-images-lists>ul>li>div>h4>i {
+    position: absolute;
+    right: 10px;
+    cursor: pointer;
+}
+
+.upload-images-lists>ul>li>div>i {
+    width: 196px;
+    height: 122px;
+    font: normal normal normal 185px/1 FontAwesome;
+}
+
+.upload-images-lists>ul>li>div>h4 {
+    margin-bottom: 10px;
+}
+
+.ng-File-UpLoad-Bt {
+    background-color: #286090;
+    border-color: #204d74;
+}
+
+.modal-is-overwrite {
+    position: absolute;
+    right: 14px;
+    margin-top: 6px;
+}
+
+.upload-files-btns {
+    text-align: center;
+    word-spacing: 86px;
+}
+
+.upload-files-btns>div {
+    width: 140px;
+    height: 70px;
+    font-size: 16px;
+    line-height: 58px;
+    display: inline-block;
+}
+
+.btn-link {
+    margin-left: 120px;
+    position: relative;
+    top: 7px;
+}
+.remove-all-images-btn{
+    position: absolute;
+    right:3px;
+    cursor: pointer;
+    margin-top: -10px;
+}
+</style>
+<div class="org hbox-auto-xs hbox-auto-sm ng-scope" ng-controller="VarietyManageListCtrl">
+    <div class="frame-panel">
+        <div class="row">
+            <div class="col-md-3 mrb-15">
+                <h2 class="title-3">品种库管理</h2>
+                
+            </div>
+            <div class="col-md-9 mrb-10">
+                <div class="pull-right">
+                    <a class="btn btn-success" ui-sref="app.VarietyManage.add">添加品种组</a>
+                    <a class="btn btn-primary" ng-click="upLoadFiles()">批量导入品种</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 cnt-col-rt">
+                <div class="panel panel-default">
+                    <div class="dataTables_wrapper form-inline dt-bootstrap no-footer">
+                        <div class="row">
+                            <div class="col-xs-3">
+                                <div class="dataTables_length">
+                                    <label>
+                                        每页
+                                        <select class="form-control input-sm" ng-model="pageSize" ng-change="InitTable(0, pageSize,startDate,endDate,keyWord)">
+                                            <option value="10" selected="selected">10</option>
+                                            <option value="20">20</option>
+                                            <option value="50">50</option>
+                                        </select>
+                                        条
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-xs-9 text-right">
+                                <div class="dataTables_filter">
+                                    <span>最后修改日期</span>
+                                    <p class="input-group">
+                                        <input type="text" class="form-control input-sm" min-date="startMinDate" uib-datepicker-popup="yyyy-MM-dd" ng-model="startDate" is-open="startTime.opened" ng-required="true" close-text="Close" placeholder="开始日期" ng-disabled="activity.id && activityType=='look'" />
+                                        <span class="input-group-btn">
+                                             <button type="button" class="btn btn-default btn-sm" ng-click="startTime.opened=!opened" ng-disabled="activity.id && activityType=='look'"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                    <span>至</span>
+                                    <p class="input-group">
+                                        <input type="text" class="form-control input-sm" min-date="startDate" uib-datepicker-popup="yyyy-MM-dd" ng-model="endDate" is-open="endTime.opened" ng-required="true" close-text="Close" placeholder="结束日期" ng-disabled="activity.id && activityType=='look'" />
+                                        <span class="input-group-btn">
+                                             <button type="button" class="btn btn-default btn-sm" ng-click="endTime.opened=!opened" ng-disabled="activity.id && activityType=='look'"><i class="glyphicon glyphicon-calendar"></i></button>
+                                        </span>
+                                    </p>
+                                    <div class="input-group">
+                                        <input type="search" class="form-control input-sm" style="width: 300px;" placeholder="请输入通用名/商品名/生产厂家/助记码/所属企业" ng-model="keyWord" ng-change="keyWordKeep(keyWord)" ng-enter="InitTable(0,pageSize,startDate,endDate,keyWord)">
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-default btn-sm" type="button" ng-click="InitTable(0,pageSize,startDate,endDate,keyWord)">搜索</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <table class="table b-b no-footer wrapTableTd">
+                        <thead>
+                            <tr>
+                                <th style="width:10%">通用名</th>
+                                <th style="width:10%">商品名</th>
+                                <th style="width:10%">生产厂商</th>
+                                <th style="width:10%">所属企业</th>
+                                <th style="width:15%">药理类别</th>
+                                <th style="width:10%">最后修改日期</th>
+                                <th style="width:12%">操作</th>
+                            </tr>
+                            <tr style="display:none;" id='titlePrompt'>
+                                <td colspan="11" class="text-center" style="font-size:16px;">无数据</td>
+                            </tr>
+                        </thead>
+                        <tbody ng-repeat="item in data.pageData ">
+                            <tr ng-click="ShowVartInfoDetails(item)">
+                                <td>{{item.generalName | cut:true:20:' ...'}}</td>
+                                <td>{{item.tradeName | cut:true:20:' ...'}}</td>
+                                <td>{{item.manufacturer }}</td>
+                                <td>{{item.companyName }}</td>
+                                <td>{{item.pharmacoTypesText | cut:true:20:' ...'}}
+                                </td>
+                                <td>{{item.lastModifiedDate | date:'yyyy-MM-dd'}}</td>
+                                <td>
+                                    <div ng-class="{true: 'dropup', false: 'inactive'}[item.isOpen]" style="border: 0px">
+                                        <button class="btn btn-xs btn-primary text-xs" ui-sref="app.VarietyManage.addVart({ id: item.id})">添加品种</button>
+                                        <button class="btn btn-xs btn-info text-xs" ui-sref="app.VarietyManage.edit({ id: item.id})">编辑</button>
+                                        <!--<button  class="btn btn-xs btn-info text-xs" ui-sref="app.VarietyManage.goodMoreList({ groupId: item.id})">查看</button>-->
+                                        <label ng-show="!item.isOpen" class="text-xs">
+                                            <span class="caret"></span>
+                                        </label>
+                                        <label ng-show="item.isOpen" class="text-xs">
+                                            <span class="caret"></span>
+                                        </label>
+                                    </div>
+                                </td>
+                            </tr>
+                            <tr ng-show="item.isOpen">
+                                <td colspan="11" style="padding:0px;">
+                                    <table class="table no-footer m-t-sm inner-table">
+                                        <thead>
+                                            <tr ng-if="item.VartInfo.length<1">
+                                                <td colspan="11" class="text-center title-3">未添加品种数据</td>
+                                            </tr>
+                                            <tr ng-if="item.VartInfo.length>0">
+                                                <th width="8%"></th>
+                                                <th width="8%">规格</th>
+                                                <th width="8%">包装规格</th>
+                                                <th width="8%">剂型</th>
+                                                <th width="8%">批准文号</th>
+                                                <th width="8%">管理类别</th>
+                                                <th width="8%">产品类别</th>
+                                                <th width="8%">状态</th>
+                                                <th width="8%">最后修改日期</th>
+                                                <th width="13%"></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr ng-repeat="cItem in item.VartInfo track by $index">
+                                                <td><img style="-webkit-border-radius: 5px;-moz-border-radius: 5px;border-radius: 5px;" src="{{cItem.imageUrl}}" /></td>
+                                                <td>{{cItem.specification}}</td>
+                                                <td>{{cItem.packSpecification}}</td>
+                                                <td>{{cItem.formText}}</td>
+                                                <td>{{cItem.number}}</td>
+                                                <td>{{cItem.manageTypeText}}</td>
+                                                <td>{{cItem.productTypeText}} </td>
+                                                <td>
+                                                    <span ng-show="cItem.valid==1">
+                                                        已禁用
+                                                    </span>
+                                                    <span ng-show="cItem.valid==0">
+                                                        <span ng-switch="cItem.stateAudit">
+                                                            <span ng-switch-when="0">未审核</span>
+                                                    <span ng-switch-when="1">审核中</span>
+                                                    <span ng-switch-when="2">审核通过</span>
+                                                    <span ng-switch-when="3"> 审核不通过</span>
+                                                    </span>
+                                                    </span>
+                                                </td>
+                                                <td>{{cItem.lastModifiedDate | date:'yyyy-MM-dd'}}</td>
+                                                <td>
+                                                    <button class="btn btn-xs btn-success text-xs" ui-sref="app.VarietyManage.copyVart({vartId: cItem.id})">复制</button>
+                                                    <button class="btn btn-xs btn-primary text-xs" ui-sref="app.VarietyManage.editVart({vartId: cItem.id})">编辑</button>
+                                                    <button class="btn btn-xs btn-info text-xs" ui-sref="app.VarietyManage.lookVart({vartId: cItem.id})">查看</button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <!--<tr><td ng-show="item.VartInfo.length > 0">无数据</td></tr>-->
+                                </td>
+                            </tr>
+                        </tbody>
+                        <tbody ng-if="!data.pageData">
+                            <tr>
+                                <td colspan="7" class="text-center">无数据</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="text-center">
+                    <ul uib-pagination ng-show="data.total>0" total-items="data.total" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" boundary-links="true" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" max-size="10" rotate="false"></ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script type="text/ng-template" id="myModalUploadFiles.html">
+        <div class="modal-header">
+            <h4 class="modal-title">批量导入品种</h4>
+        </div>
+        <div class="modal-body">
+       
+            <div ng-show="isUploadingBreedFile" style="text-align: center;color:#ccc">
+                <i class="fa fa-refresh fa-spin fa-4x fa-fw" aria-hidden="true"></i>
+                <h5>品种导入中，请稍候。。。</h5>
+            </div>
+            <div ng-show="!isUploadingBreedFile">
+                <div class="upload-files-btns">
+                    <div class="btn btn-info  r r-3x" ng-model="excleFile" ngf-select="goUpload($file)">导入品种信息</div>
+                    <div class="btn btn-success  r r-3x" ng-model="excleFile" ng-click="openUploadImagesModal()">导入品种图片</div>
+                </div>
+                <a class="btn-link" download="品种导入模板" href="file/品种导入模板.xlsx">下载导入模板</a>
+                <ul ng-if="isLoadError" class="error-list">
+                    <li class="crimson"><strong>导入成功：{{errorNum.success}}条，导入失败：{{errorNum.failure}}条，错误原因：</strong></li>
+                    <li ng-repeat="item in errorList">{{item}}</li>
+                </ul>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-warning" ng-click="modalCancel()">取消</button>
+        </div>
+    </script>
+</div>
+<script type="text/ng-template" id="myModalUploadImagesFiles.html">
+    <div class="modal-header">
+        <h4 class="modal-title">导入品种图片信息</h4>
+        <h5>提示：支持格式类型 *.jpg;*.jpeg;*.png;*.bmp，每张图片大小不超过2M，图片请以对应的品种编码命名</h5>
+        <span ng-click="removeAllImage()" class="remove-all-images-btn" >全部删除<i class="fa fa-trash"  ng-disabled="isImagesUpLoading"></i></span>
+    </div>
+    <div class="modal-body">
+        <div ng-if="imageLists.length>0" class="upload-images-lists">
+            <ul>
+                <li ng-repeat="item in fileList track by $index">
+                    <div>
+                        <img src="{{item.imageLocalurl?item.imageLocalurl:'#'}}">
+                        <h4>{{item.drugFormCode| cut:true:12:' ...'}}<i class="fa fa-trash"  ng-click="removeImage($index)" ng-disabled="isImagesUpLoading"></i></h4>
+                        <h5 ng-show="item.isBreedMatch">{{item.isBreedMatch| cut:true:12:' ...'}}</h5>
+                        <h5 ng-if="!item.isBreedMatch" style="color: #e63434">未找到对应的品种</h5>
+                        <h5 ng-show="!item.isBreedMatch"><i class="fa fa-refresh fa-spin fa-1x fa-fw"  aria-hidden="true" ></i></h5>
+                    </div>
+                </li>
+                <li class="add-more ng-File-UpLoad-Bt" ng-click="upload()">
+                    <div>
+                        <i class="fa fa-file-image-o" aria-hidden="true"></i>
+                        <h4>继续添加图片</h4>
+                    </div>
+                </li>
+            </ul>
+        </div>
+        <div class="clear"></div>
+        <div class="upload-image-box" ng-if="imageLists.length<=0">
+            <div class="btn btn-primary r-3x ng-File-UpLoad-Bt" ng-model="imagesFile" ng-click="upload()">选择品种图片</div>
+            <h5>按住Ctrl可多选图片，最多支持同时选择50张</h5>
+        </div>
+        <!-- 七牛上传组件 -->
+        <qiniu-uploader token="{{token}}" ng-disabled="companyInfo.unifiedIdentity==1" bucket="drug" upload="upload" filters="qiniuFilters" file-list="fileList" auto-start="{{autoStart}}" cancel="cancel" chunk-sizee="1mb" unique-names="true" multi-selection="true" success-call-back="uploaderSuccess" before-call-back="uploaderBefore" complete-call-back="uploaderComplete" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+        <!-- 七牛上传组件 end -->
+        <ul ng-if="isLoadError" class="error-list">
+            <li ng-repeat="item in errorList">{{item}}</li>
+        </ul>
+    </div>
+    <div class="modal-footer">
+        <div class="text-left">
+            <button class="btn btn-success" id="up_load_files_start" ng-show="!hideUploadBtn">开始上传</button>
+            <button class="btn btn-success" ng-show="hideUploadBtn && fileList.length>0"><i class="fa fa-refresh fa-spin fa-1x fa-fw" aria-hidden="true" ></i>正在上传</button>
+            <button class="btn btn-default" ng-click="modalCancel()">取消</button>
+            <span>共{{countOfMatchImages}}张图片（已更新品种图片{{countOfImagesUploaded}}张）</span>
+            <label class="modal-is-overwrite">
+                <input type="checkbox" name="checkbox" ng-model="isOverWrite"> 是否替换原品种图片
+            </label>
+        </div>
+    </div>
+</script>

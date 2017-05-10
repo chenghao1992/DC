@@ -1,0 +1,125 @@
+<div class="frame-panel-a edit_a row" ng-controller="GroupH5Ctrl">
+    <div class="clearfix" style="border-bottom: 1px solid #ddd;padding-left: 15px;padding-bottom: 6px;">
+        <span style="font-size: 20px;" class="ng-binding">集团H5简介</span>
+        <a class="btn btn-info pull-right" ui-sref="app.setting.group_edit">
+            <i class="fa  fa-mail-reply"></i>
+            <span class="hid">返回集团设置</span>
+        </a>
+    </div>
+    <div class="main col-sm-12 col-md-12 col-lg-10">
+
+        <form name="forma" class="form-horizontal form-validation ng-pristine ng-valid-email ng-invalid ng-invalid-required ng-valid-url ng-valid-pattern ng-valid-validator ng-valid-blacklist">
+            <div class="form-group">
+                <label class="col-sm-2 control-label">展示图<i class="fa fa-asterisk text-danger"></i></br>
+                    <span class="text-danger">( 建议尺寸：750*214像素，不大于2M，请注意长宽比例，否则在用户端会出现变形 )</span>
+                </label>
+                <div class="col-sm-10">
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="bg-white text-center ng-File-UpLoad-Bt" ng-click="selectFile()" over-class="b-info" style="margin:0;width: 100%;height: 100%" ng-model="fontImg" accept=".jpg,.jpeg,.png,.bmp">
+                                <img ngf-src="fontImgUrl" width="100%" height="100%" ng-show="fontImgUrl">
+                                <i ng-show="!fontImgUrl" class="fa fa-file-picture-o" style="font-size:80px;line-height:100px;color:#dee5e7;"></i>
+                            </div>
+                            <div class="progress m-b-none" ng-show="uploadPercent>0">
+                                <div class="progress-bar progress-bar-striped progress-bar-success active font-bold" role="progressbar m-b-none" aria-valuenow="{{uploadPercent}}" aria-valuemin="0" aria-valuemax="100" style="width: {{uploadPercent}}%;min-width: 2em;">
+                                    {{uploadPercent>0?uploadPercent:0}}%
+                                    <span class="sr-only">{{uploadPercent}}%</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="pull-left">
+                                <!--<div class="btn-group">-->
+                                <!--<button class="btn m-b-xs w-xs btn-default" ngf-select ng-model="fontImg" name="fontImg" ngf-max-size="2000000" ng-model-rejected="reGroupLogo" accept=".jpg,.jpeg,.png,.bmp" required>上传</button>-->
+                                <!--<button class="btn m-b-xs w-xs btn-default" ng-click="deleteImg()">删除</button>-->
+                                <!--</div>-->
+                                <div class="checkbox">
+                                    <label class="i-checks">
+                                        <input type="checkbox" checked="" ng-model="formData.isShowImg"><i></i>展示图显示在正文
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--<div class="line line-dashed b-b line-lg pull-in"></div>-->
+            <!--<div class="form-group">-->
+            <!--<label class="col-sm-2 control-label">摘要<i class="fa fa-asterisk text-danger"></i></br><span class="text-muted">（选填，该摘要只在发送图文消息为单条时显示）</span></label>-->
+            <!--<div class="col-sm-10">-->
+            <!--<textarea maxlength="100" ng-model="formData.summary" class="form-control" rows="5"></textarea>-->
+            <!--<label class="pull-right">{{summaryLength}}/80</label>-->
+            <!--</div>-->
+            <!--</div>-->
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">正文<i class="fa fa-asterisk text-danger"></i></label>
+                <div class="col-sm-10" id="editorContent">
+                    <!--<div id="myEditor"></div>-->
+                    <!-- 百度富文本编辑器（含七牛上传） -->
+                    <ng-umeditor class="block w-full" token="{{token}}" config="config"  content="formData.content" umeditor="umeditor" errorcallback="umerrorcallback"></ng-umeditor>
+                </div>
+            </div>
+            <div class="line line-dashed b-b line-lg pull-in"></div>
+            <div class="form-group text-center">
+                <button class="btn m-b-xs w-xs btn-success" ng-click="saveDoc()" ng-disabled="isSaved">保存</button>
+                <button class="btn m-b-xs w-xs btn-primary" ng-click="toPreview()" ng-disabled="isSaved">预览</button>
+            </div>
+        </form>
+    </div>
+    <!-- 七牛上传组件 -->
+    <qiniu-uploader token="{{token}}" bucket="resource" progress-call-back="fileUploadProcess" upload="upload" filters="qiniuFilters" file-list="fileList" cancel="cancel" max-file-size="2mb" chunk-sizee="1mb" unique-names="true" multi-selection="false" success-call-back="uploaderSuccess" error-call-back="uploaderError" added-call-back="uploaderAdded"></qiniu-uploader>
+    <!-- 七牛上传组件 end -->
+</div>
+<script type="text/ng-template" id="previewModalContent.html">
+    <style type="text/css">
+        ::-webkit-scrollbar {
+            width: 1px;
+            margin-right: 2px
+        }
+
+        .btn-close {
+            position: absolute;
+            top: -11px;
+            right: -11px;
+        }
+
+        .ipod-header {
+            width: 100%;
+        }
+
+        .container {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            width: 100%;
+            height: 600px;
+            overflow: auto;
+            padding: 0px 10px 10px 10px;
+            word-wrap: break-word;
+        }
+
+        .container >.font-img {
+            max-width: 100%;
+            margin: 10px 0 0;
+        }
+
+        .container >.article {
+            color: #333333;
+            font-size: 14px;
+            margin-top: 10px;
+            line-height: 150%;
+        }
+
+        .article img {
+            max-width: 100% !important;
+        }
+    </style>
+    <div style="position: relative;">
+        <button class="btn btn-rounded btn-xs btn-icon btn-default b-dark btn-close" ng-click="cancel()"><i class="fa fa-close"></i></button>
+        <img class="ipod-header" ng-src="src/img/article_header.png">
+        <div class="container">
+            <img ng-src="{{article.copyPath}}" class="font-img" ng-show="article.isShow">
+            <div class="article" ng-bind-html="article.content">
+            </div>
+        </div>
+    </div>
+</script>

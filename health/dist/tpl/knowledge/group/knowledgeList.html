@@ -1,0 +1,159 @@
+<style>.category-list>dl>dt {
+    width: 100%;
+    background-color: #f18cee;
+    padding: 5px 0 5px 20px;
+    color: #fff;
+    cursor: pointer;
+}
+
+.category-list>dl {
+    margin-bottom: 2px;
+}
+
+.category-list>dl:hover {
+    background-color: #eee;
+    color: #444;
+}
+.category-list>.active {
+    background-color: #428bca;
+    color: #fff;
+}
+.category-list>.active:hover {
+    background-color: #428bca;
+    color: #fff;
+}
+.category-list>dl>dt>i {
+    font-size: 20px;
+    color: #fff;
+    float: right;
+}
+
+.category-list>dl>dd {
+    cursor: pointer;
+    padding: 12px 0 12px 40px;
+    position: relative;
+}
+
+.category-plus {
+    position: absolute;
+    right: 23px;
+    top: 32px;
+    cursor: pointer;
+}
+
+.category-minus {
+    position: absolute;
+    right: 23px;
+    top: 16px;
+    cursor: pointer;
+}
+
+.category-edit {
+    position: absolute;
+    right: 43px;
+    top: 16px;
+    cursor: pointer;
+}
+
+.panel-body {
+    padding: 2px;
+}
+
+.pagination {
+    margin: 0 11px 10px 0;
+    white-space: nowrap;
+    text-align: right;
+    float: right;
+}
+
+div.dataTables_info {
+    padding-top: 8px;
+    white-space: nowrap;
+    padding-left: 10px;
+}</style><div class="frame-panel-a doc" ng-controller="groupKnowledgeListCtrl"><div class="row"><div class="col-xs-12 text-center"><h3>就医知识</h3></div><div class="line line-dashed b-b line-lg pull-in"></div></div><div class="row"><div class="col-xs-12"><div class="input-group" style="width: 400px;margin: 0 auto;position: relative"><input type="text" class="form-control" placeholder="输入文章标题/作者关键字搜索" ng-model="keyword" ng-enter="findKnowledgeListByKeys()"> <a ng-show="mainKWLength>0" style="position: absolute;top: 10px;right: 120px;z-index: 999" ng-click="clearMainKW()" class="glyphicon glyphicon-remove"></a> <span class="input-group-btn"><button class="btn btn-default" type="button" ng-click="findKnowledgeListByKeys()">搜索</button></span></div></div></div><div class="row m-t"><div class="col-xs-3" ng-init="isServiceGroup=true"><a ui-sref="app.groupKnowledge.add" class="btn btn-info" type="button">新建文章</a><!-- <a ng-click="addFromPlatform()" class="btn btn-success" type="button" ng-if="!isServiceGroup">从玄关健康患教平台添加</a> --></div><div class="col-xs-9" style="position: relative;top: 2px"><div class="dataTables_length" style="display: inline-block">每页<select class="form-control input-sm" ng-model="pageSize" style="display: inline-block;width: 84px" ng-change="getGroupMedicalKnowledgeList()"><option value="10">10</option><option value="20">20</option><option value="50">50</option></select>条</div><span class="m-l">( 患者可以在您的集团主页浏览就医知识 )</span></div></div><div class="row"><div class="col-xs-3"><div class="b-a r r-2x m-t-sm" ng-mouseenter="isHeadHover=true" ng-mouseleave="isHeadHover=false"><i class="glyphicon glyphicon-plus category-plus" ng-show="isHeadHover" ng-click="addGroupCategory('')"></i><accordion close-others="oneAtATime" ng-init="status.open=true"><accordion-group is-open="status.open"><accordion-heading><i class="glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}">集团分类</i></accordion-heading><div class="category-list"><dl ng-click="getGroupMedicalKnowledgeList();" ng-class="{true: 'active', false: 'inactive'}[carActiveId=='allCarg'?true:false]"><dd>全部分类</dd></dl><dl ng-repeat="item in categoryList track by $index" ng-class="{true: 'active', false: 'inactive'}[item.id==carActiveId?true:false]"><dd ng-mouseenter="isHover=true" ng-click="getKnowledgeListByCategoryId(item)" ng-mouseleave="isHover=false">{{item.name}} <i class="glyphicon glyphicon-edit category-edit" ng-show="isHover && $index<(categoryList.length-1)" ng-click="addGroupCategory(item)"></i> <i class="glyphicon glyphicon-minus category-minus" ng-show="isHover && $index<(categoryList.length-1)" ng-click="deleteGroupCategory(item)"></i></dd></dl></div></accordion-group></accordion></div></div><div class="col-xs-9"><div class="panel panel-default m-t-sm"><!--<p ng-show="!isDocLoaded" class="loading text-center"><i class="glyphicon glyphicon-repeat"></i></p>--><div><table id="article_list" class="table table-striped b-b h-full table-hover"><thead><tr><th>标题</th><th width="100px">浏览量</th><th width="110px">分享次数</th><th width="100px">发布时间</th><th width="250px;">操作</th></tr></thead><tbody><tr ng-repeat="item in konwledgeList" ng-click="toDetails(item)"><td><img style="border-radius:0px;vertical-align: top; margin-top: 9px" src="{{item.copy}}"><div style="display:inline-block;border:0px;margin-left:10px;width: 71%"><p>{{item.title}}</p><p style="position: relative;    top: 17px">作者：{{item.authorName}}</p></div></td><td>{{item.visitCount}}</td><td>{{item.shareCount}}</td><td>{{item.createTime| date:'yyyy/MM/dd'}}</td><td><button class="btn btn-sm btn-primary" ng-click="upKnowledge(item);$event.stopPropagation();" ng-show="item.isTop==1&&$index>0">上移</button> <button class="btn btn-sm btn-info" ng-click="cancelTop(item);$event.stopPropagation();" ng-show="item.isTop==1">取消置顶</button> <button class="btn btn-sm btn-success" ng-click="setTop(item);$event.stopPropagation();" ng-show="item.isTop==0">置顶</button> <button class="btn btn-sm btn-danger" ng-click="deleteKnowledge(item);$event.stopPropagation();">删除</button></td></tr><tr ng-show="!konwledgeList.length"><td colspan="11" class="text-center" style="font-size:16px">无数据</td></tr></tbody></table><div class="row"><div class="col-sm-6"><div class="dataTables_info" id="contactsList_info" role="status" aria-live="polite">当前第 {{pageIndex}} - {{pageSize*pageIndex}} 条，共 {{pageTotal}} 条</div></div><div class="col-sm-6"><pagination ng-s="pageTotal>0" total-items="pageTotal" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChanged()" boundary-links="true" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" max-size="10" boundary-links="true" rotate="false"></pagination></div></div></div></div></div></div></div><script type="text/ng-template" id="docModalContent.html"><div class="modal-header">
+        <div class="input-group" style="width: 400px;margin: 0 auto;position: relative;">
+            <input type="text" class="form-control" placeholder="输入资料标题关键字搜索" ng-model="mainKeyword" ng-keypress="pressEnter($event)">
+            <a ng-show="mainKWLength>0" style="position: absolute;top: 10px;right: 120px;z-index: 999;" ng-click="clearMainKW()" class="glyphicon glyphicon-remove"></a>
+            <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" ng-click="findDocByKeyWord()">搜索全部文档</button>
+                </span>
+        </div>
+    </div>
+    <div class="modal-body">
+        <div class="row">
+            <div class="col-xs-3">
+                <div class="b-a  r r-2x m-t-md">
+                    <p ng-show="!isTreeLoaded" class="loading text-center"><i class="glyphicon glyphicon-repeat"></i></p>
+                    <abn-tree tree-control="my_tree" tree-data="my_data" on-select="my_tree_handler(branch)" expand-level="2" icon-leaf="fa fa-stethoscope dcolor" icon-expand="fa fa-caret-right" icon-collapse="fa fa-caret-down" ng-if="isTreeLoaded">
+                    </abn-tree>
+                </div>
+            </div>
+            <div class="col-xs-9">
+                <div class="panel panel-default m-t-md">
+                    <div class="panel-heading">
+                        <span>筛选项:</span>
+                    </div>
+                    <div class="panel-body-p clearfix">
+                        <div class="font-bold kw-txt">
+                            关键字：
+                        </div>
+                        <div class="kw-content" ng-class="{'kw-open':open, 'kw-close': !open}">
+                            <div class="btn-group" id="p_kw_content">
+                                <label ng-repeat="keyword in keywords" ng-click="sortByKeyword(keyword)" class="btn btn-default btn-xs" style="margin-left:5px;!important;margin-bottom: 10px;" ng-model="$parent.radioModel" btn-radio="keyword.name">{{keyword.name}}</label>
+                            </div>
+                        </div>
+                        <a class="font-bold more-txt" ng-click="open=!open" ng-show="showMore">
+                            更多
+                            <i class=" fa ng-scope fa-angle-down" ng-class="{'fa-angle-down': !open, 'fa-angle-right': open}"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="panel panel-default">
+                    <!--<p ng-show="!isDocLoaded" class="loading text-center"><i class="glyphicon glyphicon-repeat"></i></p>-->
+                    <div>
+                        <table id="doc_list" class="table table-striped b-t b-b m-t-sm h-full table-hover">
+                            <thead>
+                                <tr>
+                                    <th>标题</th>
+                                    <th width="80px">使用次数</th>
+                                    <th width="80px">浏览量</th>
+                                    <th width="100px">发布时间</th>
+                                    <th width="150px;">操作</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" type="button" ng-click="cancel()">关闭</button>
+    </div></script><script type="text/ng-template" id="addGroupCategory.html"><div class="modal-header">
+        <h4 class="modal-title">添加分类</h4>
+    </div>
+    <div class="modal-body">
+        <label>分类名：</label>
+        <input type="text" class="form-control" ng-model="category" />
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="add()">确定</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div></script><script type="text/ng-template" id="deleteGroupCategory.html"><div class="modal-header">
+        <h4 class="modal-title">是否删除分类：{{item.name}}</h4>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-danger" ng-click="delete()">确定</button>
+        <button class="btn btn-warning" ng-click="cancel()">取消</button>
+    </div></script><script type="text/ng-template" id="deleteKnowledgeContent.html"><div class="modal-header">
+        <h3 class="modal-title">删除就医知识</h3>
+    </div>
+    <div class="modal-body text-center text-lg">
+        是否删除({{doctor.title}})？
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" type="button" ng-click="ok()">确定</button>
+        <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+    </div></script>

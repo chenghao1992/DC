@@ -1,0 +1,1 @@
+"use strict";!function(){function funDynamicEditCtrl($scope,$http,$state,toaster){localStorage.getItem("curGroupId");$scope.curPubName=localStorage.getItem("curNameType")+JSON.parse(localStorage.getItem("curPubMsg")).nickName}angular.module("app").controller("dynamicEditCtrl",funDynamicEditCtrl),funDynamicEditCtrl.$inject=["$scope","$http","$state","toaster"]}();

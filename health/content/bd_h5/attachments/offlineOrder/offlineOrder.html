@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1.0" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>订单</title>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        body{
+            font-family: '微软雅黑', Microsoft YaHei, Tahoma, '黑体', '宋体';
+            background-color: #F2F2F2;
+        }
+        .content{
+            padding-bottom: 60px;
+        }
+        .clearfix{
+            clear: both;
+        }
+        .intro{
+            border-bottom: 1px solid #D6D6D6;
+            background-color: #ffffff;
+        }
+        .intro .logo{
+            float: left;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            margin: 15px;
+        }
+        .intro .title{
+            float: left;
+            margin-top: 10px;
+        }
+        .intro .title p{
+            font-size: 18px;
+            line-height: 35px;
+        }
+        .intro .title .text{
+            color: #333333;
+        }
+        .intro .title .price{
+            font-size: 22px;
+            color: #FF8948;
+        }
+        .intro .text-intro{
+            color: #888;
+            font-size: 16px;
+            padding: 10px;
+            border-top: 1px solid #d8d8d8;
+        }
+        .intro .text-intro>p{
+            font-size: 16px;
+            color: #333333;
+        }
+        .intro .text-intro>ul>li{
+            list-style-type: circle;
+            color: #999999;
+            font-size: 16px;
+            margin-top: 10px;
+        }
+        .doc{
+            border-top: 1px solid #D6D6D6;
+            border-bottom: 1px solid #D6D6D6;
+            margin-top: 20px;
+            background-color: #ffffff;
+        }
+        .doc .logo{
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            margin: 15px;
+            float: left;
+        }
+        .doc .info{
+            margin-top: 10px;
+            margin-bottom: 10px;
+            color: #888;
+            font-size: 16px;
+            display: inline-block;
+        }
+        .doc .info .doc-name{
+            font-size: 18px;
+            color: #333333;
+         }
+        .doc .info .dep{
+            color: #333333;
+            margin-top: 10px;
+        }
+        .doc .info .v-p{
+            color: #AAAAAA;
+            margin-top: 10px;
+        }
+        .doc .info .v-p .score{
+            color: #FF8948;
+            margin-right: 10px;
+        }
+        .doc .info .good-at{
+            color: #333333;
+            margin-top: 10px;
+            text-overflow : ellipsis;
+        }
+        .doc .address{
+            text-indent: 1.5em;
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            color:#333333;
+            border-top:1px solid #D6D6D6;
+            background: url('img/location.jpg')  no-repeat 5px center;
+            background-size:15px 15px;
+        }
+        .doc .time{
+            font-size: 14px;
+            text-indent: 1.5em;
+            width: 100%;
+            height: 44px;
+            line-height: 44px;
+            color:#333333;
+            border-top:1px solid #D6D6D6;
+            background: url('img/time.jpg')  no-repeat 5px center;
+            background-size:15px 15px;
+            white-space: nowrap;
+        }
+
+        .patient{
+            border-top:1px solid #D6D6D6;
+            border-bottom:1px solid #D6D6D6;
+            margin-top: 20px;
+            background-color: #ffffff;
+        }
+        .patient .logo{
+            float:left;
+            width: 60px;
+            height: 60px;
+            border-radius: 5px;
+            margin: 15px;
+        }
+        .patient .info{
+            float: left;
+            margin-top: 15px;
+            margin-bottom: 10px;
+            color: #888;
+            font-size: 16px;
+        }
+        .patient .info .name{
+            font-size: 18px;
+            color: #333333;
+        }
+        .patient .info .rel{
+            margin-left: 5px;
+            font-size: 18px;
+            color: #FF8948;
+        }
+        .patient .info .age{
+            margin-left: 5px;
+            color: #ff7a5a;
+        }
+        .patient .info .address{
+            margin-left: 5px;
+            color: #aaaaaa;
+        }
+        .shop{
+            color: #888;
+            font-size: 16px;
+            padding: 10px;
+        }
+        .shop p{
+            margin-top: 10px;
+        }
+        .shop .title{
+            color: #333333;
+            font-size: 18px;
+        }
+        .btn-content{
+            text-align: center;
+            width: 100%;
+            position: fixed;
+            bottom: 5px;
+        }
+        .btn-content a{
+            background-color: #2db52d;
+            color: #fff;
+            text-align: center;
+            width: 96%;
+            height: 50px;
+            line-height: 50px;
+            text-decoration: none;
+            display: inline-block;
+            border-radius: 8px;
+            font-size: 18px;
+            vertical-align: middle;
+        }
+        .btn-content a:hover{
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+<div class="content">
+    <div class="intro">
+        <div>
+            <img class="logo" src="img/facetoface.jpg"/>
+            <div class="title">
+                <p class="text">名医面对面服务</p>
+                <p class="price" id="price"></p>
+            </div>
+            <div class="clearfix"></div>
+        </div>
+        <div class="text-intro">
+            <p>服务介绍</p>
+            <ul>
+                <li>名医面对面是指您预约好就诊时间和就诊地点，医生为您提供面对面服务</li>
+                <li>支付成功即表示就诊成功，请您准备好病历资料提前前往医院就诊</li>
+            </ul>
+        </div>
+
+    </div>
+    <div class="doc">
+        <img class="logo" src="" id="doctorPhoto"/>
+        <div class="info">
+            <p class="doc-name" id="doctorName"></p>
+            <p class="dep" id="departments"></p>
+            <p class="v-p"><span>评分:</span><span class="score" id="goodRate"></span><span>就诊量:</span><span id="cureNum"></span></p>
+            <p class="good-at" id="skill">
+
+            </p>
+        </div>
+        <div class="address" id="hospital">
+
+        </div>
+        <div class="time" id="time">
+
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="patient">
+        <img class="logo" src="" id="patientPhoto"/>
+        <div class="info">
+            <p><span class="name" id="patientName"></span><span class="rel">就诊人</span></p>
+            <p><img src="" id="patientSex" width="15px" height="15px"/><span class="age" id="patientAge"></span><span class="address" id="area"></span></p>
+        </div>
+        <div class="clearfix"></div>
+    </div>
+    <div class="shop">
+        <p class="title">购买方式：</p>
+        <p>1、您已经注册了博德嘉联医生集团掌上医院，直接打开，服务页会出现本订单，请直接支付。</p>
+        <p>2、您没有注册，请下载。使用<span id="patientTelphone"></span>手机号注册，进入服务页，请点击直接支付。</p>
+    </div>
+    <div class="btn-content">
+        <a id="toApp" href="#">马上使用博德嘉联医生集团掌上医院</a>
+    </div>
+</div>
+</body>
+<script src="zepto.min.js"></script>
+<script src="../../../assets/config.js"></script>
+<script type="text/javascript">
+    window.onload=function(){
+        var toAppUrl='../../../mobile/#/bdjl/openApp/pat';
+        document.querySelector('#toApp').href=toAppUrl;
+
+        var orderId=location.href.split('orderId=')[1];
+        console.log(orderId);
+
+        $.ajax({
+            type: 'POST',
+            url: serverApiRoot+'pack/order/getAppointmentOrder4H5',
+            data: {orderId:orderId},
+            // type of data we are expecting in return:
+            dataType: 'json',
+            contentType:'application/x-www-form-urlencoded',
+            timeout: 300,
+            success: function(data){
+                if(data.resultCode==1){
+                    console.log(data.data);
+                    document.getElementById('price').innerText=data.data.price/100;//价格
+                    document.getElementById('doctorPhoto').src=data.data.doctor.headPicFileName||'./img/peopleDefault.jpg';//价格
+                    document.getElementById('doctorName').innerText=data.data.doctor.name;//价格
+                    document.getElementById('departments').innerText=data.data.doctor.departments;//价格
+                    document.getElementById('goodRate').innerText=data.data.doctor.goodRate;//价格
+                    document.getElementById('cureNum').innerText=data.data.doctor.cureNum;//价格
+                    document.getElementById('skill').innerText=data.data.doctor.skill.slice(0,15)+'...';//价格
+                    document.getElementById('hospital').innerText=data.data.doctor.hospital;//价格
+                    document.getElementById('time').innerText='服务时间：'+data.data.doctor.dateStr;//价格
+                    document.getElementById('patientPhoto').src=data.data.patient.topPath||'./img/peopleDefault.jpg';//价格
+                    document.getElementById('patientSex').src=data.data.patient.sex==1?'img/male.jpg':'img/female.jpg';
+                    document.getElementById('patientName').innerText=data.data.patient.name;//价格
+                    document.getElementById('patientAge').innerText=data.data.patient.ageStr;//价格
+                    document.getElementById('area').innerText=data.data.patient.area;//价格
+                    document.getElementById('patientTelphone').innerText=data.data.patient.telephone;//价格
+                }
+                console.log(data);
+            },
+            error: function(xhr, type){
+                alert('获取数据出错!')
+            }
+        })
+    }
+</script>
+</html>

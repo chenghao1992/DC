@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="app">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="description" content="" />
+    <meta name="keywords" content="" />
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1" />
+    <meta name="renderer" content="webkit">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if lt IE 9]>
+    <script>
+        window.location.href = './Navigator_Not_Surpport.html';
+    </script>
+    <![endif]-->
+    <title ng-bind="$state.current.title"></title>
+    <script src="../assets/config.js"></script>
+</head>
+
+<body ng-controller="AppCtrl">
+    <toaster-container toaster-options="{'close-button': true}"></toaster-container>
+    <ui-medicine open="openUiMedicine"></ui-medicine>
+    <ui-view class="clearfix"></ui-view>
+    <script type="text/javascript">
+    (function() {
+
+        var protocol = window.protocol || 'http://';
+
+        // 加载 css
+        var headDom = document.getElementsByTagName('head')[0];
+        var links = [
+            protocol + "static.mediportal.com.cn/static/guider/font-awesome/css/font-awesome.min.css",
+            protocol + "static.mediportal.com.cn/static/guider/bootstrap/dist/css/bootstrap.min.css",
+            protocol + "static.mediportal.com.cn/static/guider/animate.css/animate.min.css",
+            protocol + "static.mediportal.com.cn/static/guider/angular-xeditable-npm/dist/css/xeditable.css",
+            protocol + "static.mediportal.com.cn/static/guider/angularjs-toaster/toaster.min.css",
+            protocol + "static.mediportal.com.cn/static/guider/angular-tree-control/css/tree-control.css",
+            protocol + "static.mediportal.com.cn/static/guider/angular-tree-control/css/tree-control-attribute.css",
+            protocol + "static.mediportal.com.cn/static/health/angular-ui-select/dist/select.min.css",
+            protocol + "static.mediportal.com.cn/static/guider/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.css",
+            "assets/css/theme/app.css?V=2016360611011111 ",
+            "assets/css/theme/main.css?V=2016360611011111 ",
+            "assets/css/theme/setting.css?V=2016360611011111 "
+        ];
+
+        function setCssLink(url) {
+            var link = document.createElement('link');
+            link.rel = 'stylesheet';
+            link.type = 'text/css';
+            link.href = url;
+            headDom.appendChild(link);
+        };
+
+        for (var i = 0; i < links.length; i++) {
+            setCssLink(links[i])
+        };
+
+        // 加载 js
+        var jss = [
+            protocol + "static.mediportal.com.cn/static/guider/jquery/dist/jquery.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular/angular.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-cookies/angular-cookies.min.js",
+            protocol + "static.mediportal.com.cn/static/common/angularUiCN/angularUiCN.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-ui-router/build/angular-ui-router.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-touch/angular-touch.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-file-upload/dist/angular-file-upload.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/oclazyload/dist/ocLazyLoad.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-ui-bootstrap/ui-bootstrap-tpls.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-animate/angular-animate.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-xeditable-npm/dist/js/xeditable.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/moment/min/moment.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-moment/angular-moment.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angularjs-toaster/toaster.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-tree-control/angular-tree-control.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-smart-table/dist/smart-table.min.js",
+            protocol + "static.mediportal.com.cn/static/health/angular-ui-select/dist/select.min.js",
+            protocol + "static.mediportal.com.cn/static/guider/angular-bootstrap-lightbox/dist/angular-bootstrap-lightbox.min.js",
+            "bower_components/angular-audio/app/angular.audio.js",
+            "app/app.config.js?V=2016300611015555 ",
+            "app/app.ctrl.js?V=2016300611015555 ",
+            "app/app.router.js?V=2016300611015555 ",
+            "app/shared/medicineSel/ui-medicine.js"
+        ];
+
+        var body = document.body;
+
+        function setJsLink(url) {
+            var script = document.createElement('script');
+            script.type = 'text/javascript';
+            script.src = url;
+            script.async = false; //是否异步
+            body.appendChild(script);
+        };
+        for (var i = 0; i < jss.length; i++) {
+            setJsLink(jss[i])
+        };
+
+
+    })();
+    </script>
+</body>
+
+</html>

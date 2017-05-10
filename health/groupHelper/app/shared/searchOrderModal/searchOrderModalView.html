@@ -1,0 +1,49 @@
+
+<div class="modal-body">
+    <div class="row" style="position: relative;">
+        <div class="input-group" style="width: 400px;margin: 0 auto;position: relative;">
+            <input type="text" class="form-control" placeholder="姓名，电话，证件号查询" ng-model="keyWord" ng-keypress="pressEnter($event)">
+            <a ng-show="keyWordLength>0" style="position: absolute;top: 10px;right: 60px;z-index: 999;" ng-click="clearKW()" class="glyphicon glyphicon-remove"></a>
+            <span class="input-group-btn">
+              <button class="btn btn-default" type="button" ng-click="findByKeyWord()">搜索</button>
+            </span>
+        </div>
+    </div>
+    <div class="row m-t-sm">
+        <div class="col-md-12">
+            <div class="panel panel-default">
+                <fe-table searching="false" length-menu="[5,10,20,50]" data="data">
+                    <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0">
+                        <tr>
+                            <th style="text-align: center">
+                                预约时间
+                            </th>
+                            <th style="text-align: center">
+                                患者姓名
+                            </th>
+                            <th style="text-align: center">
+                                患者电话
+                            </th>
+                            <th style="text-align: center">
+                                医生姓名
+                            </th>
+                            <th style="text-align: center">
+                                订单状态
+                            </th>
+                        </tr>
+                        <tr ng-repeat="item in $parent.sliceData" class="hover-pointer" ng-click="showDetail(item)">
+                            <td align="center">{{item.appointmentStart|date:'yyyy/MM/dd HH:mm'}}-{{item.appointmentEnd|date:'HH:mm'}}</td>
+                            <td align="center">{{item.patientName}}</td>
+                            <td align="center">{{item.patientTelephone}}</td>
+                            <td align="center">{{item.doctorName}}</td>
+                            <td align="center">{{transOrderStatus(item)}}</td>
+                        </tr>
+                    </table>
+                </fe-table>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-default" type="button" ng-click="cancel()">取消</button>
+</div>

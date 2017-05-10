@@ -1,0 +1,114 @@
+<div class="frame-panel-a doc" ng-controller="doctorCommunityCtrl">
+    <div class="row m-t-sm">
+        <div class="col-md-2">
+            <div class="row m-b-sm">
+                <span class="col-md-12" style="font-size:24px;">{{groupName}}社区</span>
+            </div>
+            <div class="b-a r r-2x m-t-sm post-list-side">
+                <!-- <accordion close-others="oneAtATime" ng-init="status.open=true">
+                    <accordion-group is-open="status.open">
+                        <accordion-heading style="padding:0">
+                            <span ng-mouseenter="isHeadHover=true" ng-mouseleave="isHeadHover=false">
+                                <dl style="display:inline-block; margin:0;">
+                                    <i class="fa fa-building" aria-hidden="true"></i>
+                                    医生社区
+                                </dl>
+                                <i class="glyphicon pull-right" ng-class="{'glyphicon-chevron-up': status.open, 'glyphicon-chevron-down': !status.open}" style="display:inline-block"></i>
+                            </span>
+                        </accordion-heading>
+                        <div class="category-list">
+                            <dl class="tomato">
+                                <dd style="padding-left:17px;" ng-click="initPostListTable()">我的帖子</dd>
+                            </dl>
+                        </div>
+                    </accordion-group>
+                </accordion> -->
+                <dl ng-click="initPostListTable(0)" style="cursor:pointer; padding-left:20px; background-color:#f6f8f8; padding: 10px 15px;font-weight:500;margin-bottom: 0px;" ng-style="tStyle">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    我的帖子
+                </dl>
+                <dl ng-click="initPostListTable(1)" style="cursor:pointer; padding-left:20px; padding: 10px 15px;font-weight:500;" ng-style="cStyle">
+                    <i class="fa fa-file-text-o" aria-hidden="true"></i>
+                    我的草稿
+                </dl>
+            </div>
+        </div>
+        <div class="col-md-10">
+            <div class="m-b-sm text-right">
+                <a ng-click="funPostType()" class="btn btn-info mrl-15" type="button" style="width: 100px;">发帖</a>
+            </div>
+            <div class="panel panel-default">
+                <div class="row" style="margin-left:15px;">
+                    <div class="pull-left" style="margin: 5px 0px;">
+                        <span>每页</span>
+                        <select name="account" class="text-xs" style="height: 30px;border-color:#cfdadd;width: 60px;" ng-change="initPostListTable(postType)" ng-model="pageSize">
+                            <option value="10"> 10 </option>
+                            <option value="20"> 20 </option>
+                            <option value="50"> 50 </option>
+                            <option value="100"> 100 </option>
+                        </select>
+                        <span>条</span>
+                    </div>
+                </div>
+                <table class="table table-striped m-b-none table-hover" style="border-top:1px solid #eaeff0;border-bottom:1px solid #eaeff0;">
+                    <thead>
+                        <tr>
+                            <th width="50%">标题</th>
+                            <th class="text-center" width="20%">作者</th>
+                            <th class="text-center" width="10%">赞</th>
+                            <th class="text-center" width="10%">回复</th>
+                            <th class="text-center" width="20%">发帖时间</th>
+                            <th class="text-center" width="10%">操作</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in postList.pageData" ng-click="postDetail(item.id)">
+                            <td width="50%">{{item.title||'<无标题>'}}</td>
+                            <td class="text-center">{{item.createName||'--'}}</td>
+                            <td class="text-center">{{item.likeCount|| 0}}</td>
+                            <td class="text-center">{{item.replies||0}}</td>
+                            <td class="text-center">{{item.createTime}}</td>
+                            <td class="text-center"><button ng-click="deletePost(item.id,$event)" class="btn btn-xs btn-danger">删除</button></td>
+                        </tr>
+                    </tbody>
+                </table>
+            
+                <div class="row">
+                    <div class="col-sm-6">
+                        <div class="dataTables_info" style="margin:20px 15px;" id="contactsList_info" role="status" aria-live="polite">当前第 {{pageIndex}} - {{pageSize*pageIndex}} 条，共 {{pageTotal}} 条</div>
+                    </div>
+                    <div class="col-sm-6" style="text-align:right;">
+                        <pagination ng-s="pageTotal>0" total-items="pageTotal" ng-model="pageIndex" items-per-page="pageSize" ng-change="pageChange()" boundary-links="true" first-text="首页" last-text="尾页" previous-text="上一页" next-text="下一页" max-size="10" boundary-links="true" rotate="false"></pagination>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="postTypeModal.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading">请选择帖子类型</div>
+        <div class="panel-body text-center">
+            <div class="form-contrl">
+                <button class="btn btn-primary w-full" ng-click="imgText()">图文帖子</button>
+            </div>
+            <div class="form-contrl m-t-sm">
+                <button class="btn btn-info w-full" ng-click="video()">视频帖子</button>
+            </div>
+            <div class="form-contrl m-t-sm">
+                <button class="btn btn-default w-full" ng-click="cancel()">取消</button>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="delPostInListModal.html">
+    <div class="panel panel-default del-modal">
+        <div class="panel-heading text-center">确认删除该篇帖子？</div>
+        <div class="panel-body text-center">
+            <button class="btn btn-default" ng-click="cancel()">取消</button>
+            <button class="btn btn-primary" ng-click="ok()">确定</button>
+        </div>
+    </div>
+</script>
