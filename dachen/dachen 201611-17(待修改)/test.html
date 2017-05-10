@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+    <link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+</head>
+<style>
+p,
+ul {
+    padding: 0;
+    margin: 0;
+}
+
+ul,
+li,
+a {
+    text-decoration: none;
+    list-style: none;
+}
+
+.controler {
+    margin: 20px auto;
+    max-width: 600px;
+    background: #ddd;
+    min-height: 800px;
+}
+.controler ul >li{
+	padding-bottom: 10px;
+}
+.textLeft .data-En {
+    font-weight: bold;
+    font-size: 18px;
+    margin-bottom: 5px;
+}
+
+.textLeft .data-Zh {
+    padding: 5px;
+    border-radius: 3em;
+    background-color: green;
+    color: #fff;
+    font-size: 16px;
+}
+.xian {
+    border-left: 2px solid green;
+    padding: 5px 0;
+    margin: 5px 0;
+    height: 100%;
+}
+
+.yuan {
+	display: inline-block;
+    color: green;
+    width: 15px;
+    height: 15px;
+    background: green;
+    -moz-border-radius: 50px;
+    -webkit-border-radius: 50px;
+    border-radius: 50px;
+}
+.textLeft{
+	max-width: 20%;
+	display: inline-block;
+}
+.xian{
+	max-width: 2px;
+	display: inline-block;
+}
+.textRight{
+	max-width: 50%;
+	display: inline-block;
+}
+</style>
+
+<body>
+    <div class="controler">
+        <ul>
+            <li>
+                <div class="textLeft">
+                    <p class="data-En">Juec</p>
+                    <span class="data-Zh">2015-15-15</span>
+                </div>
+                <div class="xian"> </div>
+                <div class="textRight">
+                    <span class="yuan"></span><br>
+                </div>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        *{
+            padding: 0;
+            margin:0;
+        }
+
+        ul,li{
+            list-style: none;
+            font-family:"微软雅黑";
+        }
+        ul{
+            width:32%;
+            margin:50px auto;
+            position: relative;
+        }
+        li{
+            height: 50px;
+            /*background-color: cyan;*/
+            margin-bottom: 30px;
+            display: flex;
+        }
+        li .left{
+            width:100px;
+            /*background:seagreen;*/
+            margin-right:120px;
+            position: relative;
+        }
+        li .left span{
+            color: #c1c4c4;
+            font-size:14px;
+        }
+        li .left .date{
+            height: 30px;
+            width:100%;
+            background: #ffbd0b;
+            line-height: 30px;
+            text-align: center;
+            border-radius: 15px;
+            position: absolute;
+            bottom:0;
+            color: #fff;
+            font-size:14px;
+        }
+        li .right{
+            flex: 1;
+            /*background:khaki;*/
+            position: relative;
+        }
+        li .right .text{
+            height: 30px;
+            width:100%;
+            line-height: 30px;
+            position: absolute;
+            bottom:0;
+            padding-left:30px;
+            color: #666;
+            font-size:16px;
+        }
+        li .right .p1{
+            background: url("img/star.png") no-repeat left center;
+
+        }
+        li .right .p2{
+            background: url("img/hippo2.png") no-repeat left center;
+
+        }
+        li .right .p3{
+            background: url("img/money3.png") no-repeat left center;
+
+        }
+        li .right .p4{
+            background: url("img/logo4.png") no-repeat left center;
+
+        }
+        li .right .p5{
+            background: url("img/logo5.png") no-repeat left center;
+
+        }
+        li .right .p6{
+            background: url("img/online.png") no-repeat left center;
+
+        }
+        
+        ul .line{
+            position: absolute;
+            left: 150px;
+            top:30px;
+        }
+    </style>
+</head>
+<body>
+    <ul class="box">
+        <li>
+            <div class="left">
+                <span>July</span>
+                <p class="date">2013-07</p>
+            </div>
+            <div class="right">
+                <p class="text p1">公司成立</p>
+            </div>
+        </li>
+        <li>
+            <div class="left">
+                <span>Oct</span>
+                <p class="date">2013-10</p>
+            </div>
+            <div class="right">
+                <p class="text p2">发布自主应用平台 Hippo</p>
+            </div>
+        </li>
+        <li>
+        <div class="left">
+            <span>June</span>
+            <p class="date">2015-06</p>
+        </div>
+        <div class="right">
+            <p class="text p3">上市公司投资</p>
+        </div>
+        </li>
+        <li>
+            <div class="left">
+                <span>Oct</span>
+                <p class="date">2015-10</p>
+            </div>
+            <div class="right">
+                <p class="text p4">发布玄关医生，患者端的内测版</p>
+            </div>
+        </li>
+        <li>
+        <div class="left">
+            <span>April</span>
+            <p class="date">2016-04</p>
+        </div>
+        <div class="right">
+            <p class="text p5">发布玄关健康产品的正式版</p>
+        </div>
+        </li>
+        <li>
+            <div class="left">
+                <span>June</span>
+                <p class="date">2016-06</p>
+            </div>
+            <div class="right">
+                <p class="text p6">玄关健康产品第一家客户正式上线</p>
+            </div>
+        </li>
+        <img src="img/矩形.png" alt="" class="line">
+    </ul>
+</body>
+</html>
